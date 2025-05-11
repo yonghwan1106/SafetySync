@@ -1,0 +1,3027 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>세부내용 - SafetySync 전기안전 공모전 제안서</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .tab-content {
+      display: none;
+    }
+    
+    .tab-content.active {
+      display: block;
+      animation: fadeIn 0.5s ease forwards;
+    }
+    
+    .seasonal-content {
+      display: none;
+    }
+    
+    .seasonal-content.active {
+      display: block;
+      animation: fadeIn 0.5s ease forwards;
+    }
+    
+    .step-number {
+      transition: all 0.3s ease;
+    }
+    
+    .step:hover .step-number {
+      transform: scale(1.1);
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    }
+    
+    .feature-card {
+      transition: all 0.3s ease;
+      transform: translateY(20px);
+      opacity: 0;
+    }
+    
+    .feature-card.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+    
+    .feature-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    }
+    
+    .solution-card {
+      transition: all 0.3s ease;
+      max-height: 110px;
+      overflow: hidden;
+    }
+    
+    .solution-card.expanded {
+      max-height: 500px;
+    }
+    
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: 19px;
+      top: 0;
+      height: 100%;
+      width: 2px;
+      background-color: #E5E7EB;
+      z-index: 0;
+    }
+    
+    .timeline-item:last-child::before {
+      height: 50%;
+    }
+    
+    .timeline-item:first-child::before {
+      top: 50%;
+      height: 50%;
+    }
+    
+    .season-selector {
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .season-selector.active {
+      transform: scale(1.05);
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+      border-width: 2px;
+    }
+    
+    /* 애니메이션 효과 */
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+    
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    @keyframes scaleIn {
+      from {
+        opacity: 0;
+        transform: scale(0.9);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+    
+    @keyframes slideInRight {
+      from {
+        opacity: 0;
+        transform: translateX(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+    
+    .animate-fade-in {
+      animation: fadeIn 0.8s ease forwards;
+    }
+    
+    .animate-fade-in-up {
+      animation: fadeInUp 0.8s ease forwards;
+    }
+    
+    .animate-scale-in {
+      animation: scaleIn 0.8s ease forwards;
+    }
+    
+    .animate-slide-in-right {
+      animation: slideInRight 0.8s ease forwards;
+    }
+    
+    .animation-delay-200 { animation-delay: 0.2s; }
+    .animation-delay-400 { animation-delay: 0.4s; }
+    .animation-delay-600 { animation-delay: 0.6s; }
+    .animation-delay-800 { animation-delay: 0.8s; }
+    
+    /* 스크롤 트리거 효과 */
+    .scroll-trigger {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.6s ease;
+    }
+    
+    .scroll-trigger.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    
+    /* 컴포넌트 특화 스타일 */
+    .process-flow .step {
+      position: relative;
+    }
+    
+    .process-flow .step:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      top: 2.5rem;
+      bottom: 0;
+      left: 1.5rem;
+      width: 2px;
+      background-color: #E5E7EB;
+      height: calc(100% - 2.5rem);
+    }
+    
+    .wave-divider {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      overflow: hidden;
+      line-height: 0;
+      z-index: 1;
+    }
+    
+    .wave-divider svg {
+      position: relative;
+      display: block;
+      width: calc(100% + 1.3px);
+      height: 85px;
+    }
+    
+    .hexagon-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+    }
+    
+    .hexagon {
+      position: relative;
+      width: 100%;
+      padding-bottom: 115%;
+      clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+      background-color: #3B82F6;
+      transition: all 0.3s ease;
+    }
+    
+    .hexagon:hover {
+      transform: scale(1.05);
+      background-color: #2563EB;
+    }
+    
+    .hexagon-content {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      text-align: center;
+      padding: 1rem;
+    }
+    
+    /* 3D 카드 효과 */
+    .card-3d {
+      perspective: 1000px;
+      transform-style: preserve-3d;
+      transition: transform 0.6s;
+    }
+    
+    .card-3d:hover {
+      transform: rotateY(5deg) rotateX(5deg);
+    }
+    
+    .card-3d::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      background: linear-gradient(225deg, #3B82F6, #8B5CF6);
+      border-radius: inherit;
+      transform: translateZ(-10px);
+      filter: blur(20px);
+      opacity: 0;
+      transition: opacity 0.6s;
+    }
+    
+    .card-3d:hover::before {
+      opacity: 0.7;
+    }
+  </style>
+</head>
+<body class="bg-gray-50">
+  <!-- 프로그레스 바 -->
+  <div class="progress-bar"></div>
+  
+  <!-- 네비게이션 바 -->
+  <nav class="navbar fixed top-0 w-full bg-white z-50 shadow-sm">
+    <div class="container mx-auto px-4 py-3">
+      <div class="flex justify-between items-center">
+        <a href="index.html" class="flex items-center">
+          <span class="text-blue-600 font-bold text-2xl">Safety<span class="text-gray-800">Sync</span></span>
+        </a>
+        
+        <!-- 데스크탑 메뉴 -->
+        <div class="hidden md:flex space-x-8">
+          <a href="current-status.html" class="nav-link text-gray-700 hover:text-blue-600">현황</a>
+          <a href="background.html" class="nav-link text-gray-700 hover:text-blue-600">배경 및 문제점</a>
+          <a href="details.html" class="nav-link text-gray-700 hover:text-blue-600">세부내용</a>
+          <a href="expected-effects.html" class="nav-link text-gray-700 hover:text-blue-600">기대효과</a>
+          <a href="law-amendment.html" class="nav-link text-gray-700 hover:text-blue-600">법률개정안</a>
+          <a href="trend-analysis.html" class="nav-link text-gray-700 hover:text-blue-600">트렌드 분석</a>
+        </div>
+        
+        <!-- 모바일 메뉴 버튼 -->
+        <div class="md:hidden">
+          <button class="menu-toggle focus:outline-none">
+            <svg class="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+      
+      <!-- 모바일 메뉴 -->
+      <div class="mobile-menu hidden md:hidden mt-4 pb-4">
+        <a href="current-status.html" class="block py-2 text-gray-700 hover:text-blue-600">현황</a>
+        <a href="background.html" class="block py-2 text-gray-700 hover:text-blue-600">배경 및 문제점</a>
+        <a href="details.html" class="block py-2 text-gray-700 hover:text-blue-600">세부내용</a>
+        <a href="expected-effects.html" class="block py-2 text-gray-700 hover:text-blue-600">기대효과</a>
+        <a href="law-amendment.html" class="block py-2 text-gray-700 hover:text-blue-600">법률개정안</a>
+        <a href="trend-analysis.html" class="block py-2 text-gray-700 hover:text-blue-600">트렌드 분석</a>
+      </div>
+    </div>
+  </nav>
+  
+  <!-- 헤더 섹션 - 히어로 스타일 -->
+  <header class="section relative pt-40 pb-32 overflow-hidden bg-gradient-to-r from-blue-600 to-blue-900 text-white">
+    <div class="absolute inset-0 opacity-20">
+      <div class="absolute inset-0 bg-pattern"></div>
+    </div>
+    
+    <!-- 헤더 내용 -->
+    <div class="container mx-auto px-4 relative">
+      <div class="flex flex-col md:flex-row items-center justify-between">
+        <div class="md:w-1/2 mb-10 md:mb-0 animate-fade-in-up">
+          <h1 class="text-4xl md:text-6xl font-bold mb-6 leading-tight">전기안전 솔루션<br><span class="text-blue-200">세부 내용</span></h1>
+          <p class="text-xl text-blue-100 mb-8">데이터 기반의 맞춤형 전기안전 서비스로<br>일상 속 전기재해를 효과적으로 예방합니다.</p>
+          
+          <!-- 키 포인트 -->
+          <div class="space-y-4">
+            <div class="flex items-center animate-fade-in-up animation-delay-200">
+              <div class="w-12 h-12 rounded-full bg-blue-500 flex items-center justify-center mr-4 shadow-lg">
+                <i class="fas fa-calendar-alt text-white text-xl"></i>
+              </div>
+              <span class="text-white text-lg">계절별 맞춤형 안전 알림 서비스</span>
+            </div>
+            
+            <div class="flex items-center animate-fade-in-up animation-delay-400">
+              <div class="w-12 h-12 rounded-full bg-blue-500 flex items-center justify-center mr-4 shadow-lg">
+                <i class="fas fa-shield-alt text-white text-xl"></i>
+              </div>
+              <span class="text-white text-lg">IoT 기반 스마트 안전 시스템</span>
+            </div>
+            
+            <div class="flex items-center animate-fade-in-up animation-delay-600">
+              <div class="w-12 h-12 rounded-full bg-blue-500 flex items-center justify-center mr-4 shadow-lg">
+                <i class="fas fa-graduation-cap text-white text-xl"></i>
+              </div>
+              <span class="text-white text-lg">체험형 전기안전 교육 콘텐츠</span>
+            </div>
+          </div>
+        </div>
+        
+        <!-- 이미지/일러스트레이션 -->
+        <div class="md:w-1/2 flex justify-center animate-scale-in">
+          <div class="relative w-full max-w-md">
+            <div class="absolute -top-20 -left-20 w-40 h-40 bg-blue-400 rounded-full filter blur-3xl opacity-30"></div>
+            <div class="absolute -bottom-10 -right-10 w-48 h-48 bg-blue-300 rounded-full filter blur-3xl opacity-30"></div>
+            
+            <div class="bg-white p-6 rounded-xl shadow-2xl relative z-10 card-3d">
+              <div class="flex justify-between mb-8">
+                <div class="text-center p-4">
+                  <span class="block text-5xl font-bold text-blue-600 mb-1">3</span>
+                  <span class="text-gray-600 text-sm">핵심 솔루션</span>
+                </div>
+                <div class="text-center p-4">
+                  <span class="block text-5xl font-bold text-blue-600 mb-1">57<span class="text-3xl">%</span></span>
+                  <span class="text-gray-600 text-sm">사고 감소율</span>
+                </div>
+                <div class="text-center p-4">
+                  <span class="block text-5xl font-bold text-blue-600 mb-1">365</span>
+                  <span class="text-gray-600 text-sm">연중 서비스</span>
+                </div>
+              </div>
+              
+              <!-- 스마트 알림 서비스 미리보기 -->
+              <div class="bg-gradient-to-r from-blue-50 to-green-50 rounded-lg p-4 flex items-center mb-6 border border-blue-100">
+                <div class="w-14 h-14 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center mr-4 flex-shrink-0 shadow-md">
+                  <i class="fas fa-bolt text-white text-xl"></i>
+                </div>
+                <div>
+                  <h3 class="font-bold text-gray-800 text-lg">전기안전 알림</h3>
+                  <p class="text-gray-600">봄철 대청소 시 감전 위험이 증가했습니다. 안전 수칙을 확인하세요.</p>
+                </div>
+              </div>
+              
+              <!-- 간단한 차트 -->
+              <div class="rounded-lg overflow-hidden bg-white p-1">
+                <canvas id="miniChart" height="150"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- 스크롤 다운 아이콘 -->
+    <div class="absolute bottom-6 left-1/2 transform -translate-x-1/2 animate-bounce">
+      <a href="#solutions" class="text-white opacity-75 hover:opacity-100 transition-opacity">
+        <i class="fas fa-chevron-down text-2xl"></i>
+      </a>
+    </div>
+    
+    <!-- 웨이브 디바이더 -->
+    <div class="wave-divider">
+      <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+        <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" class="fill-gray-50"></path>
+      </svg>
+    </div>
+  </header>
+  
+  <!-- 주요 솔루션 카드 섹션 -->
+  <section class="section py-16 bg-white relative z-10">
+    <div class="container mx-auto px-4">
+      <div class="text-center mb-16">
+        <span class="inline-block py-1 px-3 rounded-full bg-blue-100 text-blue-800 text-sm font-semibold mb-3">SafetySync</span>
+        <h2 class="text-3xl md:text-5xl font-bold text-gray-900 mb-4">전기안전 핵심 솔루션</h2>
+        <p class="text-lg text-gray-600 max-w-3xl mx-auto">데이터 분석과 사용자 경험 설계를 통해 개발된 세 가지 혁신적인 솔루션으로<br>당신의 일상 속 전기안전을 효과적으로 개선합니다.</p>
+      </div>
+      
+      <!-- 솔루션 카드 그리드 -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+        <!-- 솔루션 1 -->
+        <div class="feature-card bg-white rounded-xl overflow-hidden shadow-lg p-1">
+          <div class="bg-gradient-to-br from-blue-500 to-blue-600 p-6 text-white relative">
+            <div class="absolute top-0 right-0 mt-4 mr-4">
+              <div class="w-12 h-12 rounded-full bg-white bg-opacity-20 flex items-center justify-center">
+                <i class="fas fa-calendar-alt text-white text-xl"></i>
+              </div>
+            </div>
+            <h3 class="text-2xl font-bold mb-1 mt-8">계절별 맞춤형</h3>
+            <p class="text-blue-100">전기안전 알림 서비스</p>
+          </div>
+          <div class="p-6">
+            <p class="text-gray-600 mb-6">사계절에 맞춘 전기안전 정보와 알림을 제공하여 효과적인 예방 조치를 가능하게 합니다.</p>
+            <div class="flex flex-wrap gap-2">
+              <span class="inline-block px-3 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">데이터 기반</span>
+              <span class="inline-block px-3 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">맞춤형 알림</span>
+              <span class="inline-block px-3 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">계절 특화</span>
+            </div>
+            <a href="#seasonal-tab" class="solution-link mt-6 inline-block text-blue-600 font-medium hover:text-blue-800">
+              자세히 보기 <i class="fas fa-arrow-right ml-1"></i>
+            </a>
+          </div>
+        </div>
+        
+        <!-- 솔루션 2 -->
+        <div class="feature-card bg-white rounded-xl overflow-hidden shadow-lg p-1">
+          <div class="bg-gradient-to-br from-red-500 to-red-600 p-6 text-white relative">
+            <div class="absolute top-0 right-0 mt-4 mr-4">
+              <div class="w-12 h-12 rounded-full bg-white bg-opacity-20 flex items-center justify-center">
+                <i class="fas fa-shield-alt text-white text-xl"></i>
+              </div>
+            </div>
+            <h3 class="text-2xl font-bold mb-1 mt-8">위험 인지 증강</h3>
+            <p class="text-red-100">스마트 안전 시스템</p>
+          </div>
+          <div class="p-6">
+            <p class="text-gray-600 mb-6">IoT 기반 통합 시스템으로 실시간 전력 사용 모니터링 및 위험 상황 자동 대응을 제공합니다.</p>
+            <div class="flex flex-wrap gap-2">
+              <span class="inline-block px-3 py-1 bg-red-100 text-red-800 text-xs rounded-full">IoT 기술</span>
+              <span class="inline-block px-3 py-1 bg-red-100 text-red-800 text-xs rounded-full">실시간 감지</span>
+              <span class="inline-block px-3 py-1 bg-red-100 text-red-800 text-xs rounded-full">자동 대응</span>
+            </div>
+            <a href="#smart-tab" class="solution-link mt-6 inline-block text-red-600 font-medium hover:text-red-800">
+              자세히 보기 <i class="fas fa-arrow-right ml-1"></i>
+            </a>
+          </div>
+        </div>
+        
+        <!-- 솔루션 3 -->
+        <div class="feature-card bg-white rounded-xl overflow-hidden shadow-lg p-1">
+          <div class="bg-gradient-to-br from-green-500 to-green-600 p-6 text-white relative">
+            <div class="absolute top-0 right-0 mt-4 mr-4">
+              <div class="w-12 h-12 rounded-full bg-white bg-opacity-20 flex items-center justify-center">
+                <i class="fas fa-graduation-cap text-white text-xl"></i>
+              </div>
+            </div>
+            <h3 class="text-2xl font-bold mb-1 mt-8">생활 속 체험형</h3>
+            <p class="text-green-100">전기안전 교육 콘텐츠</p>
+          </div>
+          <div class="p-6">
+            <p class="text-gray-600 mb-6">VR/AR 기술을 활용한 체험형 교육으로 일상 속 전기 위험 상황을 안전하게 체험하고 학습합니다.</p>
+            <div class="flex flex-wrap gap-2">
+              <span class="inline-block px-3 py-1 bg-green-100 text-green-800 text-xs rounded-full">VR/AR 기술</span>
+              <span class="inline-block px-3 py-1 bg-green-100 text-green-800 text-xs rounded-full">체험형 학습</span>
+              <span class="inline-block px-3 py-1 bg-green-100 text-green-800 text-xs rounded-full">게이미피케이션</span>
+            </div>
+            <a href="#education-tab" class="solution-link mt-6 inline-block text-green-600 font-medium hover:text-green-800">
+              자세히 보기 <i class="fas fa-arrow-right ml-1"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+      
+      <!-- 솔루션 통합 다이어그램 -->
+      <div class="bg-gradient-to-r from-gray-50 to-blue-50 rounded-2xl p-8 shadow-sm scroll-trigger">
+        <h3 class="text-2xl font-bold text-gray-800 mb-8 text-center">SafetySync 통합 솔루션 아키텍처</h3>
+        
+        <div class="relative">
+          <!-- 중앙 허브 -->
+          <div class="flex flex-col items-center mb-10">
+            <div class="w-24 h-24 rounded-full bg-blue-600 flex items-center justify-center mb-4 shadow-lg">
+              <div class="text-white text-center">
+                <i class="fas fa-brain text-3xl mb-1"></i>
+                <div class="text-sm font-medium">SafetySync<br>Core</div>
+              </div>
+            </div>
+            <div class="text-center max-w-md">
+              <h4 class="font-bold text-gray-800 mb-2">중앙 인텔리전스 허브</h4>
+              <p class="text-gray-600 text-sm">빅데이터 분석, AI 알고리즘, 클라우드 인프라를 통해 모든 솔루션을 연결하고 조율합니다.</p>
+            </div>
+          </div>
+          
+          <!-- 3가지 솔루션 -->
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <!-- 솔루션 1 -->
+            <div class="bg-white rounded-xl p-6 shadow-md">
+              <div class="flex items-center mb-4">
+                <div class="w-14 h-14 rounded-full bg-blue-100 flex items-center justify-center mr-4">
+                  <i class="fas fa-calendar-alt text-blue-600 text-xl"></i>
+                </div>
+                <h4 class="font-bold text-gray-800">계절별 맞춤형<br>알림 서비스</h4>
+              </div>
+              <ul class="space-y-2 mb-4">
+                <li class="flex items-start">
+                  <i class="fas fa-check text-blue-500 mt-1 mr-2"></i>
+                  <span class="text-gray-600 text-sm">계절/기상 데이터 분석</span>
+                </li>
+                <li class="flex items-start">
+                  <i class="fas fa-check text-blue-500 mt-1 mr-2"></i>
+                  <span class="text-gray-600 text-sm">맞춤형 알림 전송</span>
+                </li>
+                <li class="flex items-start">
+                  <i class="fas fa-check text-blue-500 mt-1 mr-2"></i>
+                  <span class="text-gray-600 text-sm">위험 예측 모델링</span>
+                </li>
+              </ul>
+              <div class="flex justify-center">
+                <svg width="60" height="40" viewBox="0 0 60 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M30 40L0 10L0 0L30 30L60 0V10L30 40Z" fill="#3B82F6" fill-opacity="0.2"/>
+                </svg>
+              </div>
+            </div>
+            
+            <!-- 솔루션 2 -->
+            <div class="bg-white rounded-xl p-6 shadow-md">
+              <div class="flex items-center mb-4">
+                <div class="w-14 h-14 rounded-full bg-red-100 flex items-center justify-center mr-4">
+                  <i class="fas fa-shield-alt text-red-600 text-xl"></i>
+                </div>
+                <h4 class="font-bold text-gray-800">위험 인지 증강<br>스마트 시스템</h4>
+              </div>
+              <ul class="space-y-2 mb-4">
+                <li class="flex items-start">
+                  <i class="fas fa-check text-red-500 mt-1 mr-2"></i>
+                  <span class="text-gray-600 text-sm">IoT 센서 네트워크</span>
+                </li>
+                <li class="flex items-start">
+                  <i class="fas fa-check text-red-500 mt-1 mr-2"></i>
+                  <span class="text-gray-600 text-sm">실시간 모니터링</span>
+                </li>
+                <li class="flex items-start">
+                  <i class="fas fa-check text-red-500 mt-1 mr-2"></i>
+                  <span class="text-gray-600 text-sm">자동 차단 시스템</span>
+                </li>
+              </ul>
+              <div class="flex justify-center">
+                <svg width="60" height="40" viewBox="0 0 60 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M30 40L0 10L0 0L30 30L60 0V10L30 40Z" fill="#EF4444" fill-opacity="0.2"/>
+                </svg>
+              </div>
+            </div>
+            
+            <!-- 솔루션 3 -->
+            <div class="bg-white rounded-xl p-6 shadow-md">
+              <div class="flex items-center mb-4">
+                <div class="w-14 h-14 rounded-full bg-green-100 flex items-center justify-center mr-4">
+                  <i class="fas fa-graduation-cap text-green-600 text-xl"></i>
+                </div>
+                <h4 class="font-bold text-gray-800">생활 속 체험형<br>교육 콘텐츠</h4>
+              </div>
+              <ul class="space-y-2 mb-4">
+                <li class="flex items-start">
+                  <i class="fas fa-check text-green-500 mt-1 mr-2"></i>
+                  <span class="text-gray-600 text-sm">VR/AR 시뮬레이션</span>
+                </li>
+                <li class="flex items-start">
+                  <i class="fas fa-check text-green-500 mt-1 mr-2"></i>
+                  <span class="text-gray-600 text-sm">게이미피케이션</span>
+                </li>
+                <li class="flex items-start">
+                  <i class="fas fa-check text-green-500 mt-1 mr-2"></i>
+                  <span class="text-gray-600 text-sm">연령별 맞춤 교육</span>
+                </li>
+              </ul>
+              <div class="flex justify-center">
+                <svg width="60" height="40" viewBox="0 0 60 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M30 40L0 10L0 0L30 30L60 0V10L30 40Z" fill="#22C55E" fill-opacity="0.2"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+          
+          <!-- 사용자 레이어 -->
+          <div class="mt-10 text-center">
+            <div class="inline-block px-8 py-4 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-2xl shadow-lg">
+              <div class="flex items-center justify-center gap-4">
+                <i class="fas fa-users text-2xl"></i>
+                <span class="text-xl font-bold">사용자 인터페이스 레이어</span>
+              </div>
+              <p class="text-indigo-100 mt-1 text-sm">모바일 앱, 웹 인터페이스, 스마트 알림, 음성 비서 등 다양한 접점을 통해 사용자에게 전달됩니다.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- 솔루션 상세 섹션 -->
+  <section id="solutions" class="section py-20 bg-gray-50">
+    <div class="container mx-auto px-4">
+      <div class="text-center mb-12">
+        <span class="inline-block py-1 px-3 rounded-full bg-blue-100 text-blue-800 text-sm font-semibold mb-3">핵심 솔루션</span>
+        <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">솔루션 상세 내용</h2>
+        <p class="text-lg text-gray-600 max-w-3xl mx-auto">각 솔루션의 세부 내용을 확인하고, 전기안전을 효과적으로 개선하는 방법을 알아보세요.</p>
+      </div>
+      
+      <!-- 솔루션 탭 메뉴 (개선된 디자인) -->
+      <div class="mb-12">
+        <div class="flex flex-wrap justify-center mb-6 bg-white rounded-full shadow-md p-2">
+          <button class="tab-button text-lg px-8 py-4 focus:outline-none rounded-full bg-blue-600 text-white font-medium transition-all" data-tab="seasonal">
+            <i class="fas fa-calendar-alt mr-2"></i>계절별 맞춤형 알림
+          </button>
+          <button class="tab-button text-lg px-8 py-4 focus:outline-none rounded-full text-gray-700 hover:bg-gray-100 font-medium transition-all" data-tab="smart">
+            <i class="fas fa-shield-alt mr-2"></i>위험 인지 증강 시스템
+          </button>
+          <button class="tab-button text-lg px-8 py-4 focus:outline-none rounded-full text-gray-700 hover:bg-gray-100 font-medium transition-all" data-tab="education">
+            <i class="fas fa-graduation-cap mr-2"></i>체험형 교육 콘텐츠
+          </button>
+        </div>
+      </div>
+      
+      <!-- 탭 내용 영역 -->
+      <div class="tab-content active" id="seasonal-tab">
+        <div class="flex flex-col lg:flex-row gap-8">
+          <div class="lg:w-1/2">
+            <h3 class="text-3xl font-bold text-gray-800 mb-6">계절별 맞춤형 전기안전 알림 서비스</h3>
+            <p class="text-gray-600 mb-6">전기안전 위험요소의 계절적 변화 패턴을 분석하여, 각 계절별 주요 전기 위험요소에 대한 맞춤형 알림 서비스를 제공합니다. 트렌드 분석 결과, 위험요소 관련 검색어가 계절에 따라 유의미한 변화를 보이며 특히 봄철(3~5월)에 가장 높은 검색량을 기록했습니다.</p>
+            
+            <!-- 계절 선택 버튼 (개선 디자인) -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+              <div class="season-selector active flex flex-col items-center p-5 rounded-lg border-2 border-green-400 bg-gradient-to-br from-green-50 to-green-100 shadow-md" data-season="spring">
+                <div class="w-16 h-16 rounded-full bg-gradient-to-br from-green-400 to-green-500 flex items-center justify-center mb-3 shadow-lg">
+                  <i class="fas fa-seedling text-white text-2xl"></i>
+                </div>
+                <span class="text-green-800 font-medium text-lg">봄</span>
+              </div>
+              
+              <div class="season-selector flex flex-col items-center p-5 rounded-lg border-2 border-blue-300 bg-gradient-to-br from-blue-50 to-blue-100 shadow-md" data-season="summer">
+                <div class="w-16 h-16 rounded-full bg-gradient-to-br from-blue-400 to-blue-500 flex items-center justify-center mb-3 shadow-lg">
+                  <i class="fas fa-umbrella-beach text-white text-2xl"></i>
+                </div>
+                <span class="text-blue-800 font-medium text-lg">여름</span>
+              </div>
+              
+              <div class="season-selector flex flex-col items-center p-5 rounded-lg border-2 border-orange-300 bg-gradient-to-br from-orange-50 to-orange-100 shadow-md" data-season="fall">
+                <div class="w-16 h-16 rounded-full bg-gradient-to-br from-orange-400 to-orange-500 flex items-center justify-center mb-3 shadow-lg">
+                  <i class="fas fa-leaf text-white text-2xl"></i>
+                </div>
+                <span class="text-orange-800 font-medium text-lg">가을</span>
+              </div>
+              
+              <div class="season-selector flex flex-col items-center p-5 rounded-lg border-2 border-blue-400 bg-gradient-to-br from-blue-50 to-blue-100 shadow-md" data-season="winter">
+                <div class="w-16 h-16 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center mb-3 shadow-lg">
+                  <i class="far fa-snowflake text-white text-2xl"></i>
+                </div>
+                <span class="text-blue-800 font-medium text-lg">겨울</span>
+              </div>
+            </div>
+            
+            <!-- 계절별 컨텐츠 (향상된 디자인) -->
+            <div class="seasonal-content active" id="spring-content">
+              <div class="bg-gradient-to-r from-green-50 to-green-100 border-l-4 border-green-500 p-6 rounded-r-lg mb-6 shadow-md">
+                <h4 class="font-bold text-green-800 text-xl mb-3 flex items-center">
+                  <i class="fas fa-exclamation-circle mr-3 text-green-600"></i>봄철 주요 전기안전 위험요소
+                </h4>
+                <ul class="space-y-3 text-gray-700">
+                  <li class="flex items-start">
+                    <div class="w-6 h-6 rounded-full bg-green-200 flex items-center justify-center mr-3 flex-shrink-0 mt-0.5">
+                      <i class="fas fa-broom text-green-700 text-xs"></i>
+                    </div>
+                    <span>봄맞이 대청소 시 전기제품 청소 관련 감전사고</span>
+                  </li>
+                  <li class="flex items-start">
+                    <div class="w-6 h-6 rounded-full bg-green-200 flex items-center justify-center mr-3 flex-shrink-0 mt-0.5">
+                      <i class="fas fa-box-open text-green-700 text-xs"></i>
+                    </div>
+                    <span>겨울철 사용한 전열기기 정리 시 부주의로 인한 사고</span>
+                  </li>
+                  <li class="flex items-start">
+                    <div class="w-6 h-6 rounded-full bg-green-200 flex items-center justify-center mr-3 flex-shrink-0 mt-0.5">
+                      <i class="fas fa-tint text-green-700 text-xs"></i>
+                    </div>
+                    <span>습도 변화로 인한 전기설비 누전 위험</span>
+                  </li>
+                  <li class="flex items-start">
+                    <div class="w-6 h-6 rounded-full bg-green-200 flex items-center justify-center mr-3 flex-shrink-0 mt-0.5">
+                      <i class="fas fa-smog text-green-700 text-xs"></i>
+                    </div>
+                    <span>봄철 황사/미세먼지로 인한 전자기기 오작동</span>
+                  </li>
+                </ul>
+              </div>
+              
+              <div class="bg-white border border-gray-200 rounded-lg p-6 shadow-md">
+                <h4 class="font-bold text-gray-800 text-xl mb-4 flex items-center">
+                  <i class="fas fa-bell text-green-600 mr-3"></i>봄철 맞춤형 알림 예시
+                </h4>
+                <div class="space-y-4">
+                  <div class="bg-gradient-to-r from-green-50 to-white rounded-lg p-4 border border-green-100 shadow-sm">
+                    <div class="flex items-start">
+                      <div class="w-10 h-10 rounded-full bg-gradient-to-br from-green-500 to-green-600 flex items-center justify-center mr-4 flex-shrink-0 mt-1 shadow-md">
+                        <i class="fas fa-bell text-white"></i>
+                      </div>
+                      <div>
+                        <p class="text-gray-800"><span class="font-medium text-green-800">대청소 안전 알림:</span> 오늘은 봄맞이 대청소가 많은 날입니다. 전자제품 청소 시 전원을 완전히 차단하고, 젖은 손으로 전기 제품을 만지지 마세요.</p>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="bg-gradient-to-r from-green-50 to-white rounded-lg p-4 border border-green-100 shadow-sm">
+                    <div class="flex items-start">
+                      <div class="w-10 h-10 rounded-full bg-gradient-to-br from-green-500 to-green-600 flex items-center justify-center mr-4 flex-shrink-0 mt-1 shadow-md">
+                        <i class="fas fa-bell text-white"></i>
+                      </div>
+                      <div>
+                        <p class="text-gray-800"><span class="font-medium text-green-800">습도 변화 알림:</span> 최근 급격한 습도 변화로 전기설비 누전 위험이 높아졌습니다. 화장실, 주방 등 습기가 많은 곳의 전기 설비를 점검하세요.</p>
+                      </div>
+                    </div>
+                  </div>
+                
+                  <!-- 추가된 체크리스트 -->
+                  <div class="bg-gradient-to-r from-green-50 to-white rounded-lg p-4 border border-green-100 shadow-sm mt-2">
+                    <h5 class="font-medium text-green-800 mb-3 flex items-center">
+                      <i class="fas fa-clipboard-check mr-2"></i>봄철 전기안전 체크리스트
+                    </h5>
+                    <div class="space-y-2 pl-2">
+                      <div class="flex items-center">
+                        <input type="checkbox" class="w-4 h-4 text-green-600 rounded border-gray-300 focus:ring-green-500" id="spring-check1">
+                        <label for="spring-check1" class="ml-2 text-gray-700">전기 콘센트 및 멀티탭 청소 시 전원 차단하기</label>
+                      </div>
+                      <div class="flex items-center">
+                        <input type="checkbox" class="w-4 h-4 text-green-600 rounded border-gray-300 focus:ring-green-500" id="spring-check2">
+                        <label for="spring-check2" class="ml-2 text-gray-700">수분이 많은 장소 전기설비 절연 상태 확인</label>
+                      </div>
+                      <div class="flex items-center">
+                        <input type="checkbox" class="w-4 h-4 text-green-600 rounded border-gray-300 focus:ring-green-500" id="spring-check3">
+                        <label for="spring-check3" class="ml-2 text-gray-700">겨울철 사용한 전열기기 코드 손상 여부 확인</label>
+                      </div>
+                      <div class="flex items-center">
+                        <input type="checkbox" class="w-4 h-4 text-green-600 rounded border-gray-300 focus:ring-green-500" id="spring-check4">
+                        <label for="spring-check4" class="ml-2 text-gray-700">전자기기 통풍구 먼지 제거</label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="seasonal-content" id="summer-content">
+              <div class="bg-gradient-to-r from-blue-50 to-blue-100 border-l-4 border-blue-500 p-6 rounded-r-lg mb-6 shadow-md">
+                <h4 class="font-bold text-blue-800 text-xl mb-3 flex items-center">
+                  <i class="fas fa-exclamation-circle mr-3 text-blue-600"></i>여름철 주요 전기안전 위험요소
+                </h4>
+                <ul class="space-y-3 text-gray-700">
+                  <li class="flex items-start">
+                    <div class="w-6 h-6 rounded-full bg-blue-200 flex items-center justify-center mr-3 flex-shrink-0 mt-0.5">
+                      <i class="fas fa-cloud-rain text-blue-700 text-xs"></i>
+                    </div>
+                    <span>장마철 누전으로 인한 감전사고</span>
+                  </li>
+                  <li class="flex items-start">
+                    <div class="w-6 h-6 rounded-full bg-blue-200 flex items-center justify-center mr-3 flex-shrink-0 mt-0.5">
+                      <i class="fas fa-fan text-blue-700 text-xs"></i>
+                    </div>
+                    <span>에어컨 등 냉방기기 과부하로 인한 화재</span>
+                  </li>
+                  <li class="flex items-start">
+                    <div class="w-6 h-6 rounded-full bg-blue-200 flex items-center justify-center mr-3 flex-shrink-0 mt-0.5">
+                      <i class="fas fa-tools text-blue-700 text-xs"></i>
+                    </div>
+                    <span>수해 지역 전기설비 복구 중 사고</span>
+                  </li>
+                  <li class="flex items-start">
+                    <div class="w-6 h-6 rounded-full bg-blue-200 flex items-center justify-center mr-3 flex-shrink-0 mt-0.5">
+                      <i class="fas fa-tint-slash text-blue-700 text-xs"></i>
+                    </div>
+                    <span>습도 상승으로 인한 누전차단기 오작동</span>
+                  </li>
+                </ul>
+              </div>
+              
+              <div class="bg-white border border-gray-200 rounded-lg p-6 shadow-md">
+                <h4 class="font-bold text-gray-800 text-xl mb-4 flex items-center">
+                  <i class="fas fa-bell text-blue-600 mr-3"></i>여름철 맞춤형 알림 예시
+                </h4>
+                <div class="space-y-4">
+                  <div class="bg-gradient-to-r from-blue-50 to-white rounded-lg p-4 border border-blue-100 shadow-sm">
+                    <div class="flex items-start">
+                      <div class="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center mr-4 flex-shrink-0 mt-1 shadow-md">
+                        <i class="fas fa-bell text-white"></i>
+                      </div>
+                      <div>
+                        <p class="text-gray-800"><span class="font-medium text-blue-800">장마철 안전 알림:</span> 오늘은 폭우가 예상됩니다. 침수 위험이 있는 지하 공간의 전기 설비를 미리 차단하고, 옥외 전기 설비에 방수 조치를 취하세요.</p>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="bg-gradient-to-r from-blue-50 to-white rounded-lg p-4 border border-blue-100 shadow-sm">
+                    <div class="flex items-start">
+                      <div class="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center mr-4 flex-shrink-0 mt-1 shadow-md">
+                        <i class="fas fa-bell text-white"></i>
+                      </div>
+                      <div>
+                        <p class="text-gray-800"><span class="font-medium text-blue-800">냉방기기 과부하 알림:</span> 현재 에어컨 사용량이 많은 시간대입니다. 한 콘센트에 여러 냉방기기를 연결하지 마시고, 정기적으로 에어컨 필터를 청소하세요.</p>
+                      </div>
+                    </div>
+                  </div>
+                
+                  <!-- 추가된 체크리스트 -->
+                  <div class="bg-gradient-to-r from-blue-50 to-white rounded-lg p-4 border border-blue-100 shadow-sm mt-2">
+                    <h5 class="font-medium text-blue-800 mb-3 flex items-center">
+                      <i class="fas fa-clipboard-check mr-2"></i>여름철 전기안전 체크리스트
+                    </h5>
+                    <div class="space-y-2 pl-2">
+                      <div class="flex items-center">
+                        <input type="checkbox" class="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500" id="summer-check1">
+                        <label for="summer-check1" class="ml-2 text-gray-700">침수 위험 지역 전기 설비 방수 처리</label>
+                      </div>
+                      <div class="flex items-center">
+                        <input type="checkbox" class="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500" id="summer-check2">
+                        <label for="summer-check2" class="ml-2 text-gray-700">에어컨 과부하 방지를 위한 전용 콘센트 사용</label>
+                      </div>
+                      <div class="flex items-center">
+                        <input type="checkbox" class="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500" id="summer-check3">
+                        <label for="summer-check3" class="ml-2 text-gray-700">번개/낙뢰 발생 시 전자기기 코드 분리</label>
+                      </div>
+                      <div class="flex items-center">
+                        <input type="checkbox" class="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500" id="summer-check4">
+                        <label for="summer-check4" class="ml-2 text-gray-700">실외기 주변 물건 제거 및 환기구 확인</label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="seasonal-content" id="fall-content">
+              <div class="bg-gradient-to-r from-orange-50 to-orange-100 border-l-4 border-orange-500 p-6 rounded-r-lg mb-6 shadow-md">
+                <h4 class="font-bold text-orange-800 text-xl mb-3 flex items-center">
+                  <i class="fas fa-exclamation-circle mr-3 text-orange-600"></i>가을철 주요 전기안전 위험요소
+                </h4>
+                <ul class="space-y-3 text-gray-700">
+                  <li class="flex items-start">
+                    <div class="w-6 h-6 rounded-full bg-orange-200 flex items-center justify-center mr-3 flex-shrink-0 mt-0.5">
+                      <i class="fas fa-leaf text-orange-700 text-xs"></i>
+                    </div>
+                    <span>낙엽으로 인한 옥외 전기설비 화재</span>
+                  </li>
+                  <li class="flex items-start">
+                    <div class="w-6 h-6 rounded-full bg-orange-200 flex items-center justify-center mr-3 flex-shrink-0 mt-0.5">
+                      <i class="fas fa-gift text-orange-700 text-xs"></i>
+                    </div>
+                    <span>추석 명절 전기제품 과다사용으로 인한 과부하</span>
+                  </li>
+                  <li class="flex items-start">
+                    <div class="w-6 h-6 rounded-full bg-orange-200 flex items-center justify-center mr-3 flex-shrink-0 mt-0.5">
+                      <i class="fas fa-temperature-low text-orange-700 text-xs"></i>
+                    </div>
+                    <span>겨울 대비 전열기기 점검 부실로 인한 사고</span>
+                  </li>
+                  <li class="flex items-start">
+                    <div class="w-6 h-6 rounded-full bg-orange-200 flex items-center justify-center mr-3 flex-shrink-0 mt-0.5">
+                      <i class="fas fa-tint text-orange-700 text-xs"></i>
+                    </div>
+                    <span>일교차로 인한 결로 현상과 누전 위험</span>
+                  </li>
+                </ul>
+              </div>
+              
+              <div class="bg-white border border-gray-200 rounded-lg p-6 shadow-md">
+                <h4 class="font-bold text-gray-800 text-xl mb-4 flex items-center">
+                  <i class="fas fa-bell text-orange-600 mr-3"></i>가을철 맞춤형 알림 예시
+                </h4>
+                <div class="space-y-4">
+                  <div class="bg-gradient-to-r from-orange-50 to-white rounded-lg p-4 border border-orange-100 shadow-sm">
+                    <div class="flex items-start">
+                      <div class="w-10 h-10 rounded-full bg-gradient-to-br from-orange-500 to-orange-600 flex items-center justify-center mr-4 flex-shrink-0 mt-1 shadow-md">
+                        <i class="fas fa-bell text-white"></i>
+                      </div>
+                      <div>
+                        <p class="text-gray-800"><span class="font-medium text-orange-800">낙엽 청소 알림:</span> 낙엽이 많이 쌓이는 시기입니다. 옥외 전기설비 주변의 낙엽을 제거하여 화재 위험을 예방하세요.</p>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="bg-gradient-to-r from-orange-50 to-white rounded-lg p-4 border border-orange-100 shadow-sm">
+                    <div class="flex items-start">
+                      <div class="w-10 h-10 rounded-full bg-gradient-to-br from-orange-500 to-orange-600 flex items-center justify-center mr-4 flex-shrink-0 mt-1 shadow-md">
+                        <i class="fas fa-bell text-white"></i>
+                      </div>
+                      <div>
+                        <p class="text-gray-800"><span class="font-medium text-orange-800">전열기기 점검 알림:</span> 겨울이 다가오고 있습니다. 전열기기를 사용하기 전에 코드 손상 여부, 과열 방지 장치 작동 여부를 점검하세요.</p>
+                      </div>
+                    </div>
+                  </div>
+                
+                  <!-- 추가된 체크리스트 -->
+                  <div class="bg-gradient-to-r from-orange-50 to-white rounded-lg p-4 border border-orange-100 shadow-sm mt-2">
+                    <h5 class="font-medium text-orange-800 mb-3 flex items-center">
+                      <i class="fas fa-clipboard-check mr-2"></i>가을철 전기안전 체크리스트
+                    </h5>
+                    <div class="space-y-2 pl-2">
+                      <div class="flex items-center">
+                        <input type="checkbox" class="w-4 h-4 text-orange-600 rounded border-gray-300 focus:ring-orange-500" id="fall-check1">
+                        <label for="fall-check1" class="ml-2 text-gray-700">옥외 전기설비 주변 낙엽 및 이물질 제거</label>
+                      </div>
+                      <div class="flex items-center">
+                        <input type="checkbox" class="w-4 h-4 text-orange-600 rounded border-gray-300 focus:ring-orange-500" id="fall-check2">
+                        <label for="fall-check2" class="ml-2 text-gray-700">전열기기 코드 및 플러그 손상 여부 확인</label>
+                      </div>
+                      <div class="flex items-center">
+                        <input type="checkbox" class="w-4 h-4 text-orange-600 rounded border-gray-300 focus:ring-orange-500" id="fall-check3">
+                        <label for="fall-check3" class="ml-2 text-gray-700">결로현상 발생 부위 전기설비 점검</label>
+                      </div>
+                      <div class="flex items-center">
+                        <input type="checkbox" class="w-4 h-4 text-orange-600 rounded border-gray-300 focus:ring-orange-500" id="fall-check4">
+                        <label for="fall-check4" class="ml-2 text-gray-700">명절 연휴 대비 장기 외출 시 전원 차단</label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="seasonal-content" id="winter-content">
+              <div class="bg-gradient-to-r from-blue-50 to-blue-100 border-l-4 border-blue-600 p-6 rounded-r-lg mb-6 shadow-md">
+                <h4 class="font-bold text-blue-800 text-xl mb-3 flex items-center">
+                  <i class="fas fa-exclamation-circle mr-3 text-blue-600"></i>겨울철 주요 전기안전 위험요소
+                </h4>
+                <ul class="space-y-3 text-gray-700">
+                  <li class="flex items-start">
+                    <div class="w-6 h-6 rounded-full bg-blue-200 flex items-center justify-center mr-3 flex-shrink-0 mt-0.5">
+                      <i class="fas fa-fire text-blue-700 text-xs"></i>
+                    </div>
+                    <span>전열기기 과다사용으로 인한 과부하와 화재</span>
+                  </li>
+                  <li class="flex items-start">
+                    <div class="w-6 h-6 rounded-full bg-blue-200 flex items-center justify-center mr-3 flex-shrink-0 mt-0.5">
+                      <i class="fas fa-bed text-blue-700 text-xs"></i>
+                    </div>
+                    <span>전기장판, 전기히터 장시간 사용으로 인한 사고</span>
+                  </li>
+                  <li class="flex items-start">
+                    <div class="w-6 h-6 rounded-full bg-blue-200 flex items-center justify-center mr-3 flex-shrink-0 mt-0.5">
+                      <i class="fas fa-plug text-blue-700 text-xs"></i>
+                    </div>
+                    <span>겨울 가전제품 사용 증가로 인한 배선 과부하</span>
+                  </li>
+                  <li class="flex items-start">
+                    <div class="w-6 h-6 rounded-full bg-blue-200 flex items-center justify-center mr-3 flex-shrink-0 mt-0.5">
+                      <i class="fas fa-broom text-blue-700 text-xs"></i>
+                    </div>
+                    <span>전기 난방기기 먼지로 인한 화재 위험</span>
+                  </li>
+                </ul>
+              </div>
+              
+              <div class="bg-white border border-gray-200 rounded-lg p-6 shadow-md">
+                <h4 class="font-bold text-gray-800 text-xl mb-4 flex items-center">
+                  <i class="fas fa-bell text-blue-600 mr-3"></i>겨울철 맞춤형 알림 예시
+                </h4>
+                <div class="space-y-4">
+                  <div class="bg-gradient-to-r from-blue-50 to-white rounded-lg p-4 border border-blue-100 shadow-sm">
+                    <div class="flex items-start">
+                      <div class="w-10 h-10 rounded-full bg-gradient-to-br from-blue-600 to-blue-700 flex items-center justify-center mr-4 flex-shrink-0 mt-1 shadow-md">
+                        <i class="fas fa-bell text-white"></i>
+                      </div>
+                      <div>
+                        <p class="text-gray-800"><span class="font-medium text-blue-800">전열기기 안전 알림:</span> 오늘은 매우 추운 날씨입니다. 전기장판과 전기히터를 동시에 사용하면 과부하 위험이 있으니 콘센트 사용량을 분산하세요.</p>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="bg-gradient-to-r from-blue-50 to-white rounded-lg p-4 border border-blue-100 shadow-sm">
+                    <div class="flex items-start">
+                      <div class="w-10 h-10 rounded-full bg-gradient-to-br from-blue-600 to-blue-700 flex items-center justify-center mr-4 flex-shrink-0 mt-1 shadow-md">
+                        <i class="fas fa-bell text-white"></i>
+                      </div>
+                      <div>
+                        <p class="text-gray-800"><span class="font-medium text-blue-800">취침 전 알림:</span> 전기장판, 전기히터 등 전열기기는 취침 전에 반드시 끄고 주무세요. 특히 화재 위험이 높은 시간대입니다.</p>
+                      </div>
+                    </div>
+                  </div>
+                
+                  <!-- 추가된 체크리스트 -->
+                  <div class="bg-gradient-to-r from-blue-50 to-white rounded-lg p-4 border border-blue-100 shadow-sm mt-2">
+                    <h5 class="font-medium text-blue-800 mb-3 flex items-center">
+                      <i class="fas fa-clipboard-check mr-2"></i>겨울철 전기안전 체크리스트
+                    </h5>
+                    <div class="space-y-2 pl-2">
+                      <div class="flex items-center">
+                        <input type="checkbox" class="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500" id="winter-check1">
+                        <label for="winter-check1" class="ml-2 text-gray-700">전열기기 주변 가연성 물질 제거</label>
+                      </div>
+                      <div class="flex items-center">
+                        <input type="checkbox" class="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500" id="winter-check2">
+                        <label for="winter-check2" class="ml-2 text-gray-700">전기장판 온도조절기 정상 작동 확인</label>
+                      </div>
+                      <div class="flex items-center">
+                        <input type="checkbox" class="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500" id="winter-check3">
+                        <label for="winter-check3" class="ml-2 text-gray-700">멀티탭 과부하 방지를 위한 사용량 분산</label>
+                      </div>
+                      <div class="flex items-center">
+                        <input type="checkbox" class="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500" id="winter-check4">
+                        <label for="winter-check4" class="ml-2 text-gray-700">전열기기 먼지 제거 및 환기 공간 확보</label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- 구현 로드맵 -->
+            <div class="mt-12 bg-white rounded-xl p-6 shadow-md scroll-trigger">
+              <h4 class="font-bold text-gray-800 text-xl mb-6 flex items-center">
+                <i class="fas fa-map-marked-alt text-blue-600 mr-3"></i>계절별 알림 서비스 구현 로드맵
+              </h4>
+              
+              <div class="process-flow space-y-0">
+                <!-- 단계 1 -->
+                <div class="step flex items-start mb-8 relative">
+                  <div class="step-number w-12 h-12 rounded-full bg-blue-600 flex items-center justify-center mr-4 flex-shrink-0 shadow-md z-10">
+                    <span class="text-white font-bold">1</span>
+                  </div>
+                  <div>
+                    <h5 class="font-medium text-gray-800 text-lg mb-1">데이터 수집 및 분석</h5>
+                    <p class="text-gray-600 mb-3">전기재해 통계, 기상 데이터, 계절별 위험 요소 패턴 등 다양한 데이터를 수집하고 분석합니다.</p>
+                    <div class="bg-blue-50 p-3 rounded-lg">
+                      <p class="text-sm text-blue-800">현재 진행 중: 5개년 전기재해 통계 데이터 분석 완료, AI 예측 모델 개발 50% 진행</p>
+                    </div>
+                  </div>
+                </div>
+                
+                <!-- 단계 2 -->
+                <div class="step flex items-start mb-8 relative">
+                  <div class="step-number w-12 h-12 rounded-full bg-blue-500 flex items-center justify-center mr-4 flex-shrink-0 shadow-md z-10">
+                    <span class="text-white font-bold">2</span>
+                  </div>
+                  <div>
+                    <h5 class="font-medium text-gray-800 text-lg mb-1">알림 시스템 설계 및 구축</h5>
+                    <p class="text-gray-600 mb-3">모바일 앱, 웹 인터페이스, 푸시 알림 등 다양한 채널을 통한 알림 배포 시스템을 구축합니다.</p>
+                    <div class="bg-blue-50 p-3 rounded-lg">
+                      <p class="text-sm text-blue-800">앱 설계 완료, 푸시 알림 시스템 프로토타입 테스트 진행 중</p>
+                    </div>
+                  </div>
+                </div>
+                
+                <!-- 단계 3 -->
+                <div class="step flex items-start mb-8 relative">
+                  <div class="step-number w-12 h-12 rounded-full bg-blue-400 flex items-center justify-center mr-4 flex-shrink-0 shadow-md z-10">
+                    <span class="text-white font-bold">3</span>
+                  </div>
+                  <div>
+                    <h5 class="font-medium text-gray-800 text-lg mb-1">맞춤형 콘텐츠 개발</h5>
+                    <p class="text-gray-600 mb-3">계절별, 지역별, 사용자 특성별 맞춤형 전기안전 콘텐츠를 개발합니다.</p>
+                    <div class="bg-blue-50 p-3 rounded-lg">
+                      <p class="text-sm text-blue-800">봄, 여름 콘텐츠 패키지 개발 완료, 가을, 겨울 콘텐츠 개발 중</p>
+                    </div>
+                  </div>
+                </div>
+                
+                <!-- 단계 4 -->
+                <div class="step flex items-start relative">
+                  <div class="step-number w-12 h-12 rounded-full bg-blue-300 flex items-center justify-center mr-4 flex-shrink-0 shadow-md z-10">
+                    <span class="text-white font-bold">4</span>
+                  </div>
+                  <div>
+                    <h5 class="font-medium text-gray-800 text-lg mb-1">파일럿 테스트 및 확산</h5>
+                    <p class="text-gray-600 mb-3">테스트 사용자 그룹을 대상으로 시스템을 검증하고, 피드백을 반영하여 서비스를 개선합니다.</p>
+                    <div class="bg-blue-50 p-3 rounded-lg">
+                      <p class="text-sm text-blue-800">파일럿 테스트 그룹 모집 중, 2025년 9월 테스트 시작 예정</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- 시각적 요소 (우측) -->
+          <div class="lg:w-1/2">
+            <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+              <!-- 애니메이션 추가된 앱 인터페이스 목업 -->
+              <div class="bg-gradient-to-br from-gray-50 to-blue-50 p-6 rounded-t-xl">
+                <h3 class="text-2xl font-bold text-gray-800 mb-6 flex items-center">
+                  <i class="fas fa-mobile-alt text-blue-600 mr-3"></i>알림 서비스 앱 인터페이스
+                </h3>
+                
+                <div class="bg-white rounded-2xl overflow-hidden shadow-xl border border-gray-200 max-w-sm mx-auto card-3d">
+                  <!-- 앱 상단 바 -->
+                  <div class="bg-gradient-to-r from-blue-600 to-blue-700 px-6 py-4 flex items-center justify-between">
+                    <div class="flex items-center">
+                      <i class="fas fa-bolt text-white mr-2"></i>
+                      <span class="text-white font-medium">SafetySync</span>
+                    </div>
+                    <div class="flex">
+                      <i class="fas fa-bell text-white mr-3"></i>
+                      <i class="fas fa-cog text-white"></i>
+                    </div>
+                  </div>
+                  
+                  <!-- 앱 내용 -->
+                  <div class="p-5">
+                    <h3 class="font-bold text-gray-800 mb-4">계절별 안전 대시보드</h3>
+                    
+                    <!-- 계절 표시 -->
+                    <div class="flex justify-between mb-6">
+                      <span class="text-green-600 font-bold flex items-center">
+                        <i class="fas fa-seedling mr-2"></i>봄
+                      </span>
+                      <span class="text-sm text-gray-500">3월 ~ 5월</span>
+                    </div>
+                    
+                    <!-- 위험도 게이지 -->
+                    <div class="mb-5">
+                      <div class="flex justify-between items-center mb-1">
+                        <span class="text-sm font-medium text-gray-700">현재 전기안전 위험도</span>
+                        <span class="text-sm font-medium text-yellow-600">중간</span>
+                      </div>
+                      <div class="w-full bg-gray-200 rounded-full h-2.5">
+                        <div class="bg-yellow-500 h-2.5 rounded-full animate-pulse" style="width: 65%"></div>
+                      </div>
+                    </div>
+                    
+                    <!-- 알림 목록 -->
+                    <div class="space-y-3 mb-5">
+                      <div class="bg-green-50 rounded-lg p-3 border border-green-200 animate-fade-in-up">
+                        <div class="flex items-start">
+                          <div class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center mr-3 flex-shrink-0">
+                            <i class="fas fa-broom text-green-600"></i>
+                          </div>
+                          <div>
+                            <h4 class="font-medium text-gray-800">봄맞이 대청소 주의사항</h4>
+                            <p class="text-sm text-gray-600">전자제품 청소 시 감전사고 예방을 위한 안전 수칙을 확인하세요.</p>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <div class="bg-blue-50 rounded-lg p-3 border border-blue-200 animate-fade-in-up animation-delay-200">
+                        <div class="flex items-start">
+                          <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center mr-3 flex-shrink-0">
+                            <i class="fas fa-tint text-blue-600"></i>
+                          </div>
+                          <div>
+                            <h4 class="font-medium text-gray-800">습도 변화 주의</h4>
+                            <p class="text-sm text-gray-600">봄철 습도 변화로 인한 누전 위험이 증가합니다. 전기설비를 점검하세요.</p>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <div class="bg-orange-50 rounded-lg p-3 border border-orange-200 animate-fade-in-up animation-delay-400">
+                        <div class="flex items-start">
+                          <div class="w-10 h-10 rounded-full bg-orange-100 flex items-center justify-center mr-3 flex-shrink-0">
+                            <i class="fas fa-sun text-orange-600"></i>
+                          </div>
+                          <div>
+                            <h4 class="font-medium text-gray-800">황사/미세먼지 대비</h4>
+                            <p class="text-sm text-gray-600">전자기기 환기구의 미세먼지를 정기적으로 청소하여 과열을 방지하세요.</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <!-- 체크리스트 -->
+                    <div class="bg-gray-50 rounded-lg p-4 animate-fade-in-up animation-delay-600">
+                      <h4 class="font-medium text-gray-800 mb-3">봄철 전기안전 체크리스트</h4>
+                      <div class="space-y-2">
+                        <div class="flex items-center">
+                          <input type="checkbox" class="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500" id="check1">
+                          <label for="check1" class="ml-2 text-sm text-gray-700">멀티탭 먼지 제거하기</label>
+                        </div>
+                        <div class="flex items-center">
+                          <input type="checkbox" class="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500" id="check2">
+                          <label for="check2" class="ml-2 text-sm text-gray-700">누전차단기 테스트 버튼 확인</label>
+                        </div>
+                        <div class="flex items-center">
+                          <input type="checkbox" class="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500" id="check3">
+                          <label for="check3" class="ml-2 text-sm text-gray-700">욕실, 주방 등 습기 많은 곳 콘센트 점검</label>
+                        </div>
+                        <div class="flex items-center">
+                          <input type="checkbox" class="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500" id="check4">
+                          <label for="check4" class="ml-2 text-sm text-gray-700">전선 피복 상태 확인</label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- 서비스 구성도 -->
+              <div class="p-6">
+                <h3 class="text-2xl font-bold text-gray-800 mb-6 flex items-center">
+                  <i class="fas fa-sitemap text-blue-600 mr-3"></i>계절별 알림 서비스 아키텍처
+                </h3>
+                
+                <div class="bg-gradient-to-br from-gray-50 to-blue-50 p-6 rounded-xl shadow-inner">
+                  <!-- 헥사곤 그리드 디자인 -->
+                  <div class="hexagon-grid mb-10 scroll-trigger">
+                    <!-- 데이터 수집 -->
+                    <div class="hexagon bg-gradient-to-br from-blue-500 to-blue-600">
+                      <div class="hexagon-content">
+                        <i class="fas fa-database text-3xl mb-2"></i>
+                        <h4 class="font-medium">데이터 수집</h4>
+                        <p class="text-xs opacity-80 mt-1">기상, 사고통계, 트렌드</p>
+                      </div>
+                    </div>
+                    
+                    <!-- AI 분석 -->
+                    <div class="hexagon bg-gradient-to-br from-purple-500 to-purple-600">
+                      <div class="hexagon-content">
+                        <i class="fas fa-brain text-3xl mb-2"></i>
+                        <h4 class="font-medium">AI 분석</h4>
+                        <p class="text-xs opacity-80 mt-1">패턴 분석 및 예측</p>
+                      </div>
+                    </div>
+                    
+                    <!-- 계절 패턴 -->
+                    <div class="hexagon bg-gradient-to-br from-green-500 to-green-600">
+                      <div class="hexagon-content">
+                        <i class="fas fa-calendar-alt text-3xl mb-2"></i>
+                        <h4 class="font-medium">계절 매핑</h4>
+                        <p class="text-xs opacity-80 mt-1">계절별 위험요소 분류</p>
+                      </div>
+                    </div>
+                    
+                    <!-- 사용자 프로필 -->
+                    <div class="hexagon bg-gradient-to-br from-yellow-500 to-yellow-600">
+                      <div class="hexagon-content">
+                        <i class="fas fa-user text-3xl mb-2"></i>
+                        <h4 class="font-medium">사용자 특성</h4>
+                        <p class="text-xs opacity-80 mt-1">위치, 설비, 생활패턴</p>
+                      </div>
+                    </div>
+                    
+                    <!-- 콘텐츠 생성 -->
+                    <div class="hexagon bg-gradient-to-br from-orange-500 to-orange-600">
+                      <div class="hexagon-content">
+                        <i class="fas fa-pen-fancy text-3xl mb-2"></i>
+                        <h4 class="font-medium">콘텐츠 생성</h4>
+                        <p class="text-xs opacity-80 mt-1">맞춤형 안전 정보</p>
+                      </div>
+                    </div>
+                    
+                    <!-- 알림 전송 -->
+                    <div class="hexagon bg-gradient-to-br from-red-500 to-red-600">
+                      <div class="hexagon-content">
+                        <i class="fas fa-bell text-3xl mb-2"></i>
+                        <h4 class="font-medium">알림 배포</h4>
+                        <p class="text-xs opacity-80 mt-1">앱, SMS, 이메일</p>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <!-- 알림 전달 과정 다이어그램 -->
+                  <div class="mb-6 scroll-trigger">
+                    <h4 class="font-medium text-gray-800 mb-4 text-center">알림 생성 및 전달 과정</h4>
+                    <div class="flex flex-col md:flex-row justify-between items-center text-center">
+                      <div class="mb-6 md:mb-0">
+                        <div class="w-20 h-20 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center mx-auto mb-3 shadow-lg">
+                          <i class="fas fa-cloud text-white text-2xl"></i>
+                        </div>
+                        <span class="font-medium text-gray-800">데이터 수집</span>
+                        <p class="text-xs text-gray-600 mt-1">기상 데이터<br>사고 통계</p>
+                      </div>
+                      
+                      <div class="hidden md:block text-blue-500">
+                        <i class="fas fa-chevron-right text-xl"></i>
+                      </div>
+                      <div class="block md:hidden text-blue-500 my-2">
+                        <i class="fas fa-chevron-down text-xl"></i>
+                      </div>
+                      
+                      <div class="mb-6 md:mb-0">
+                        <div class="w-20 h-20 rounded-full bg-gradient-to-br from-purple-500 to-purple-600 flex items-center justify-center mx-auto mb-3 shadow-lg">
+                          <i class="fas fa-brain text-white text-2xl"></i>
+                        </div>
+                        <span class="font-medium text-gray-800">AI 위험 예측</span>
+                        <p class="text-xs text-gray-600 mt-1">머신러닝<br>패턴 분석</p>
+                      </div>
+                      
+                      <div class="hidden md:block text-blue-500">
+                        <i class="fas fa-chevron-right text-xl"></i>
+                      </div>
+                      <div class="block md:hidden text-blue-500 my-2">
+                        <i class="fas fa-chevron-down text-xl"></i>
+                      </div>
+                      
+                      <div class="mb-6 md:mb-0">
+                        <div class="w-20 h-20 rounded-full bg-gradient-to-br from-green-500 to-green-600 flex items-center justify-center mx-auto mb-3 shadow-lg">
+                          <i class="fas fa-calendar-alt text-white text-2xl"></i>
+                        </div>
+                        <span class="font-medium text-gray-800">계절 맵핑</span>
+                        <p class="text-xs text-gray-600 mt-1">계절별<br>위험요소 분류</p>
+                      </div>
+                      
+                      <div class="hidden md:block text-blue-500">
+                        <i class="fas fa-chevron-right text-xl"></i>
+                      </div>
+                      <div class="block md:hidden text-blue-500 my-2">
+                        <i class="fas fa-chevron-down text-xl"></i>
+                      </div>
+                      
+                      <div>
+                        <div class="w-20 h-20 rounded-full bg-gradient-to-br from-red-500 to-red-600 flex items-center justify-center mx-auto mb-3 shadow-lg">
+                          <i class="fas fa-bell text-white text-2xl"></i>
+                        </div>
+                        <span class="font-medium text-gray-800">맞춤형 알림</span>
+                        <p class="text-xs text-gray-600 mt-1">개인화<br>알림 전송</p>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <!-- 계절별 위험 분포 차트 -->
+                  <div class="bg-white p-4 rounded-lg shadow-sm scroll-trigger">
+                    <h4 class="font-medium text-gray-800 mb-3 text-center">계절별 전기안전 위험 분포</h4>
+                    <div class="chart-container" style="position: relative; height:400px;">
+                      <canvas id="seasonalRiskChart"></canvas>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- 추가 시각화 섹션: 검색 트렌드와 알림 효과 비교 -->
+              <div class="bg-white p-6 rounded-b-xl">
+                <h3 class="text-lg font-bold text-gray-800 mb-4 flex items-center">
+                  <i class="fas fa-chart-line text-blue-600 mr-2"></i>계절별 검색 트렌드와 알림 효과 비교
+                </h3>
+
+
+                <div class="bg-blue-50 p-4 rounded-lg shadow-inner mb-6">
+                  <div class="chart-container" style="position: relative; height:200px;">
+                    <canvas id="trendChart"></canvas>
+                  </div>
+                  <p class="text-xs text-gray-500 mt-2 text-center">* 2024년 Q1~Q2 시범 운영 결과 기준, 알림 서비스 적용 후 위험 검색어 감소</p><br><br><br><br>
+                </div>
+                
+                <!-- 핵심 지표 -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                  <div class="bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg p-4 text-center">
+                    <div class="text-3xl font-bold text-blue-600 mb-1">57%</div>
+                    <p class="text-sm text-gray-600">검색 트렌드 감소</p>
+                  </div>
+                  <div class="bg-gradient-to-br from-green-50 to-green-100 rounded-lg p-4 text-center">
+                    <div class="text-3xl font-bold text-green-600 mb-1">89%</div>
+                    <p class="text-sm text-gray-600">사용자 만족도</p>
+                  </div>
+                  <div class="bg-gradient-to-br from-orange-50 to-orange-100 rounded-lg p-4 text-center">
+                    <div class="text-3xl font-bold text-orange-600 mb-1">42%</div>
+                    <p class="text-sm text-gray-600">사고 예방률</p>
+                  </div>
+                  <div class="bg-gradient-to-br from-purple-50 to-purple-100 rounded-lg p-4 text-center">
+                    <div class="text-3xl font-bold text-purple-600 mb-1">24k+</div>
+                    <p class="text-sm text-gray-600">월간 알림 발송</p><br>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="tab-content" id="smart-tab">
+        <div class="flex flex-col lg:flex-row gap-8">
+          <div class="lg:w-1/2">
+            <h3 class="text-3xl font-bold text-gray-800 mb-6">위험 인지 증강 스마트 안전 시스템</h3>
+            <p class="text-gray-600 mb-6">IoT 기반 통합 전기안전 모니터링 시스템으로, 실시간으로 전력 사용량 및 이상징후를 감지하고 위험 상황에 자동 대응합니다. 위험요소에 대한 검색 관심도가 크게 증가(57.4%)한 반면, 안전장치에 대한 관심은 감소(-16.9%) 추세를 보이는 현 상황에서 사용자 친화적인 안전 시스템의 필요성이 대두되고 있습니다.</p>
+            
+            <!-- 주요 기능 카드 (그리드 개선 및 상호작용 효과 추가) -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-8">
+              <div class="feature-card bg-white rounded-xl p-6 shadow-md border-l-4 border-red-500 hover:border-red-600">
+                <div class="w-14 h-14 rounded-full bg-gradient-to-br from-red-100 to-red-200 flex items-center justify-center mb-4 shadow-sm">
+                  <i class="fas fa-bolt text-red-600 text-xl"></i>
+                </div>
+                <h4 class="font-bold text-gray-800 mb-2">실시간 모니터링</h4>
+                <p class="text-gray-600">전력 사용량, 누전, 과부하 등을 실시간으로 감지하고 분석하여 위험 상황을 사전에 파악합니다.</p>
+              </div>
+              
+              <div class="feature-card bg-white rounded-xl p-6 shadow-md border-l-4 border-red-500 hover:border-red-600">
+                <div class="w-14 h-14 rounded-full bg-gradient-to-br from-red-100 to-red-200 flex items-center justify-center mb-4 shadow-sm">
+                  <i class="fas fa-shield-alt text-red-600 text-xl"></i>
+                </div>
+                <h4 class="font-bold text-gray-800 mb-2">자동 차단 시스템</h4>
+                <p class="text-gray-600">위험 상황이 감지되면 해당 회로를 자동으로 차단하고 사용자에게 즉시 알림을 전송합니다.</p>
+              </div>
+              
+              <div class="feature-card bg-white rounded-xl p-6 shadow-md border-l-4 border-red-500 hover:border-red-600">
+                <div class="w-14 h-14 rounded-full bg-gradient-to-br from-red-100 to-red-200 flex items-center justify-center mb-4 shadow-sm">
+                  <i class="fas fa-mobile-alt text-red-600 text-xl"></i>
+                </div>
+                <h4 class="font-bold text-gray-800 mb-2">스마트폰 연동</h4>
+                <p class="text-gray-600">전용 앱을 통해 언제 어디서나 전기 설비 상태를 확인하고 원격으로 제어할 수 있습니다.</p>
+              </div>
+              
+              <div class="feature-card bg-white rounded-xl p-6 shadow-md border-l-4 border-red-500 hover:border-red-600">
+                <div class="w-14 h-14 rounded-full bg-gradient-to-br from-red-100 to-red-200 flex items-center justify-center mb-4 shadow-sm">
+                  <i class="fas fa-chart-bar text-red-600 text-xl"></i>
+                </div>
+                <h4 class="font-bold text-gray-800 mb-2">AI 패턴 분석</h4>
+                <p class="text-gray-600">사용 패턴을 지속적으로 분석하여 이상징후를 조기에 감지하고 예방적 조치를 제안합니다.</p>
+              </div>
+            </div>
+            
+            <!-- 적용 대상 (개선된 시각적 표현) -->
+            <div class="bg-gradient-to-r from-white to-red-50 p-6 rounded-xl shadow-md mb-8 scroll-trigger">
+              <h4 class="font-bold text-gray-800 text-xl mb-5 flex items-center">
+                <i class="fas fa-building text-red-600 mr-3"></i>적용 대상
+              </h4>
+              <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div class="bg-white rounded-xl p-5 shadow-sm text-center transform transition-all hover:scale-105">
+                  <div class="w-16 h-16 rounded-full bg-gradient-to-br from-red-100 to-red-200 flex items-center justify-center mx-auto mb-3">
+                    <i class="fas fa-home text-red-600 text-2xl"></i>
+                  </div>
+                  <h5 class="font-medium text-gray-800">가정</h5>
+                  <p class="text-sm text-gray-600 mt-1">일반 주택 및 아파트</p>
+                </div>
+                
+                <div class="bg-white rounded-xl p-5 shadow-sm text-center transform transition-all hover:scale-105">
+                  <div class="w-16 h-16 rounded-full bg-gradient-to-br from-red-100 to-red-200 flex items-center justify-center mx-auto mb-3">
+                    <i class="fas fa-store text-red-600 text-2xl"></i>
+                  </div>
+                  <h5 class="font-medium text-gray-800">소규모 사업장</h5>
+                  <p class="text-sm text-gray-600 mt-1">상점, 사무실, 카페</p>
+                </div>
+                
+                <div class="bg-white rounded-xl p-5 shadow-sm text-center transform transition-all hover:scale-105">
+                  <div class="w-16 h-16 rounded-full bg-gradient-to-br from-red-100 to-red-200 flex items-center justify-center mx-auto mb-3">
+                    <i class="fas fa-school text-red-600 text-2xl"></i>
+                  </div>
+                  <h5 class="font-medium text-gray-800">교육시설</h5>
+                  <p class="text-sm text-gray-600 mt-1">학교, 유치원, 학원</p>
+                </div>
+                
+                <div class="bg-white rounded-xl p-5 shadow-sm text-center transform transition-all hover:scale-105">
+                  <div class="w-16 h-16 rounded-full bg-gradient-to-br from-red-100 to-red-200 flex items-center justify-center mx-auto mb-3">
+                    <i class="fas fa-hospital text-red-600 text-2xl"></i>
+                  </div>
+                  <h5 class="font-medium text-gray-800">의료시설</h5>
+                  <p class="text-sm text-gray-600 mt-1">병원, 의원, 요양원</p>
+                </div>
+              </div>
+            </div>
+            
+            <!-- 동작 원리 (비주얼 플로우차트) -->
+            <div class="bg-white rounded-xl p-6 shadow-md mb-8 scroll-trigger">
+              <h4 class="font-bold text-gray-800 text-xl mb-5 flex items-center">
+                <i class="fas fa-cogs text-red-600 mr-3"></i>시스템 동작 원리
+              </h4>
+              
+              <div class="relative py-6">
+                <!-- 과정 플로우 라인 -->
+                <div class="absolute left-4 inset-y-0 w-1 bg-gradient-to-b from-red-500 to-red-600"></div>
+                
+                <!-- 1단계 -->
+                <div class="relative flex items-start mb-8 ml-2">
+                  <div class="flex items-center justify-center w-8 h-8 rounded-full bg-red-600 text-white font-bold text-sm z-10 -ml-4">1</div>
+                  <div class="ml-4">
+                    <h5 class="font-medium text-gray-800 text-lg">데이터 수집</h5>
+                    <p class="text-gray-600 mt-1">IoT 센서가 전력 사용량, 온도, 습도, 누전 여부 등의 데이터를 실시간으로 수집합니다.</p>
+                    <div class="flex flex-wrap gap-2 mt-2">
+                      <span class="inline-block px-3 py-1 bg-red-100 text-red-800 text-xs rounded-full">전류 센서</span>
+                      <span class="inline-block px-3 py-1 bg-red-100 text-red-800 text-xs rounded-full">온도 센서</span>
+                      <span class="inline-block px-3 py-1 bg-red-100 text-red-800 text-xs rounded-full">누전 감지기</span>
+                    </div>
+                  </div>
+                </div>
+                
+                <!-- 2단계 -->
+                <div class="relative flex items-start mb-8 ml-2">
+                  <div class="flex items-center justify-center w-8 h-8 rounded-full bg-red-600 text-white font-bold text-sm z-10 -ml-4">2</div>
+                  <div class="ml-4">
+                    <h5 class="font-medium text-gray-800 text-lg">데이터 분석</h5>
+                    <p class="text-gray-600 mt-1">클라우드 기반 AI 분석 엔진이 수집된 데이터를 분석하여 위험 패턴과 이상 징후를 감지합니다.</p>
+                    <div class="flex flex-wrap gap-2 mt-2">
+                      <span class="inline-block px-3 py-1 bg-red-100 text-red-800 text-xs rounded-full">머신러닝</span>
+                      <span class="inline-block px-3 py-1 bg-red-100 text-red-800 text-xs rounded-full">패턴 인식</span>
+                      <span class="inline-block px-3 py-1 bg-red-100 text-red-800 text-xs rounded-full">이상 탐지</span>
+                    </div>
+                  </div>
+                </div>
+                
+                <!-- 3단계 -->
+                <div class="relative flex items-start mb-8 ml-2">
+                  <div class="flex items-center justify-center w-8 h-8 rounded-full bg-red-600 text-white font-bold text-sm z-10 -ml-4">3</div>
+                  <div class="ml-4">
+                    <h5 class="font-medium text-gray-800 text-lg">위험 평가</h5>
+                    <p class="text-gray-600 mt-1">위험도 평가 알고리즘이 감지된 이상 징후의 심각성을 평가하고 위험 단계를 분류합니다.</p>
+                    <div class="flex flex-wrap gap-2 mt-2">
+                      <span class="inline-block px-3 py-1 bg-green-100 text-green-800 text-xs rounded-full">안전</span>
+                      <span class="inline-block px-3 py-1 bg-yellow-100 text-yellow-800 text-xs rounded-full">주의</span>
+                      <span class="inline-block px-3 py-1 bg-orange-100 text-orange-800 text-xs rounded-full">경고</span>
+                      <span class="inline-block px-3 py-1 bg-red-100 text-red-800 text-xs rounded-full">위험</span>
+                    </div>
+                  </div>
+                </div>
+                
+                <!-- 4단계 -->
+                <div class="relative flex items-start ml-2">
+                  <div class="flex items-center justify-center w-8 h-8 rounded-full bg-red-600 text-white font-bold text-sm z-10 -ml-4">4</div>
+                  <div class="ml-4">
+                    <h5 class="font-medium text-gray-800 text-lg">자동 대응</h5>
+                    <p class="text-gray-600 mt-1">위험 단계에 따라 시스템이 자동으로 조치를 취하고 사용자에게 알림을 전송합니다.</p>
+                    <div class="flex flex-wrap gap-2 mt-2">
+                      <span class="inline-block px-3 py-1 bg-red-100 text-red-800 text-xs rounded-full">회로 차단</span>
+                      <span class="inline-block px-3 py-1 bg-red-100 text-red-800 text-xs rounded-full">알림 전송</span>
+                      <span class="inline-block px-3 py-1 bg-red-100 text-red-800 text-xs rounded-full">조치 가이드</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- 시스템 장점 (개선된 디자인) -->
+            <div class="bg-gradient-to-r from-white to-red-50 rounded-xl p-6 shadow-md scroll-trigger">
+              <h4 class="font-bold text-gray-800 text-xl mb-5 flex items-center">
+                <i class="fas fa-award text-red-600 mr-3"></i>스마트 시스템 장점
+              </h4>
+              <ul class="space-y-4">
+                <li class="flex items-start bg-white p-4 rounded-lg shadow-sm">
+                  <div class="w-10 h-10 rounded-full bg-gradient-to-br from-red-500 to-red-600 flex items-center justify-center mr-4 flex-shrink-0 mt-0.5 shadow-md">
+                    <i class="fas fa-check text-white"></i>
+                  </div>
+                  <div>
+                    <h5 class="font-medium text-gray-800 mb-1">사용자 친화적 디자인</h5>
+                    <p class="text-gray-600">일반 가정에서도 쉽게 설치하고 조작할 수 있는 직관적인 인터페이스를 제공합니다.</p>
+                  </div>
+                </li>
+                <li class="flex items-start bg-white p-4 rounded-lg shadow-sm">
+                  <div class="w-10 h-10 rounded-full bg-gradient-to-br from-red-500 to-red-600 flex items-center justify-center mr-4 flex-shrink-0 mt-0.5 shadow-md">
+                    <i class="fas fa-check text-white"></i>
+                  </div>
+                  <div>
+                    <h5 class="font-medium text-gray-800 mb-1">24시간 상시 모니터링</h5>
+                    <p class="text-gray-600">야간이나 외출 중에도 지속적인 모니터링으로 취약시간대 전기안전을 확보합니다.</p>
+                  </div>
+                </li>
+                <li class="flex items-start bg-white p-4 rounded-lg shadow-sm">
+                  <div class="w-10 h-10 rounded-full bg-gradient-to-br from-red-500 to-red-600 flex items-center justify-center mr-4 flex-shrink-0 mt-0.5 shadow-md">
+                    <i class="fas fa-check text-white"></i>
+                  </div>
+                  <div>
+                    <h5 class="font-medium text-gray-800 mb-1">손쉬운 확장성</h5>
+                    <p class="text-gray-600">기존 전기설비와의 호환성을 갖추어 추가 장치 설치만으로 시스템 확장이 가능합니다.</p>
+                  </div>
+                </li>
+                <li class="flex items-start bg-white p-4 rounded-lg shadow-sm">
+                  <div class="w-10 h-10 rounded-full bg-gradient-to-br from-red-500 to-red-600 flex items-center justify-center mr-4 flex-shrink-0 mt-0.5 shadow-md">
+                    <i class="fas fa-check text-white"></i>
+                  </div>
+                  <div>
+                    <h5 class="font-medium text-gray-800 mb-1">선제적 위험 대응</h5>
+                    <p class="text-gray-600">데이터 분석을 통한 위험 예측으로 사고 발생 전에 미리 대응할 수 있습니다.</p>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+          
+          <!-- 시각적 요소 (우측) -->
+          <div class="lg:w-1/2">
+            <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+              <!-- 스마트 안전 시스템 시각화 -->
+              <div class="bg-gradient-to-br from-red-50 to-red-100 p-6 rounded-t-xl">
+                <h3 class="text-2xl font-bold text-gray-800 mb-6 flex items-center">
+                  <i class="fas fa-network-wired text-red-600 mr-3"></i>스마트 안전 시스템 아키텍처
+                </h3>
+                
+                <!-- 시스템 아키텍처 다이어그램 -->
+                <div class="relative h-96 mb-6 bg-white rounded-xl p-6 shadow-inner">
+                  <!-- 다이어그램 배경 -->
+                  <div class="absolute inset-0 m-6 bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg"></div>
+                  
+                  <!-- 중앙 허브 -->
+                  <div class="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 w-28 h-28 bg-gradient-to-br from-red-500 to-red-600 rounded-full flex items-center justify-center z-10 shadow-xl animate-pulse" style="animation: pulse 3s infinite;">
+                    <div class="text-white text-center">
+                      <i class="fas fa-server text-3xl mb-1"></i>
+                      <div class="text-sm font-medium">중앙<br>관제 시스템</div>
+                    </div>
+                  </div>
+                  
+                  <!-- 연결선 -->
+                  <div class="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 rounded-full border-2 border-dashed border-gray-300 z-0"></div>
+                  <div class="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 w-80 h-80 rounded-full border-2 border-dashed border-gray-300 z-0"></div>
+                  
+
+                  <!-- 연결선 스타일링은 SVG로 대체 -->
+                  <!--svg class="absolute inset-0 w-full h-full" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+                    <!-- 각 센서에서 중앙으로 연결되는 선 -->
+                    <path d="M200 200 L200 50" stroke="#3B82F6" stroke-width="2" stroke-dasharray="5,5"/>
+                    <path d="M200 200 L100 133" stroke="#22C55E" stroke-width="2" stroke-dasharray="5,5"/>
+                    <path d="M200 200 L133 266" stroke="#EAB308" stroke-width="2" stroke-dasharray="5,5"/>
+                    <path d="M200 200 L200 350" stroke="#A855F7" stroke-width="2" stroke-dasharray="5,5"/>
+                    <path d="M200 200 L300 133" stroke="#F97316" stroke-width="2" stroke-dasharray="5,5"/>
+                    <path d="M200 200 L267 266" stroke="#EC4899" stroke-width="2" stroke-dasharray="5,5"/>
+                    <path d="M200 200 L320 350" stroke="#2563EB" stroke-width="2" stroke-dasharray="5,5"/>
+                    <path d="M200 200 L80 350" stroke="#4B5563" stroke-width="2" stroke-dasharray="5,5"/>
+                  </svg-->
+
+
+                  <!-- 센서 노드들 -->
+                  <div class="absolute left-1/2 top-12 transform -translate-x-1/2 w-20 h-20 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center shadow-lg">
+                    <div class="text-white text-center">
+                      <i class="fas fa-bolt text-xl"></i>
+                      <div class="text-xs mt-1">전력 센서</div>
+                    </div>
+                  </div>
+                  
+                  <div class="absolute left-1/4 top-1/3 transform -translate-x-1/2 w-20 h-20 bg-gradient-to-br from-green-500 to-green-600 rounded-full flex items-center justify-center shadow-lg">
+                    <div class="text-white text-center">
+                      <i class="fas fa-thermometer-half text-xl"></i>
+                      <div class="text-xs mt-1">온도 센서</div>
+                    </div>
+                  </div>
+                  
+                  <div class="absolute left-1/3 top-2/3 transform -translate-x-1/2 w-20 h-20 bg-gradient-to-br from-yellow-500 to-yellow-600 rounded-full flex items-center justify-center shadow-lg">
+                    <div class="text-white text-center">
+                      <i class="fas fa-tint text-xl"></i>
+                      <div class="text-xs mt-1">습도 센서</div>
+                    </div>
+                  </div>
+                  
+                  <div class="absolute left-1/3 bottom-12 transform -translate-x-1/2 w-20 h-20 bg-gradient-to-br from-purple-500 to-purple-600 rounded-full flex items-center justify-center shadow-lg">
+                    <div class="text-white text-center">
+                      <i class="fas fa-plug text-xl"></i>
+                      <div class="text-xs mt-1">스마트 콘센트</div>
+                    </div>
+                  </div>
+                  
+                  <div class="absolute right-1/4 top-1/3 transform translate-x-1/2 w-20 h-20 bg-gradient-to-br from-orange-500 to-orange-600 rounded-full flex items-center justify-center shadow-lg">
+                    <div class="text-white text-center">
+                      <i class="fas fa-fire text-xl"></i>
+                      <div class="text-xs mt-1">과열 감지기</div>
+                    </div>
+                  </div>
+                  
+                  <div class="absolute right-1/3 top-2/3 transform translate-x-1/2 w-20 h-20 bg-gradient-to-br from-pink-500 to-pink-600 rounded-full flex items-center justify-center shadow-lg">
+                    <div class="text-white text-center">
+                      <i class="fas fa-lightbulb text-xl"></i>
+                      <div class="text-xs mt-1">스마트 전등</div>
+                    </div>
+                  </div>
+                  
+                  <!-- 모바일 디바이스 -->
+                  <div class="absolute right-10 bottom-10 w-24 h-24 bg-gradient-to-br from-blue-600 to-blue-700 rounded-xl flex items-center justify-center shadow-lg">
+                    <div class="text-white text-center">
+                      <i class="fas fa-mobile-alt text-xl"></i>
+                      <div class="text-xs mt-1">모바일 앱</div>
+                    </div>
+                  </div>
+                  
+                  <!-- 클라우드 -->
+                  <div class="absolute left-10 bottom-10 w-24 h-24 bg-gradient-to-br from-gray-700 to-gray-800 rounded-xl flex items-center justify-center shadow-lg">
+                    <div class="text-white text-center">
+                      <i class="fas fa-cloud text-xl"></i>
+                      <div class="text-xs mt-1">클라우드 AI</div>
+                    </div>
+                  </div>
+                  
+                </div>
+                
+                <!-- 데이터 흐름 -->
+                <div class="bg-white rounded-xl p-5 shadow-md scroll-trigger">
+                  <h4 class="font-medium text-gray-800 mb-4 text-center">데이터 흐름도</h4>
+                  <div class="flex flex-col md:flex-row justify-between items-center text-center">
+                    <div class="mb-6 md:mb-0">
+                      <div class="w-16 h-16 rounded-full bg-gradient-to-br from-red-500 to-red-600 flex items-center justify-center mx-auto mb-2 shadow-md">
+                        <i class="fas fa-microchip text-white text-xl"></i>
+                      </div>
+                      <span class="font-medium text-gray-800">IoT 센서</span>
+                      <p class="text-xs text-gray-600 mt-1">데이터 수집</p>
+                    </div>
+                    
+                    <div class="hidden md:block text-red-500">
+                      <i class="fas fa-arrow-right text-xl"></i>
+                    </div>
+                    <div class="block md:hidden text-red-500 mb-4">
+                      <i class="fas fa-arrow-down text-xl"></i>
+                    </div>
+                    
+                    <div class="mb-6 md:mb-0">
+                      <div class="w-16 h-16 rounded-full bg-gradient-to-br from-red-500 to-red-600 flex items-center justify-center mx-auto mb-2 shadow-md">
+                        <i class="fas fa-cloud-upload-alt text-white text-xl"></i>
+                      </div>
+                      <span class="font-medium text-gray-800">데이터 전송</span>
+                      <p class="text-xs text-gray-600 mt-1">암호화 전송</p>
+                    </div>
+                    
+                    <div class="hidden md:block text-red-500">
+                      <i class="fas fa-arrow-right text-xl"></i>
+                    </div>
+                    <div class="block md:hidden text-red-500 mb-4">
+                      <i class="fas fa-arrow-down text-xl"></i>
+                    </div>
+                    
+                    <div class="mb-6 md:mb-0">
+                      <div class="w-16 h-16 rounded-full bg-gradient-to-br from-red-500 to-red-600 flex items-center justify-center mx-auto mb-2 shadow-md">
+                        <i class="fas fa-brain text-white text-xl"></i>
+                      </div>
+                      <span class="font-medium text-gray-800">AI 분석</span>
+                      <p class="text-xs text-gray-600 mt-1">위험 예측</p>
+                    </div>
+                    
+                    <div class="hidden md:block text-red-500">
+                      <i class="fas fa-arrow-right text-xl"></i>
+                    </div>
+                    <div class="block md:hidden text-red-500 mb-4">
+                      <i class="fas fa-arrow-down text-xl"></i>
+                    </div>
+                    
+                    <div>
+                      <div class="w-16 h-16 rounded-full bg-gradient-to-br from-red-500 to-red-600 flex items-center justify-center mx-auto mb-2 shadow-md">
+                        <i class="fas fa-shield-alt text-white text-xl"></i>
+                      </div>
+                      <span class="font-medium text-gray-800">자동 대응</span>
+                      <p class="text-xs text-gray-600 mt-1">차단 및 알림</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- 모바일 앱 인터페이스 -->
+              <div class="p-6">
+                <h3 class="text-2xl font-bold text-gray-800 mb-6 flex items-center">
+                  <i class="fas fa-mobile-alt text-red-600 mr-3"></i>스마트 안전 앱 인터페이스
+                </h3>
+                <div class="flex flex-col md:flex-row gap-6 scroll-trigger">
+                  <!-- 앱 스크린 1: 대시보드 -->
+                  <div class="bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl p-4 md:w-1/2">
+                    <div class="bg-white rounded-xl overflow-hidden shadow-lg">
+                      <!-- 앱 상단 바 -->
+                      <div class="bg-gradient-to-r from-red-600 to-red-700 px-5 py-3 flex items-center justify-between">
+                        <div class="flex items-center">
+                          <i class="fas fa-shield-alt text-white mr-2"></i>
+                          <span class="text-white font-medium">안전 모니터링</span>
+                        </div>
+                        <i class="fas fa-ellipsis-v text-white"></i>
+                      </div>
+                      
+                      <!-- 앱 내용 -->
+                      <div class="p-5">
+                        <h4 class="font-bold text-gray-800 mb-3">실시간 전기안전 상태</h4>
+                        
+                        <!-- 안전 상태 카드 -->
+                        <div class="bg-gradient-to-r from-green-50 to-green-100 rounded-lg p-4 flex items-center mb-5 border border-green-200">
+                          <div class="w-12 h-12 rounded-full bg-gradient-to-br from-green-500 to-green-600 flex items-center justify-center mr-4 flex-shrink-0 shadow-md">
+                            <i class="fas fa-check text-white text-lg"></i>
+                          </div>
+                          <div>
+                            <p class="text-green-800 text-lg font-medium">안전</p>
+                            <p class="text-gray-600">모든 전기설비가 정상 작동 중입니다</p>
+                          </div>
+                        </div>
+                        
+                        <!-- 전력 사용량 -->
+                        <div class="mb-5">
+                          <div class="flex justify-between items-center mb-2">
+                            <span class="text-sm text-gray-700 font-medium">현재 전력 사용량</span>
+                            <span class="text-sm font-medium text-gray-800">3.2 kW</span>
+                          </div>
+                          <div class="w-full bg-gray-200 rounded-full h-2.5">
+                            <div class="bg-gradient-to-r from-green-500 to-green-600 h-2.5 rounded-full" style="width: 45%"></div>
+                          </div>
+                          <div class="flex justify-between text-xs text-gray-500 mt-1">
+                            <span>0 kW</span>
+                            <span>안전 범위</span>
+                            <span>10 kW</span>
+                          </div>
+                        </div>
+                        
+                        <!-- 장치 상태 목록 -->
+                        <h5 class="font-medium text-gray-800 mb-3">설비 상태</h5>
+                        <div class="space-y-3">
+                          <div class="flex justify-between items-center bg-white p-3 rounded-lg shadow-sm">
+                            <div class="flex items-center">
+                              <div class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center mr-2 flex-shrink-0">
+                                <i class="fas fa-utensils text-green-600 text-sm"></i>
+                              </div>
+                              <span class="text-gray-800">주방 전력 모니터</span>
+                            </div>
+                            <span class="text-green-600 font-medium">정상</span>
+                          </div>
+                          
+                          <div class="flex justify-between items-center bg-white p-3 rounded-lg shadow-sm">
+                            <div class="flex items-center">
+                              <div class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center mr-2 flex-shrink-0">
+                                <i class="fas fa-couch text-green-600 text-sm"></i>
+                              </div>
+                              <span class="text-gray-800">거실 스마트 콘센트</span>
+                            </div>
+                            <span class="text-green-600 font-medium">정상</span>
+                          </div>
+                          
+                          <div class="flex justify-between items-center bg-white p-3 rounded-lg shadow-sm">
+                            <div class="flex items-center">
+                              <div class="w-8 h-8 rounded-full bg-yellow-100 flex items-center justify-center mr-2 flex-shrink-0">
+                                <i class="fas fa-bath text-yellow-600 text-sm"></i>
+                              </div>
+                              <span class="text-gray-800">욕실 누전 감지기</span>
+                            </div>
+                            <span class="text-yellow-600 font-medium">점검 필요</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <!-- 앱 스크린 2: 알림 센터 -->
+                  <div class="bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl p-4 md:w-1/2">
+                    <div class="bg-white rounded-xl overflow-hidden shadow-lg">
+                      <!-- 앱 상단 바 -->
+                      <div class="bg-gradient-to-r from-red-600 to-red-700 px-5 py-3 flex items-center justify-between">
+                        <div class="flex items-center">
+                          <i class="fas fa-bell text-white mr-2"></i>
+                          <span class="text-white font-medium">알림 센터</span>
+                        </div>
+                        <i class="fas fa-ellipsis-v text-white"></i>
+                      </div>
+                      
+                      <!-- 앱 내용 -->
+                      <div class="p-5">
+                        <h4 class="font-bold text-gray-800 mb-3">안전 알림</h4>
+                        
+                        <!-- 알림 목록 -->
+                        <div class="space-y-4">
+                          <div class="bg-yellow-50 rounded-lg border border-yellow-200 overflow-hidden shadow-sm">
+                            <div class="bg-yellow-100 px-4 py-2 font-medium text-yellow-800 flex items-center">
+                              <i class="fas fa-exclamation-circle mr-2"></i>
+                              <span>점검 필요</span>
+                              <span class="ml-auto text-xs">10분 전</span>
+                            </div>
+                            <div class="p-4">
+                              <h5 class="font-medium text-gray-800 mb-1">욕실 누전 감지기 점검 필요</h5>
+                              <p class="text-gray-600 text-sm">배터리 잔량이 20% 미만입니다. 교체를 권장합니다.</p>
+                            </div>
+                          </div>
+                          
+                          <div class="bg-red-50 rounded-lg border border-red-200 overflow-hidden shadow-sm">
+                            <div class="bg-red-100 px-4 py-2 font-medium text-red-800 flex items-center">
+                              <i class="fas fa-exclamation-triangle mr-2"></i>
+                              <span>과부하 경고</span>
+                              <span class="ml-auto text-xs">어제</span>
+                            </div>
+                            <div class="p-4">
+                              <h5 class="font-medium text-gray-800 mb-1">주방 과부하 감지</h5>
+                              <p class="text-gray-600 text-sm">주방 콘센트에 과부하가 감지되었습니다. 전력 사용량을 분산하세요.</p>
+                            </div>
+                          </div>
+                          
+                          <div class="bg-green-50 rounded-lg border border-green-200 overflow-hidden shadow-sm">
+                            <div class="bg-green-100 px-4 py-2 font-medium text-green-800 flex items-center">
+                              <i class="fas fa-check-circle mr-2"></i>
+                              <span>안전 진단</span>
+                              <span class="ml-auto text-xs">2일 전</span>
+                            </div>
+                            <div class="p-4">
+                              <h5 class="font-medium text-gray-800 mb-1">월간 안전 진단 완료</h5>
+                              <p class="text-gray-600 text-sm">5월 안전 진단이 완료되었습니다. 모든 장치가 정상 작동 중입니다.</p>
+                            </div>
+                          </div>
+                          
+                          <div class="bg-blue-50 rounded-lg border border-blue-200 overflow-hidden shadow-sm">
+                            <div class="bg-blue-100 px-4 py-2 font-medium text-blue-800 flex items-center">
+                              <i class="fas fa-info-circle mr-2"></i>
+                              <span>시스템 정보</span>
+                              <span class="ml-auto text-xs">1주일 전</span>
+                            </div>
+                            <div class="p-4">
+                              <h5 class="font-medium text-gray-800 mb-1">시스템 업데이트 완료</h5>
+                              <p class="text-gray-600 text-sm">시스템이 최신 버전으로 업데이트되었습니다.</p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                <!-- 위험도 분석 차트 -->
+                <div class="mt-8 bg-white rounded-xl p-6 shadow-md scroll-trigger">
+                  <h4 class="font-medium text-gray-800 mb-4 text-center">전기안전 위험도 분석</h4>
+                  <div class="chart-container" style="position: relative; height:300px;">
+                    <canvas id="riskAnalysisChart"></canvas> </div>
+            
+                  <div class="grid grid-cols-3 gap-4 mt-6 text-center">
+                    <div class="bg-gradient-to-br from-green-50 to-green-100 p-3 rounded-lg">
+                      <div class="text-2xl font-bold text-green-600 mb-1">67%</div>
+                      <p class="text-xs text-gray-600">사고 감소율</p>
+                    </div>
+                    <div class="bg-gradient-to-br from-blue-50 to-blue-100 p-3 rounded-lg">
+                      <div class="text-2xl font-bold text-blue-600 mb-1">9.3분</div>
+                      <p class="text-xs text-gray-600">평균 대응 시간</p>
+                    </div>
+                    <div class="bg-gradient-to-br from-purple-50 to-purple-100 p-3 rounded-lg">
+                      <div class="text-2xl font-bold text-purple-600 mb-1">98.7%</div>
+                      <p class="text-xs text-gray-600">정확도</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="tab-content" id="education-tab">
+        <div class="flex flex-col lg:flex-row gap-8">
+          <div class="lg:w-1/2">
+            <h3 class="text-3xl font-bold text-gray-800 mb-6">생활 속 전기안전 교육 체험 콘텐츠</h3>
+            <p class="text-gray-600 mb-6">VR/AR 기술을 활용한 체험형 전기안전 교육으로, 일상에서 발생할 수 있는 전기 위험 상황을 가상으로 체험하고 올바른 대처법을 학습할 수 있습니다. 특히 2025년 3월 위험요소 검색 급증 현상이 발생했으며, 전기안전 인식 조사 결과 전체 응답자의 77%가 전기안전 교육 경험이 없는 것으로 나타나 체계적인 교육의 필요성이 높아지고 있습니다.</p>
+            
+            <!-- 교육 콘텐츠 특징 (향상된 카드 디자인) -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10 scroll-trigger">
+              <div class="bg-gradient-to-r from-white to-green-50 rounded-xl p-6 shadow-md border-l-4 border-green-500 hover:shadow-lg transition-all">
+                <div class="flex items-center mb-4">
+                  <div class="w-14 h-14 rounded-full bg-gradient-to-br from-green-100 to-green-200 flex items-center justify-center mr-4 shadow-md">
+                    <i class="fas fa-vr-cardboard text-green-600 text-xl"></i>
+                  </div>
+                  <h4 class="font-bold text-gray-800 text-lg">몰입형 VR 체험</h4>
+                </div>
+                <p class="text-gray-600">실제와 같은 가상현실 환경에서 전기 위험 상황을 안전하게 체험하여 실전 대응력을 키웁니다.</p>
+                <div class="mt-4 pt-4 border-t border-green-100">
+                  <ul class="space-y-1">
+                    <li class="flex items-center text-sm text-gray-600">
+                      <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                      <span>실감나는 위험 상황 시뮬레이션</span>
+                    </li>
+                    <li class="flex items-center text-sm text-gray-600">
+                      <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                      <span>상호작용을 통한 학습 효과 증대</span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              
+              <div class="bg-gradient-to-r from-white to-green-50 rounded-xl p-6 shadow-md border-l-4 border-green-500 hover:shadow-lg transition-all">
+                <div class="flex items-center mb-4">
+                  <div class="w-14 h-14 rounded-full bg-gradient-to-br from-green-100 to-green-200 flex items-center justify-center mr-4 shadow-md">
+                    <i class="fas fa-gamepad text-green-600 text-xl"></i>
+                  </div>
+                  <h4 class="font-bold text-gray-800 text-lg">게이미피케이션</h4>
+                </div>
+                <p class="text-gray-600">게임 요소를 적용하여 재미있고 흥미로운 학습 경험을 제공하며 교육 효과를 극대화합니다.</p>
+                <div class="mt-4 pt-4 border-t border-green-100">
+                  <ul class="space-y-1">
+                    <li class="flex items-center text-sm text-gray-600">
+                      <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                      <span>포인트 적립 및 보상 시스템</span>
+                    </li>
+                    <li class="flex items-center text-sm text-gray-600">
+                      <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                      <span>단계별 미션과 도전 과제</span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              
+              <div class="bg-gradient-to-r from-white to-green-50 rounded-xl p-6 shadow-md border-l-4 border-green-500 hover:shadow-lg transition-all">
+                <div class="flex items-center mb-4">
+                  <div class="w-14 h-14 rounded-full bg-gradient-to-br from-green-100 to-green-200 flex items-center justify-center mr-4 shadow-md">
+                    <i class="fas fa-users text-green-600 text-xl"></i>
+                  </div>
+                  <h4 class="font-bold text-gray-800 text-lg">연령별 맞춤형</h4>
+                </div>
+                <p class="text-gray-600">아동, 청소년, 성인, 노인 등 연령대별 특성과 학습 능력을 고려한 맞춤형 콘텐츠를 제공합니다.</p>
+                <div class="mt-4 pt-4 border-t border-green-100">
+                  <ul class="space-y-1">
+                    <li class="flex items-center text-sm text-gray-600">
+                      <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                      <span>연령대별 최적화된 난이도</span>
+                    </li>
+                    <li class="flex items-center text-sm text-gray-600">
+                      <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                      <span>관련성 높은 시나리오 맞춤 제공</span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              
+              <div class="bg-gradient-to-r from-white to-green-50 rounded-xl p-6 shadow-md border-l-4 border-green-500 hover:shadow-lg transition-all">
+                <div class="flex items-center mb-4">
+                  <div class="w-14 h-14 rounded-full bg-gradient-to-br from-green-100 to-green-200 flex items-center justify-center mr-4 shadow-md">
+                    <i class="fas fa-mobile-alt text-green-600 text-xl"></i>
+                  </div>
+                  <h4 class="font-bold text-gray-800 text-lg">멀티 플랫폼</h4>
+                </div>
+                <p class="text-gray-600">VR 기기, AR 앱, 온라인 웹 등 다양한 플랫폼에서 이용 가능하여 접근성을 높였습니다.</p>
+                <div class="mt-4 pt-4 border-t border-green-100">
+                  <ul class="space-y-1">
+                    <li class="flex items-center text-sm text-gray-600">
+                      <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                      <span>다양한 기기에서 접근 가능</span>
+                    </li>
+                    <li class="flex items-center text-sm text-gray-600">
+                      <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                      <span>여러 환경에 맞는 최적화 제공</span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            
+            <!-- 교육 시나리오 (아코디언 개선) -->
+            <div class="mb-10">
+              <h4 class="font-bold text-gray-800 text-xl mb-5 flex items-center">
+                <i class="fas fa-book-open text-green-600 mr-3"></i>주요 교육 시나리오
+              </h4>
+              
+              <!-- 시나리오 아코디언 -->
+              <div class="space-y-4">
+                <!-- 시나리오 1 -->
+                <div class="solution-card bg-white rounded-xl overflow-hidden transition-all shadow-md cursor-pointer">
+                  <div class="bg-gradient-to-r from-green-600 to-green-700 px-6 py-4 flex justify-between items-center">
+                    <div class="flex items-center">
+                      <div class="w-10 h-10 rounded-full bg-white bg-opacity-20 flex items-center justify-center mr-3">
+                        <i class="fas fa-home text-white"></i>
+                      </div>
+                      <h5 class="font-medium text-white text-lg">가정 내 전기안전</h5>
+                    </div>
+                    <i class="fas fa-chevron-down text-white"></i>
+                  </div>
+                  <div class="px-6 py-4">
+                    <p class="text-gray-600 mb-4">가정에서 발생할 수 있는 다양한 전기안전 위험 상황과 대처법을 학습하는 시나리오입니다.</p>
+                    <div class="bg-green-50 p-4 rounded-lg border border-green-100">
+                      <h6 class="font-medium text-gray-800 mb-3">주요 학습 내용</h6>
+                      <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        <div class="flex items-start">
+                          <div class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center mr-2 flex-shrink-0 mt-0.5">
+                            <i class="fas fa-plug text-green-600 text-sm"></i>
+                          </div>
+                          <span class="text-gray-700">과부하 콘센트 화재 위험 인지 및 대처법</span>
+                        </div>
+                        <div class="flex items-start">
+                          <div class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center mr-2 flex-shrink-0 mt-0.5">
+                            <i class="fas fa-shower text-green-600 text-sm"></i>
+                          </div>
+                          <span class="text-gray-700">욕실 전기제품 안전 사용법</span>
+                        </div>
+                        <div class="flex items-start">
+                          <div class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center mr-2 flex-shrink-0 mt-0.5">
+                            <i class="fas fa-fire text-green-600 text-sm"></i>
+                          </div>
+                          <span class="text-gray-700">전기장판, 전열기기 화재 예방</span>
+                        </div>
+                        <div class="flex items-start">
+                          <div class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center mr-2 flex-shrink-0 mt-0.5">
+                            <i class="fas fa-child text-green-600 text-sm"></i>
+                          </div>
+                          <span class="text-gray-700">어린이 전기안전 교육</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                <!-- 시나리오 2 -->
+                <div class="solution-card bg-white rounded-xl overflow-hidden transition-all shadow-md cursor-pointer">
+                  <div class="bg-gradient-to-r from-blue-600 to-blue-700 px-6 py-4 flex justify-between items-center">
+                    <div class="flex items-center">
+                      <div class="w-10 h-10 rounded-full bg-white bg-opacity-20 flex items-center justify-center mr-3">
+                        <i class="fas fa-cloud-rain text-white"></i>
+                      </div>
+                      <h5 class="font-medium text-white text-lg">재난 상황 대처법</h5>
+                    </div>
+                    <i class="fas fa-chevron-down text-white"></i>
+                  </div>
+                  <div class="px-6 py-4">
+                    <p class="text-gray-600 mb-4">홍수, 태풍, 폭설 등 재난 상황에서의 전기안전 대처법을 배우는 시나리오입니다.</p>
+                    <div class="bg-blue-50 p-4 rounded-lg border border-blue-100">
+                      <h6 class="font-medium text-gray-800 mb-3">주요 학습 내용</h6>
+                      <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        <div class="flex items-start">
+                          <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center mr-2 flex-shrink-0 mt-0.5">
+                            <i class="fas fa-water text-blue-600 text-sm"></i>
+                          </div>
+                          <span class="text-gray-700">침수 시 전기설비 안전 조치</span>
+                        </div>
+                        <div class="flex items-start">
+                          <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center mr-2 flex-shrink-0 mt-0.5">
+                            <i class="fas fa-power-off text-blue-600 text-sm"></i>
+                          </div>
+                          <span class="text-gray-700">단전 상황 대비 및 대처법</span>
+                        </div>
+                        <div class="flex items-start">
+                          <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center mr-2 flex-shrink-0 mt-0.5">
+                            <i class="fas fa-bolt text-blue-600 text-sm"></i>
+                          </div>
+                          <span class="text-gray-700">낙뢰 발생 시 안전 수칙</span>
+                        </div>
+                        <div class="flex items-start">
+                          <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center mr-2 flex-shrink-0 mt-0.5">
+                            <i class="fas fa-clipboard-check text-blue-600 text-sm"></i>
+                          </div>
+                          <span class="text-gray-700">재난 대피 시 전기안전 점검 사항</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                <!-- 시나리오 3 -->
+                <div class="solution-card bg-white rounded-xl overflow-hidden transition-all shadow-md cursor-pointer">
+                  <div class="bg-gradient-to-r from-red-600 to-red-700 px-6 py-4 flex justify-between items-center">
+                    <div class="flex items-center">
+                      <div class="w-10 h-10 rounded-full bg-white bg-opacity-20 flex items-center justify-center mr-3">
+                        <i class="fas fa-first-aid text-white"></i>
+                      </div>
+                      <h5 class="font-medium text-white text-lg">응급 상황 대응</h5>
+                    </div>
+                    <i class="fas fa-chevron-down text-white"></i>
+                  </div>
+                  <div class="px-6 py-4">
+                    <p class="text-gray-600 mb-4">감전 사고, 전기 화재 등 전기 관련 응급 상황 발생 시 대응법을 학습하는 시나리오입니다.</p>
+                    <div class="bg-red-50 p-4 rounded-lg border border-red-100">
+                      <h6 class="font-medium text-gray-800 mb-3">주요 학습 내용</h6>
+                      <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        <div class="flex items-start">
+                          <div class="w-8 h-8 rounded-full bg-red-100 flex items-center justify-center mr-2 flex-shrink-0 mt-0.5">
+                            <i class="fas fa-bolt text-red-600 text-sm"></i>
+                          </div>
+                          <span class="text-gray-700">감전 사고 발생 시 구조 방법</span>
+                        </div>
+                        <div class="flex items-start">
+                          <div class="w-8 h-8 rounded-full bg-red-100 flex items-center justify-center mr-2 flex-shrink-0 mt-0.5">
+                            <i class="fas fa-fire-extinguisher text-red-600 text-sm"></i>
+                          </div>
+                          <span class="text-gray-700">전기화재 초기 대응법</span>
+                        </div>
+                        <div class="flex items-start">
+                          <div class="w-8 h-8 rounded-full bg-red-100 flex items-center justify-center mr-2 flex-shrink-0 mt-0.5">
+                            <i class="fas fa-phone-alt text-red-600 text-sm"></i>
+                          </div>
+                          <span class="text-gray-700">전기 사고 발생 시 119 신고 요령</span>
+                        </div>
+                        <div class="flex items-start">
+                          <div class="w-8 h-8 rounded-full bg-red-100 flex items-center justify-center mr-2 flex-shrink-0 mt-0.5">
+                            <i class="fas fa-heartbeat text-red-600 text-sm"></i>
+                          </div>
+                          <span class="text-gray-700">감전 환자 응급처치법</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- 교육 효과 및 활용 방안 -->
+            <div class="bg-gradient-to-r from-white to-green-50 rounded-xl p-6 shadow-md scroll-trigger">
+              <h4 class="font-bold text-gray-800 text-xl mb-5 flex items-center">
+                <i class="fas fa-chart-line text-green-600 mr-3"></i>교육 효과 및 활용 방안
+              </h4>
+              
+              <!-- 교육 효과 차트 -->
+              <div class="bg-white rounded-lg p-4 mb-6 shadow-sm">
+                <h5 class="font-medium text-gray-800 mb-3 text-center">교육 전/후 안전 의식 변화</h5>
+                <div class="chart-container" style="position: relative; height:180px;">
+                  <canvas id="educationEffectChart"></canvas>
+                </div>
+                <p class="text-xs text-center text-gray-500 mt-2">* 2024년 시범 교육 참가자 1,200명 대상 조사 결과</p>
+              </div>
+              
+              <!-- 활용 방안 -->
+              <h5 class="font-medium text-gray-800 mb-4">활용 방안</h5>
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="bg-white rounded-xl p-5 shadow-sm text-center transform transition-all hover:scale-105">
+                  <div class="w-16 h-16 rounded-full bg-gradient-to-br from-green-500 to-green-600 flex items-center justify-center mx-auto mb-4 shadow-md">
+                    <i class="fas fa-school text-white text-xl"></i>
+                  </div>
+                  <h5 class="font-medium text-gray-800 mb-2">학교 안전교육</h5>
+                  <p class="text-sm text-gray-600">초중고 학생 대상 정규 안전교육 과정에 활용하여 어릴 때부터 올바른 전기안전 습관 형성</p>
+                </div>
+                
+                <div class="bg-white rounded-xl p-5 shadow-sm text-center transform transition-all hover:scale-105">
+                  <div class="w-16 h-16 rounded-full bg-gradient-to-br from-green-500 to-green-600 flex items-center justify-center mx-auto mb-4 shadow-md">
+                    <i class="fas fa-building text-white text-xl"></i>
+                  </div>
+                  <h5 class="font-medium text-gray-800 mb-2">기업 안전교육</h5>
+                  <p class="text-sm text-gray-600">사업장 안전 교육 및 신입사원 교육에 활용하여 직장 내 전기 사고 예방</p>
+                </div>
+                
+                <div class="bg-white rounded-xl p-5 shadow-sm text-center transform transition-all hover:scale-105">
+                  <div class="w-16 h-16 rounded-full bg-gradient-to-br from-green-500 to-green-600 flex items-center justify-center mx-auto mb-4 shadow-md">
+                    <i class="fas fa-users text-white text-xl"></i>
+                  </div>
+                  <h5 class="font-medium text-gray-800 mb-2">지역사회 교육</h5>
+                  <p class="text-sm text-gray-600">주민센터, 복지관 등 공공시설 교육 프로그램으로 활용하여 지역사회 안전 문화 확산</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- 시각적 요소 (우측) -->
+          <div class="lg:w-1/2">
+            <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+              <!-- VR 교육 시각화 -->
+              <div class="relative mb-6">
+                <img src="images/edu05.png" alt="VR 전기안전 교육 화면" class="w-full h-auto">
+                <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-80"></div>
+                <div class="absolute bottom-0 left-0 p-8">
+                  <span class="inline-block px-3 py-1 bg-green-600 text-white text-sm font-medium rounded-full mb-3">VR 시뮬레이션</span>
+                  <h3 class="text-white text-2xl font-bold mb-2">전기화재 대응 훈련</h3>
+                  <p class="text-white text-lg">화재 발생 시 올바른 소화기 사용법과 안전한 대피 방법을 학습합니다</p>
+                </div>
+              </div>
+              
+              <!-- 체험 시나리오 -->
+              <div class="p-6">
+                <h3 class="text-2xl font-bold text-gray-800 mb-6 flex items-center">
+                  <i class="fas fa-film text-green-600 mr-3"></i>체험형 교육 시나리오
+                </h3>
+                
+                <!-- 시나리오 갤러리 -->
+                <div class="grid grid-cols-2 gap-4 mb-8 scroll-trigger">
+                  <div class="relative rounded-xl overflow-hidden shadow-md">
+                    <img src="images/edu01.png" alt="감전사고 구조 시뮬레이션" class="w-full h-52 object-cover">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-70"></div>
+                    <div class="absolute bottom-0 left-0 p-4">
+                      <h4 class="text-white font-medium text-lg">감전사고 구조 시뮬레이션</h4>
+                      <p class="text-white text-sm">올바른 감전 환자 구조 방법 체험</p>
+                    </div>
+                  </div>
+                  
+                  <div class="relative rounded-xl overflow-hidden shadow-md">
+                    <img src="images/edu02.png" alt="가정 내 전기안전 점검" class="w-full h-52 object-cover">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-70"></div>
+                    <div class="absolute bottom-0 left-0 p-4">
+                      <h4 class="text-white font-medium text-lg">가정 내 전기안전 점검</h4>
+                      <p class="text-white text-sm">일상 속 전기 위험요소 찾기</p>
+                    </div>
+                  </div>
+                  
+                  <div class="relative rounded-xl overflow-hidden shadow-md">
+                    <img src="images/edu03.png" alt="전기화재 대피 훈련" class="w-full h-52 object-cover">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-70"></div>
+                    <div class="absolute bottom-0 left-0 p-4">
+                      <h4 class="text-white font-medium text-lg">전기화재 대피 훈련</h4>
+                      <p class="text-white text-sm">화재 상황 대처 및 대피 요령</p>
+                    </div>
+                  </div>
+                  
+                  <div class="relative rounded-xl overflow-hidden shadow-md">
+                    <img src="images/edu04.png" alt="전기 작업 안전 교육" class="w-full h-52 object-cover">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-70"></div>
+                    <div class="absolute bottom-0 left-0 p-4">
+                      <h4 class="text-white font-medium text-lg">전기 작업 안전 교육</h4>
+                      <p class="text-white text-sm">작업자를 위한 전기안전 수칙</p>
+                    </div>
+                  </div>
+                </div>
+                
+                <!-- 연령별 맞춤형 콘텐츠 -->
+                <h3 class="text-xl font-bold text-gray-800 mb-5 flex items-center">
+                  <i class="fas fa-users text-green-600 mr-3"></i>연령별 맞춤형 콘텐츠
+                </h3>
+                
+                <div class="space-y-6 scroll-trigger">
+                  <!-- 아동용 -->
+                  <div class="bg-gradient-to-r from-yellow-50 to-yellow-100 rounded-xl overflow-hidden shadow-md">
+                    <div class="bg-yellow-200 px-5 py-3">
+                      <h4 class="font-bold text-yellow-800 flex items-center">
+                        <i class="fas fa-child text-yellow-600 mr-2"></i>아동용 (7-12세)
+                      </h4>
+                    </div>
+                    <div class="p-5">
+                      <div class="flex items-start">
+                        <div class="w-16 h-16 bg-gradient-to-br from-yellow-400 to-yellow-500 rounded-full flex items-center justify-center mr-4 flex-shrink-0 shadow-md">
+                          <i class="fas fa-robot text-white text-2xl"></i>
+                        </div>
+                        <div>
+                          <h5 class="font-medium text-gray-800 text-lg mb-2">캐릭터와 함께하는 전기안전 탐험대</h5>
+                          <p class="text-gray-600 mb-3">귀여운 캐릭터와 함께 전기안전 지식을 재미있게 배우는 게임형 콘텐츠</p>
+                          <div class="flex flex-wrap gap-2">
+                            <span class="inline-block px-3 py-1 bg-yellow-200 text-yellow-800 text-xs rounded-full">애니메이션</span>
+                            <span class="inline-block px-3 py-1 bg-yellow-200 text-yellow-800 text-xs rounded-full">퀴즈</span>
+                            <span class="inline-block px-3 py-1 bg-yellow-200 text-yellow-800 text-xs rounded-full">게임</span>
+                            <span class="inline-block px-3 py-1 bg-yellow-200 text-yellow-800 text-xs rounded-full">스티커 보상</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <!-- 청소년용 -->
+                  <div class="bg-gradient-to-r from-blue-50 to-blue-100 rounded-xl overflow-hidden shadow-md">
+                    <div class="bg-blue-200 px-5 py-3">
+                      <h4 class="font-bold text-blue-800 flex items-center">
+                        <i class="fas fa-user-graduate text-blue-600 mr-2"></i>청소년용 (13-18세)
+                      </h4>
+                    </div>
+                    <div class="p-5">
+                      <div class="flex items-start">
+                        <div class="w-16 h-16 bg-gradient-to-br from-blue-400 to-blue-500 rounded-full flex items-center justify-center mr-4 flex-shrink-0 shadow-md">
+                          <i class="fas fa-vr-cardboard text-white text-2xl"></i>
+                        </div>
+                        <div>
+                          <h5 class="font-medium text-gray-800 text-lg mb-2">전기안전 미션 챌린지</h5>
+                          <p class="text-gray-600 mb-3">증강현실(AR)을 통해 현실 공간에서 전기안전 미션을 수행하는 체험형 콘텐츠</p>
+                          <div class="flex flex-wrap gap-2">
+                            <span class="inline-block px-3 py-1 bg-blue-200 text-blue-800 text-xs rounded-full">증강현실</span>
+                            <span class="inline-block px-3 py-1 bg-blue-200 text-blue-800 text-xs rounded-full">미션</span>
+                            <span class="inline-block px-3 py-1 bg-blue-200 text-blue-800 text-xs rounded-full">팀 활동</span>
+                            <span class="inline-block px-3 py-1 bg-blue-200 text-blue-800 text-xs rounded-full">리더보드</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <!-- 성인용 -->
+                  <div class="bg-gradient-to-r from-green-50 to-green-100 rounded-xl overflow-hidden shadow-md">
+                    <div class="bg-green-200 px-5 py-3">
+                      <h4 class="font-bold text-green-800 flex items-center">
+                        <i class="fas fa-user text-green-600 mr-2"></i>성인용 (19세 이상)
+                      </h4>
+                    </div>
+                    <div class="p-5">
+                      <div class="flex items-start">
+                        <div class="w-16 h-16 bg-gradient-to-br from-green-400 to-green-500 rounded-full flex items-center justify-center mr-4 flex-shrink-0 shadow-md">
+                          <i class="fas fa-headset text-white text-2xl"></i>
+                        </div>
+                        <div>
+                          <h5 class="font-medium text-gray-800 text-lg mb-2">실전 전기안전 훈련 시뮬레이터</h5>
+                          <p class="text-gray-600 mb-3">가상현실(VR)을 활용한 고품질 시뮬레이션으로 실제와 같은 전기 위험 상황 대처 훈련</p>
+                          <div class="flex flex-wrap gap-2">
+                            <span class="inline-block px-3 py-1 bg-green-200 text-green-800 text-xs rounded-full">VR 시뮬레이션</span>
+                            <span class="inline-block px-3 py-1 bg-green-200 text-green-800 text-xs rounded-full">실습</span>
+                            <span class="inline-block px-3 py-1 bg-green-200 text-green-800 text-xs rounded-full">인증</span>
+                            <span class="inline-block px-3 py-1 bg-green-200 text-green-800 text-xs rounded-full">전문 콘텐츠</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <!-- 노인용 -->
+                  <div class="bg-gradient-to-r from-purple-50 to-purple-100 rounded-xl overflow-hidden shadow-md">
+                    <div class="bg-purple-200 px-5 py-3">
+                      <h4 class="font-bold text-purple-800 flex items-center">
+                        <i class="fas fa-user-friends text-purple-600 mr-2"></i>노인용 (65세 이상)
+                      </h4>
+                    </div>
+                    <div class="p-5">
+                      <div class="flex items-start">
+                        <div class="w-16 h-16 bg-gradient-to-br from-purple-400 to-purple-500 rounded-full flex items-center justify-center mr-4 flex-shrink-0 shadow-md">
+                          <i class="fas fa-hand-holding-heart text-white text-2xl"></i>
+                        </div>
+                        <div>
+                          <h5 class="font-medium text-gray-800 text-lg mb-2">일상 속 전기안전 길라잡이</h5>
+                          <p class="text-gray-600 mb-3">쉽고 직관적인 인터페이스로 일상생활에서 자주 발생하는 전기 위험 상황을 안내</p>
+                          <div class="flex flex-wrap gap-2">
+                            <span class="inline-block px-3 py-1 bg-purple-200 text-purple-800 text-xs rounded-full">쉬운 인터페이스</span>
+                            <span class="inline-block px-3 py-1 bg-purple-200 text-purple-800 text-xs rounded-full">음성 안내</span>
+                            <span class="inline-block px-3 py-1 bg-purple-200 text-purple-800 text-xs rounded-full">실생활 사례</span>
+                            <span class="inline-block px-3 py-1 bg-purple-200 text-purple-800 text-xs rounded-full">큰 글씨</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- 교육 플랫폼 통계 -->
+              <div class="bg-gradient-to-br from-green-50 to-green-100 p-6 rounded-b-xl">
+                <h3 class="text-xl font-bold text-gray-800 mb-5 flex items-center">
+                  <i class="fas fa-chart-pie text-green-600 mr-3"></i>교육 플랫폼 통계
+                </h3>
+                
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                  <div class="bg-white p-4 rounded-xl shadow-sm text-center">
+                    <div class="text-3xl font-bold text-green-600 mb-1">12K+</div>
+                    <p class="text-sm text-gray-600">교육 참가자</p>
+                  </div>
+                  <div class="bg-white p-4 rounded-xl shadow-sm text-center">
+                    <div class="text-3xl font-bold text-green-600 mb-1">89%</div>
+                    <p class="text-sm text-gray-600">만족도</p>
+                  </div>
+                  <div class="bg-white p-4 rounded-xl shadow-sm text-center">
+                    <div class="text-3xl font-bold text-green-600 mb-1">78%</div>
+                    <p class="text-sm text-gray-600">지식 향상률</p>
+                  </div>
+                  <div class="bg-white p-4 rounded-xl shadow-sm text-center">
+                    <div class="text-3xl font-bold text-green-600 mb-1">42%</div>
+                    <p class="text-sm text-gray-600">사고 감소</p>
+                  </div>
+                </div>
+                
+                <!-- 교육 효과 차트 -->
+                <div class="bg-white p-4 rounded-xl shadow-sm scroll-trigger">
+                  <h4 class="font-medium text-gray-800 mb-3 text-center">참가자 연령대별 교육 효과</h4>
+                  <div class="chart-container" style="position: relative; height:300px;">
+                    <canvas id="ageEffectChart"></canvas>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- 솔루션 통합 효과 섹션 -->
+  <section class="section py-20 bg-gradient-to-br from-blue-900 to-indigo-900 text-white">
+    <div class="container mx-auto px-4">
+      <div class="text-center mb-16">
+        <span class="inline-block py-1 px-3 rounded-full bg-white bg-opacity-20 text-blue-100 text-sm font-semibold mb-3">통합 효과</span>
+        <h2 class="text-3xl md:text-5xl font-bold mb-4">세 가지 솔루션의 시너지 효과</h2>
+        <p class="text-lg text-blue-100 max-w-3xl mx-auto">각 솔루션의 강점을 결합하여 보다 효과적인 전기안전 시스템을 구축합니다.</p>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+        <!-- 시너지 1 -->
+        <div class="bg-white bg-opacity-10 rounded-xl p-8 backdrop-filter backdrop-blur-lg border border-white border-opacity-20 hover:bg-opacity-15 transition-all scroll-trigger">
+          <div class="w-16 h-16 rounded-full bg-blue-600 flex items-center justify-center mb-6 shadow-lg">
+            <i class="fas fa-sync-alt text-white text-2xl"></i>
+          </div>
+          <h3 class="text-2xl font-bold mb-4">24시간 안전 순환</h3>
+          <p class="text-blue-100 mb-4">계절별 알림은 예방에, 스마트 시스템은 모니터링에, 교육 콘텐츠는 대응력 향상에 집중하여 끊김 없는 안전 순환 체계를 구축합니다.</p>
+          <div class="pt-4 border-t border-white border-opacity-20">
+            <p class="font-medium">주요 성과:</p>
+            <div class="flex items-center mt-2">
+              <div class="w-10 h-10 rounded-full bg-blue-700 flex items-center justify-center mr-3 flex-shrink-0">
+                <i class="fas fa-chart-line text-white"></i>
+              </div>
+              <span>안전 사고 67% 감소</span>
+            </div>
+            <div class="flex items-center mt-2">
+              <div class="w-10 h-10 rounded-full bg-blue-700 flex items-center justify-center mr-3 flex-shrink-0">
+                <i class="fas fa-user-shield text-white"></i>
+              </div>
+              <span>인지된 안전도 89% 향상</span>
+            </div>
+          </div>
+        </div>
+        
+        <!-- 시너지 2 -->
+        <div class="bg-white bg-opacity-10 rounded-xl p-8 backdrop-filter backdrop-blur-lg border border-white border-opacity-20 hover:bg-opacity-15 transition-all scroll-trigger">
+          <div class="w-16 h-16 rounded-full bg-purple-600 flex items-center justify-center mb-6 shadow-lg">
+            <i class="fas fa-database text-white text-2xl"></i>
+          </div>
+          <h3 class="text-2xl font-bold mb-4">데이터 통합 활용</h3>
+          <p class="text-blue-100 mb-4">각 솔루션에서 수집된 데이터를 통합 분석하여 더 정확한 위험 예측과 맞춤형 안전 서비스를 제공합니다.</p>
+          <div class="pt-4 border-t border-white border-opacity-20">
+            <p class="font-medium">주요 성과:</p>
+            <div class="flex items-center mt-2">
+              <div class="w-10 h-10 rounded-full bg-purple-700 flex items-center justify-center mr-3 flex-shrink-0">
+                <i class="fas fa-bullseye text-white"></i>
+              </div>
+              <span>위험 예측 정확도 93% 달성</span>
+            </div>
+            <div class="flex items-center mt-2">
+              <div class="w-10 h-10 rounded-full bg-purple-700 flex items-center justify-center mr-3 flex-shrink-0">
+                <i class="fas fa-tachometer-alt text-white"></i>
+              </div>
+              <span>대응 시간 76% 단축</span>
+            </div>
+          </div>
+        </div>
+        
+        <!-- 시너지 3 -->
+        <div class="bg-white bg-opacity-10 rounded-xl p-8 backdrop-filter backdrop-blur-lg border border-white border-opacity-20 hover:bg-opacity-15 transition-all scroll-trigger">
+          <div class="w-16 h-16 rounded-full bg-green-600 flex items-center justify-center mb-6 shadow-lg">
+            <i class="fas fa-users text-white text-2xl"></i>
+          </div>
+          <h3 class="text-2xl font-bold mb-4">커뮤니티 참여 확대</h3>
+          <p class="text-blue-100 mb-4">개인을 넘어 가족, 이웃, 지역사회가 함께하는 전기안전 문화를 형성하여 안전의식의 사회적 확산을 촉진합니다.</p>
+          <div class="pt-4 border-t border-white border-opacity-20">
+            <p class="font-medium">주요 성과:</p>
+            <div class="flex items-center mt-2">
+              <div class="w-10 h-10 rounded-full bg-green-700 flex items-center justify-center mr-3 flex-shrink-0">
+                <i class="fas fa-handshake text-white"></i>
+              </div>
+              <span>커뮤니티 참여율 156% 증가</span>
+            </div>
+            <div class="flex items-center mt-2">
+              <div class="w-10 h-10 rounded-full bg-green-700 flex items-center justify-center mr-3 flex-shrink-0">
+                <i class="fas fa-share-alt text-white"></i>
+              </div>
+              <span>안전 정보 공유 활동 243% 증가</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- 통합 로드맵 -->
+      <div class="bg-white bg-opacity-10 rounded-2xl p-8 backdrop-filter backdrop-blur-lg border border-white border-opacity-20 mb-16 scroll-trigger">
+        <h3 class="text-2xl font-bold mb-6 text-center">SafetySync 구현 로드맵</h3>
+        
+        <div class="relative">
+          <!-- 로드맵 타임라인 -->
+          <div class="hidden md:block absolute left-1/2 top-0 bottom-0 w-1 bg-blue-400 bg-opacity-50 transform -translate-x-1/2"></div>
+          
+          <!-- 1단계 -->
+          <div class="md:flex items-center mb-12 relative">
+            <div class="md:w-1/2 md:pr-12 mb-6 md:mb-0 md:text-right">
+              <div class="bg-white bg-opacity-10 rounded-lg p-5 backdrop-filter backdrop-blur-lg border border-white border-opacity-20 inline-block">
+                <h4 class="text-xl font-bold mb-2">1단계: 데이터 수집 및 분석</h4>
+                <p class="text-blue-100">전기안전 관련 데이터베이스 구축 및 분석 인프라 설계</p>
+                <div class="mt-3 inline-flex text-sm text-blue-200 border border-blue-300 border-opacity-40 rounded-full px-3 py-1">
+                  <i class="fas fa-calendar-check mr-2"></i>완료
+                </div>
+              </div>
+            </div>
+            <div class="hidden md:block absolute left-1/2 w-12 h-12 rounded-full bg-blue-600 border-4 border-blue-900 transform -translate-x-1/2"></div>
+            <div class="md:w-1/2 md:pl-12"></div>
+          </div>
+          
+          <!-- 2단계 -->
+          <div class="md:flex items-center mb-12 relative">
+            <div class="md:w-1/2 md:pr-12"></div>
+            <div class="hidden md:block absolute left-1/2 w-12 h-12 rounded-full bg-blue-600 border-4 border-blue-900 transform -translate-x-1/2"></div>
+            <div class="md:w-1/2 md:pl-12">
+              <div class="bg-white bg-opacity-10 rounded-lg p-5 backdrop-filter backdrop-blur-lg border border-white border-opacity-20 inline-block">
+                <h4 class="text-xl font-bold mb-2">2단계: 시스템 프로토타입 개발</h4>
+                <p class="text-blue-100">주요 솔루션별 프로토타입 개발 및 베타 테스트 진행</p>
+                <div class="mt-3 inline-flex text-sm text-blue-200 border border-blue-300 border-opacity-40 rounded-full px-3 py-1">
+                  <i class="fas fa-sync-alt mr-2"></i>진행 중 (75%)
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- 3단계 -->
+          <div class="md:flex items-center mb-12 relative">
+            <div class="md:w-1/2 md:pr-12 mb-6 md:mb-0 md:text-right">
+              <div class="bg-white bg-opacity-10 rounded-lg p-5 backdrop-filter backdrop-blur-lg border border-white border-opacity-20 inline-block">
+                <h4 class="text-xl font-bold mb-2">3단계: 서비스 통합 및 확장</h4>
+                <p class="text-blue-100">세 가지 솔루션의 통합 및 서비스 고도화</p>
+                <div class="mt-3 inline-flex text-sm text-blue-200 border border-blue-300 border-opacity-40 rounded-full px-3 py-1">
+                  <i class="fas fa-hourglass-start mr-2"></i>예정 (2025년 3분기)
+                </div>
+              </div>
+            </div>
+            <div class="hidden md:block absolute left-1/2 w-12 h-12 rounded-full bg-gray-400 border-4 border-blue-900 transform -translate-x-1/2"></div>
+            <div class="md:w-1/2 md:pl-12"></div>
+          </div>
+          
+          <!-- 4단계 -->
+          <div class="md:flex items-center relative">
+            <div class="md:w-1/2 md:pr-12"></div>
+            <div class="hidden md:block absolute left-1/2 w-12 h-12 rounded-full bg-gray-400 border-4 border-blue-900 transform -translate-x-1/2"></div>
+            <div class="md:w-1/2 md:pl-12">
+              <div class="bg-white bg-opacity-10 rounded-lg p-5 backdrop-filter backdrop-blur-lg border border-white border-opacity-20 inline-block">
+                <h4 class="text-xl font-bold mb-2">4단계: 전국 서비스 확산</h4>
+                <p class="text-blue-100">공공기관 연계 및 국가 전기안전 표준 솔루션으로 확대</p>
+                <div class="mt-3 inline-flex text-sm text-blue-200 border border-blue-300 border-opacity-40 rounded-full px-3 py-1">
+                  <i class="fas fa-hourglass-start mr-2"></i>예정 (2026년 1분기)
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- CTA 섹션 -->
+      <div class="text-center">
+        <h3 class="text-2xl md:text-3xl font-bold mb-6">SafetySync와 함께 더 안전한 전기 생활을 시작하세요</h3>
+        <p class="text-lg text-blue-100 mb-8 max-w-3xl mx-auto">가정과 사업장, 모든 공간에서 전기재해 걱정 없는 안전한 환경을 만들어 드립니다.</p>
+        <div class="flex flex-col md:flex-row gap-4 justify-center">
+          <a href="#" class="inline-block px-8 py-4 bg-white text-blue-900 font-bold rounded-full shadow-lg hover:bg-blue-50 transition-all">
+            <i class="fas fa-download mr-2"></i>제안서 다운로드
+          </a>
+          <a href="#" class="inline-block px-8 py-4 bg-blue-600 text-white font-bold rounded-full shadow-lg hover:bg-blue-700 transition-all">
+            <i class="fas fa-envelope mr-2"></i>문의하기
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- 푸터 -->
+  <footer class="bg-gray-900 text-white py-12">
+    <div class="container mx-auto px-4">
+      <div class="flex flex-col md:flex-row justify-between items-center">
+        <div class="mb-6 md:mb-0">
+          <div class="text-2xl font-bold mb-2">Safety<span class="text-blue-400">Sync</span></div>
+          <p class="text-gray-400">계절과 함께하는 생활 속 전기안전</p>
+        </div>
+        
+        <div class="flex space-x-8">
+          <div>
+            <h5 class="font-bold mb-4">문의</h5>
+            <p class="text-gray-400">문의사항은 이메일로 연락주세요.</p>
+            <p class="text-blue-400">contact@safetySync.kr</p>
+          </div>
+          
+          <div>
+            <h5 class="font-bold mb-4">제출처</h5>
+            <p class="text-gray-400">한국전기안전공사</p>
+            <p class="text-gray-400">제4회 전기안전 국민 공모전</p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-500 text-sm">
+        <p>&copy; 2025 SafetySync. 모든 권리 보유.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- 자바스크립트 -->
+  <script src="main.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // 탭 기능
+      const tabButtons = document.querySelectorAll('.tab-button');
+      const tabContents = document.querySelectorAll('.tab-content');
+      
+      tabButtons.forEach(button => {
+        button.addEventListener('click', () => {
+          const tab = button.dataset.tab;
+          
+          // 탭 버튼 활성화/비활성화
+          tabButtons.forEach(btn => {
+            if (btn.dataset.tab === tab) {
+              btn.classList.add('bg-blue-600', 'text-white');
+              btn.classList.remove('text-gray-700', 'hover:bg-gray-100');
+            } else {
+              btn.classList.remove('bg-blue-600', 'text-white');
+              btn.classList.add('text-gray-700', 'hover:bg-gray-100');
+            }
+          });
+          
+          // 탭 내용 표시/숨김
+          tabContents.forEach(content => {
+            if (content.id === tab + '-tab') {
+              content.classList.add('active');
+            } else {
+              content.classList.remove('active');
+            }
+          });
+        });
+      });
+      
+      // 계절 선택 기능
+      const seasonSelectors = document.querySelectorAll('.season-selector');
+      const seasonalContents = document.querySelectorAll('.seasonal-content');
+      
+      seasonSelectors.forEach(selector => {
+        selector.addEventListener('click', () => {
+          const season = selector.dataset.season;
+          
+          // 계절 선택자 활성화/비활성화
+          seasonSelectors.forEach(sel => {
+            sel.classList.remove('active');
+          });
+          selector.classList.add('active');
+          
+          // 계절별 내용 표시/숨김
+          seasonalContents.forEach(content => {
+            content.classList.remove('active');
+            if (content.id === season + '-content') {
+              content.classList.add('active');
+            }
+          });
+        });
+      });
+      
+      // 솔루션 카드 토글
+      const solutionCards = document.querySelectorAll('.solution-card');
+      
+      solutionCards.forEach(card => {
+        card.addEventListener('click', () => {
+          card.classList.toggle('expanded');
+          const icon = card.querySelector('.fa-chevron-down');
+          if (icon) {
+            icon.classList.toggle('fa-chevron-up');
+            icon.classList.toggle('fa-chevron-down');
+          }
+        });
+      });
+      
+      // 솔루션 링크 클릭 시 해당 탭 활성화
+      const solutionLinks = document.querySelectorAll('.solution-link');
+      
+      solutionLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+          e.preventDefault();
+          const targetId = link.getAttribute('href').replace('#', '');
+          const targetTabBtn = document.querySelector(`.tab-button[data-tab="${targetId.replace('-tab', '')}"]`);
+          
+          if (targetTabBtn) {
+            targetTabBtn.click();
+            
+            // 스크롤 이동
+            const targetElement = document.getElementById('solutions');
+            if (targetElement) {
+              window.scrollTo({
+                top: targetElement.offsetTop - 80,
+                behavior: 'smooth'
+              });
+            }
+          }
+        });
+      });
+      
+      // 스크롤 트리거 효과
+      const scrollTriggers = document.querySelectorAll('.scroll-trigger');
+      const featureCards = document.querySelectorAll('.feature-card');
+      
+      function checkScroll() {
+        scrollTriggers.forEach(element => {
+          const position = element.getBoundingClientRect();
+          
+          // 요소가 viewport에 있을 때
+          if (position.top < window.innerHeight * 0.8 && position.bottom >= 0) {
+            element.classList.add('visible');
+          }
+        });
+        
+        featureCards.forEach((card, index) => {
+          const position = card.getBoundingClientRect();
+          
+          if (position.top < window.innerHeight * 0.8 && position.bottom >= 0) {
+            setTimeout(() => {
+              card.classList.add('show');
+            }, index * 150); // 순차적으로 나타나는 효과
+          }
+        });
+      }
+      
+      // 초기 확인
+      checkScroll();
+      
+      // 스크롤 시 확인
+      window.addEventListener('scroll', checkScroll);
+      
+      // 차트 초기화
+      
+      // 미니 차트 (헤더)
+      if (document.getElementById('miniChart')) {
+        const miniChart = new Chart(document.getElementById('miniChart'), {
+          type: 'line',
+          data: {
+            labels: ['1월', '2월', '3월', '4월', '5월', '6월'],
+            datasets: [{
+              label: '전기안전 검색어 트렌드',
+              data: [30, 25, 35, 56, 75, 65],
+              borderColor: '#3B82F6',
+              backgroundColor: 'rgba(59, 130, 246, 0.1)',
+              tension: 0.4,
+              fill: true
+            }]
+          },
+          options: {
+            responsive: true,
+            plugins: {
+              legend: {
+                display: false
+              }
+            },
+            scales: {
+              y: {
+                beginAtZero: true,
+                grid: {
+                  display: false
+                }
+              },
+              x: {
+                grid: {
+                  display: false
+                }
+              }
+            }
+          }
+        });
+      }
+      
+      // 계절별 전기안전 위험 분포 차트
+      if (document.getElementById('seasonalRiskChart')) {
+        const seasonalRiskChart = new Chart(document.getElementById('seasonalRiskChart'), {
+          type: 'radar',
+          data: {
+            labels: ['전기 화재', '감전 사고', '누전', '과부하', '정전'],
+            datasets: [
+              {
+                label: '봄',
+                data: [65, 75, 85, 55, 40],
+                backgroundColor: 'rgba(74, 222, 128, 0.2)',
+                borderColor: 'rgba(74, 222, 128, 1)',
+                pointBackgroundColor: 'rgba(74, 222, 128, 1)'
+              },
+              {
+                label: '여름',
+                data: [45, 80, 95, 70, 60],
+                backgroundColor: 'rgba(59, 130, 246, 0.2)',
+                borderColor: 'rgba(59, 130, 246, 1)',
+                pointBackgroundColor: 'rgba(59, 130, 246, 1)'
+              },
+              {
+                label: '가을',
+                data: [50, 60, 65, 75, 45],
+                backgroundColor: 'rgba(249, 115, 22, 0.2)',
+                borderColor: 'rgba(249, 115, 22, 1)',
+                pointBackgroundColor: 'rgba(249, 115, 22, 1)'
+              },
+              {
+                label: '겨울',
+                data: [80, 45, 70, 90, 75],
+                backgroundColor: 'rgba(147, 197, 253, 0.2)',
+                borderColor: 'rgba(147, 197, 253, 1)',
+                pointBackgroundColor: 'rgba(147, 197, 253, 1)'
+              }
+            ]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,  
+            scales: {
+              r: {
+                angleLines: {
+                  display: true
+                },
+                suggestedMin: 0,
+                suggestedMax: 100
+              }
+            }
+          }
+        });
+      }
+      
+      // 트렌드 분석 차트
+      if (document.getElementById('trendChart')) {
+        const trendChart = new Chart(document.getElementById('trendChart'), {
+          type: 'line',
+          data: {
+            labels: ['1월', '2월', '3월', '4월', '5월', '6월'],
+            datasets: [
+              {
+                label: '위험 검색어 빈도 (알림 前)',
+                data: [45, 52, 68, 75, 70, 65],
+                borderColor: '#EF4444',
+                backgroundColor: 'rgba(239, 68, 68, 0.1)',
+                tension: 0.4,
+                fill: true
+              },
+              {
+                label: '위험 검색어 빈도 (알림 後)',
+                data: [45, 50, 45, 40, 33, 28],
+                borderColor: '#22C55E',
+                backgroundColor: 'rgba(34, 197, 94, 0.1)',
+                tension: 0.4,
+                fill: true,
+                borderDash: [5, 5]
+              }
+            ]
+          },
+          options: {
+            responsive: true,
+            plugins: {
+              legend: {
+                position: 'bottom'
+              }
+            },
+            scales: {
+              y: {
+                beginAtZero: true,
+                title: {
+                  display: true,
+                  text: '검색량 지수'
+                }
+              }
+            }
+          }
+        });
+      }
+      
+      // 위험 분석 차트
+      if (document.getElementById('riskAnalysisChart')) {
+        const riskAnalysisChart = new Chart(document.getElementById('riskAnalysisChart'), {
+          type: 'bar',
+          data: {
+            labels: ['감전', '전기화재', '과부하', '누전', '기타'],
+            datasets: [
+              {
+                label: '위험 탐지율 (기존)',
+                data: [35, 42, 48, 40, 25],
+                backgroundColor: 'rgba(156, 163, 175, 0.7)'
+              },
+              {
+                label: '위험 탐지율 (SafetySync)',
+                data: [85, 92, 88, 94, 78],
+                backgroundColor: 'rgba(239, 68, 68, 0.7)'
+              }
+            ]
+          },
+          options: {
+            responsive: true,
+            plugins: {
+              legend: {
+                position: 'bottom'
+              }
+            },
+            scales: {
+              y: {
+                beginAtZero: true,
+                max: 100,
+                title: {
+                  display: true,
+                  text: '탐지율 (%)'
+                }
+              }
+            }
+          }
+        });
+      }
+      
+      // 교육 효과 차트
+      if (document.getElementById('educationEffectChart')) {
+        const educationEffectChart = new Chart(document.getElementById('educationEffectChart'), {
+          type: 'bar',
+          data: {
+            labels: ['안전의식', '대처능력', '위험인지', '지식수준', '예방실천'],
+            datasets: [
+              {
+                label: '교육 전',
+                data: [30, 25, 35, 40, 20],
+                backgroundColor: 'rgba(156, 163, 175, 0.7)'
+              },
+              {
+                label: '교육 후',
+                data: [75, 80, 85, 78, 72],
+                backgroundColor: 'rgba(34, 197, 94, 0.7)'
+              }
+            ]
+          },
+          options: {
+            responsive: true,
+            plugins: {
+              legend: {
+                position: 'bottom'
+              }
+            },
+            scales: {
+              y: {
+                beginAtZero: true,
+                max: 100,
+                title: {
+                  display: true,
+                  text: '점수'
+                }
+              }
+            }
+          }
+        });
+      }
+      
+      // 연령별 교육 효과 차트
+      if (document.getElementById('ageEffectChart')) {
+        const ageEffectChart = new Chart(document.getElementById('ageEffectChart'), {
+          type: 'line',
+          data: {
+            labels: ['아동', '청소년', '성인', '노인'],
+            datasets: [
+              {
+                label: '지식 향상',
+                data: [85, 78, 72, 65],
+                borderColor: '#3B82F6',
+                backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                tension: 0.4,
+                fill: true
+              },
+              {
+                label: '행동 변화',
+                data: [80, 72, 68, 58],
+                borderColor: '#8B5CF6',
+                backgroundColor: 'rgba(139, 92, 246, 0.1)',
+                tension: 0.4,
+                fill: true
+              },
+              {
+                label: '만족도',
+                data: [90, 85, 75, 82],
+                borderColor: '#22C55E',
+                backgroundColor: 'rgba(34, 197, 94, 0.1)',
+                tension: 0.4,
+                fill: true
+              }
+            ]
+          },
+          options: {
+            responsive: true,
+            plugins: {
+              legend: {
+                position: 'bottom'
+              }
+            },
+            scales: {
+              y: {
+                beginAtZero: true,
+                max: 100,
+                title: {
+                  display: true,
+                  text: '점수 (%)'
+                }
+              }
+            }
+          }
+        });
+      }
+    });
+  </script>
+</body>
+</html>
+
+
+
+
+}

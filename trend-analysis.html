@@ -1,0 +1,1289 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>전기안전 관련 검색어 트렌드 분석 보고서</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap');
+        
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .report-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+        
+        .chart-container {
+            position: relative;
+            width: 100%;
+            height: 400px;
+            margin-bottom: 2rem;
+        }
+        
+        .idea-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .idea-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .nav-dot {
+            transition: all 0.3s ease;
+        }
+        
+        .nav-dot.active {
+            background-color: #3B82F6;
+        }
+        
+        .section {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+        
+        .section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        @media print {
+            .no-print {
+                display: none;
+            }
+            
+            body {
+                color: #000;
+            }
+            
+            .page-break {
+                page-break-before: always;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- 상단 프로그레스 바 -->
+  <!-- 프로그레스 바 -->
+  <div class="progress-bar"></div>
+  
+  <!-- 네비게이션 바 -->
+  <nav class="navbar fixed top-0 w-full bg-white z-50 shadow-sm">
+    <div class="container mx-auto px-4 py-3">
+      <div class="flex justify-between items-center">
+        <a href="index.html" class="flex items-center">
+          <span class="text-blue-600 font-bold text-2xl">Safety<span class="text-gray-800">Sync</span></span>
+        </a>
+        
+        <!-- 데스크탑 메뉴 -->
+        <div class="hidden md:flex space-x-8">
+          <a href="current-status.html" class="nav-link text-gray-700 hover:text-blue-600">현황</a>
+          <a href="background.html" class="nav-link text-gray-700 hover:text-blue-600">배경 및 문제점</a>
+          <a href="details.html" class="nav-link text-gray-700 hover:text-blue-600">세부내용</a>
+          <a href="expected-effects.html" class="nav-link text-gray-700 hover:text-blue-600">기대효과</a>
+          <a href="law-amendment.html" class="nav-link text-gray-700 hover:text-blue-600">법률개정안</a>
+          <a href="trend-analysis.html" class="nav-link text-gray-700 hover:text-blue-600">트렌드 분석</a>
+        </div>
+        
+        <!-- 모바일 메뉴 버튼 -->
+        <div class="md:hidden">
+          <button class="menu-toggle focus:outline-none">
+            <svg class="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+      
+      <!-- 모바일 메뉴 -->
+      <div class="mobile-menu hidden md:hidden mt-4 pb-4">
+        <a href="current-status.html" class="block py-2 text-gray-700 hover:text-blue-600">현황</a>
+        <a href="background.html" class="block py-2 text-gray-700 hover:text-blue-600">배경 및 문제점</a>
+        <a href="details.html" class="block py-2 text-gray-700 hover:text-blue-600">세부내용</a>
+        <a href="expected-effects.html" class="block py-2 text-gray-700 hover:text-blue-600">기대효과</a>
+        <a href="law-amendment.html" class="block py-2 text-gray-700 hover:text-blue-600">법률개정안</a>
+        <a href="trend-analysis.html" class="block py-2 text-gray-700 hover:text-blue-600">트렌드 분석</a>
+      </div>
+    </div>
+  </nav>
+  
+
+    <div class="fixed top-0 left-0 w-full h-1 bg-gray-200 z-50 no-print">
+        <div id="progress-bar" class="h-full bg-blue-500 w-0 transition-all duration-300"></div>
+    </div>
+    
+    <!-- 네비게이션 도트 -->
+    <div class="fixed right-6 top-1/2 transform -translate-y-1/2 flex flex-col space-y-4 z-40 no-print">
+        <a href="#header" class="nav-dot active w-3 h-3 rounded-full bg-gray-300" data-section="header"></a>
+        <a href="#summary" class="nav-dot w-3 h-3 rounded-full bg-gray-300" data-section="summary"></a>
+        <a href="#trends" class="nav-dot w-3 h-3 rounded-full bg-gray-300" data-section="trends"></a>
+        <a href="#seasonal" class="nav-dot w-3 h-3 rounded-full bg-gray-300" data-section="seasonal"></a>
+        <a href="#surges" class="nav-dot w-3 h-3 rounded-full bg-gray-300" data-section="surges"></a>
+        <a href="#correlation" class="nav-dot w-3 h-3 rounded-full bg-gray-300" data-section="correlation"></a>
+        <a href="#recent" class="nav-dot w-3 h-3 rounded-full bg-gray-300" data-section="recent"></a>
+        <a href="#proposals" class="nav-dot w-3 h-3 rounded-full bg-gray-300" data-section="proposals"></a>
+        <a href="#appendix" class="nav-dot w-3 h-3 rounded-full bg-gray-300" data-section="appendix"></a>
+    </div>
+
+    <div class="report-container">
+        <!-- 헤더 섹션 -->
+        <section id="header" class="section visible min-h-screen flex flex-col justify-center py-20">
+            <div class="text-center">
+                <div class="inline-block p-2 px-4 mb-6 bg-blue-100 text-blue-800 rounded-full">데이터 분석 보고서</div>
+                <h1 class="text-4xl md:text-6xl font-bold mb-6 text-gray-800">전기안전 관련<br>검색어 트렌드 분석</h1>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto mb-12">2020년 1월부터 2025년 4월까지의 네이버 데이터랩 API 분석 결과</p>
+                <div class="flex justify-center">
+                    <a href="#summary" class="flex items-center bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700 transition duration-300">
+                        보고서 보기
+                        <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+            <div class="absolute bottom-10 left-0 right-0 flex justify-center animate-bounce">
+                <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+                </svg>
+            </div>
+        </section>
+
+        <!-- 요약 섹션 -->
+        <section id="summary" class="section min-h-screen flex flex-col justify-center py-20">
+            <div class="bg-white rounded-xl shadow-lg p-8 md:p-12">
+                <h2 class="text-3xl font-bold mb-8 text-gray-800 border-b pb-4">요약</h2>
+                <div class="flex flex-col md:flex-row gap-8">
+                    <div class="md:w-1/2">
+                        <p class="text-gray-700 mb-6">
+                            네이버 데이터랩 API를 활용하여 2020년 1월부터 2025년 4월까지의 전기안전 관련 키워드 트렌드를 분석한 결과, 최근 1년간 <span class="font-semibold text-blue-700">위험요소</span> 관련 검색어의 관심도가 <span class="font-semibold text-red-600">57.39% 증가</span>하여 가장 주목할 만한 변화를 보였습니다.
+                        </p>
+                        <p class="text-gray-700">
+                            이는 전기안전에 대한 사회적 인식이 높아지고 있음을 시사합니다. 본 보고서는 이러한 트렌드 분석을 바탕으로 '2025년 제4회 전기안전 국민 공모전'에 제출할 아이디어 방향을 제시합니다.
+                        </p>
+                    </div>
+                    <div class="md:w-1/2 bg-gray-50 p-6 rounded-lg">
+                        <h3 class="text-xl font-semibold mb-4 text-gray-800">주요 발견점</h3>
+                        <ul class="space-y-3">
+                            <li class="flex items-start">
+                                <svg class="w-5 h-5 text-green-500 mr-2 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                                <span>위험요소 검색 관심도 2025년 3월 최고치 기록 (지수 100)</span>
+                            </li>
+                            <li class="flex items-start">
+                                <svg class="w-5 h-5 text-green-500 mr-2 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                                <span>안전장치 관련 검색어는 2023년 최고점 이후 하락 추세</span>
+                            </li>
+                            <li class="flex items-start">
+                                <svg class="w-5 h-5 text-green-500 mr-2 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                                <span>위험요소 검색어는 봄철(3~5월)에 가장 높은 관심도 기록</span>
+                            </li>
+                            <li class="flex items-start">
+                                <svg class="w-5 h-5 text-green-500 mr-2 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                                <span>위험요소 관련 급증 현상이 총 20회 발생 (30% 이상 증가)</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="mt-10 flex flex-col md:flex-row gap-6">
+                    <div class="bg-blue-50 p-5 rounded-lg flex-1">
+                        <h4 class="font-semibold text-blue-800 mb-2">분석 기간</h4>
+                        <p>2020년 1월 ~ 2025년 4월 (64개월)</p>
+                    </div>
+                    <div class="bg-blue-50 p-5 rounded-lg flex-1">
+                        <h4 class="font-semibold text-blue-800 mb-2">분석 키워드 그룹</h4>
+                        <ul class="space-y-1">
+                            <li>위험요소: 감전, 화재, 누전, 과부하, 합선</li>
+                            <li>안전장치: 차단기, 접지, 누전차단, 안전, 퓨즈</li>
+                            <li>신기술: ESS, 태양광, 풍력, 전기차, 충전</li>
+                        </ul>
+                    </div>
+                    <div class="bg-blue-50 p-5 rounded-lg flex-1">
+                        <h4 class="font-semibold text-blue-800 mb-2">데이터 출처</h4>
+                        <p>네이버 데이터랩 검색어 트렌드 API<br>
+                           네이버 블로그 및 뉴스 검색 API</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 검색량 추이 섹션 -->
+        <section id="trends" class="section min-h-screen flex flex-col justify-center py-20">
+            <div class="bg-white rounded-xl shadow-lg p-8 md:p-12">
+                <h2 class="text-3xl font-bold mb-8 text-gray-800 border-b pb-4">키워드별 검색량 추이</h2>
+                
+                <div class="mb-12">
+                    <h3 class="text-xl font-semibold mb-4 text-gray-800">연간 평균 검색량 추이 (상대적 지수)</h3>
+                    <div class="chart-container">
+                        <canvas id="yearlyTrendChart"></canvas>
+                    </div>
+                    
+                    <div class="bg-yellow-50 border-l-4 border-yellow-500 p-4 mt-6">
+                        <div class="flex">
+                            <div class="flex-shrink-0">
+                                <svg class="h-5 w-5 text-yellow-600" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
+                                </svg>
+                            </div>
+                            <div class="ml-3">
+                                <h4 class="text-sm font-medium text-yellow-800">주요 발견점</h4>
+                                <div class="mt-2 text-sm text-yellow-700">
+                                    <ul class="list-disc pl-5 space-y-1">
+                                        <li><span class="font-semibold">위험요소</span> 관련 검색어는 2025년에 들어 큰 폭으로 상승(56.84)하여 2020년 이후 최고치 기록</li>
+                                        <li><span class="font-semibold">안전장치</span> 관련 검색어는 2023년 최고점(91.29) 이후 하락 추세</li>
+                                        <li><span class="font-semibold">신기술</span> 관련 검색어는 2022년 최고점(77.54) 이후 지속적 하락 추세</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="text-xl font-semibold mb-4 text-gray-800">주요 검색어 피크 시점</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="bg-red-50 p-6 rounded-lg border border-red-100">
+                            <div class="text-2xl font-bold text-red-600 mb-2">위험요소</div>
+                            <div class="text-4xl font-bold text-gray-800 mb-2">2025년 3월</div>
+                            <div class="flex items-center">
+                                <span class="text-xl font-medium text-gray-900">지수 100.00</span>
+                                <span class="ml-2 text-red-600">(전체 기간 최고치)</span>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-blue-50 p-6 rounded-lg border border-blue-100">
+                            <div class="text-2xl font-bold text-blue-600 mb-2">안전장치</div>
+                            <div class="text-4xl font-bold text-gray-800 mb-2">2023년 3월</div>
+                            <div class="flex items-center">
+                                <span class="text-xl font-medium text-gray-900">지수 100.00</span>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-green-50 p-6 rounded-lg border border-green-100">
+                            <div class="text-2xl font-bold text-green-600 mb-2">신기술</div>
+                            <div class="text-4xl font-bold text-gray-800 mb-2">2022년 3월</div>
+                            <div class="flex items-center">
+                                <span class="text-xl font-medium text-gray-900">지수 100.00</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 계절적 변화 섹션 -->
+        <section id="seasonal" class="section min-h-screen flex flex-col justify-center py-20">
+            <div class="bg-white rounded-xl shadow-lg p-8 md:p-12">
+                <h2 class="text-3xl font-bold mb-8 text-gray-800 border-b pb-4">계절적 변화 분석</h2>
+                
+                <div class="chart-container mb-10">
+                    <canvas id="seasonalChart"></canvas>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div>
+                        <h3 class="text-xl font-semibold mb-4 text-gray-800">계절별 평균 검색량</h3>
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full divide-y divide-gray-200">
+                                <thead class="bg-gray-50">
+                                    <tr>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">계절</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">위험요소</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">안전장치</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">신기술</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="bg-white divide-y divide-gray-200">
+                                    <tr>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">봄 (3~5월)</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">40.29</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">86.61</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">57.09</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">여름 (6~8월)</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">36.18</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">88.42</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">64.55</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">가을 (9~11월)</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">34.71</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">84.62</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">55.28</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">겨울 (12~2월)</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">36.84</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">75.27</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">51.62</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h3 class="text-xl font-semibold mb-4 text-gray-800">주요 발견점</h3>
+                        <div class="space-y-4">
+                            <div class="flex items-start">
+                                <div class="flex-shrink-0 h-10 w-10 flex items-center justify-center rounded-md bg-red-100 text-red-600">
+                                    <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                                    </svg>
+                                </div>
+                                <div class="ml-4">
+                                    <h4 class="text-lg font-semibold text-gray-800">위험요소</h4>
+                                    <p class="text-gray-600">봄철(3~5월)에 검색량이 가장 높음 (40.29)</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start">
+                                <div class="flex-shrink-0 h-10 w-10 flex items-center justify-center rounded-md bg-blue-100 text-blue-600">
+                                    <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                                    </svg>
+                                </div>
+                                <div class="ml-4">
+                                    <h4 class="text-lg font-semibold text-gray-800">안전장치</h4>
+                                    <p class="text-gray-600">여름철(6~8월)에 검색량이 가장 높음 (88.42)</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start">
+                                <div class="flex-shrink-0 h-10 w-10 flex items-center justify-center rounded-md bg-green-100 text-green-600">
+                                    <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+                                    </svg>
+                                </div>
+                                <div class="ml-4">
+                                    <h4 class="text-lg font-semibold text-gray-800">신기술</h4>
+                                    <p class="text-gray-600">여름철(6~8월)에 검색량이 가장 높음 (64.55)</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start">
+                                <div class="flex-shrink-0 h-10 w-10 flex items-center justify-center rounded-md bg-purple-100 text-purple-600">
+                                    <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 8v8m-4-5v5m-4-2v2m-2 4h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                    </svg>
+                                </div>
+                                <div class="ml-4">
+                                    <h4 class="text-lg font-semibold text-gray-800">변동성</h4>
+                                    <p class="text-gray-600">계절별 변동성은 안전장치(25.64)가 가장 크고, 위험요소(4.19)가 가장 작음</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 검색 급증 현상 섹션 -->
+        <section id="surges" class="section min-h-screen flex flex-col justify-center py-20">
+            <div class="bg-white rounded-xl shadow-lg p-8 md:p-12">
+                <h2 class="text-3xl font-bold mb-8 text-gray-800 border-b pb-4">검색 급증 현상 분석</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+                    <div class="bg-red-50 p-6 rounded-lg border border-red-100">
+                        <h3 class="text-xl font-bold text-red-800 mb-4">위험요소 급증</h3>
+                        <div class="text-4xl font-bold text-gray-800 mb-2">20회</div>
+                        <p class="text-gray-600 mb-4">전월 대비 30% 이상 증가</p>
+                        <div class="space-y-3">
+                            <div class="flex items-center">
+                                <svg class="w-5 h-5 text-red-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+                                </svg>
+                                <span>최대 증가: 2020년 9월 (250.11%)</span>
+                            </div>
+                            <div class="flex items-center">
+                                <svg class="w-5 h-5 text-red-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                                <span>최근 급증: 2025년 3월 (150.63%)</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-blue-50 p-6 rounded-lg border border-blue-100">
+                        <h3 class="text-xl font-bold text-blue-800 mb-4">안전장치 급증</h3>
+                        <div class="text-4xl font-bold text-gray-800 mb-2">0회</div>
+                        <p class="text-gray-600 mb-4">전월 대비 30% 이상 증가</p>
+                        <div class="space-y-3">
+                            <div class="flex items-center">
+                                <svg class="w-5 h-5 text-blue-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                                </svg>
+                                <span>안정적인 검색량 유지</span>
+                            </div>
+                            <div class="flex items-center">
+                                <svg class="w-5 h-5 text-blue-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 17h8m0 0V9m0 8l-8-8-4 4-6-6"></path>
+                                </svg>
+                                <span>점진적인 변화 추세</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-green-50 p-6 rounded-lg border border-green-100">
+                        <h3 class="text-xl font-bold text-green-800 mb-4">신기술 급증</h3>
+                        <div class="text-4xl font-bold text-gray-800 mb-2">3회</div>
+                        <p class="text-gray-600 mb-4">전월 대비 30% 이상 증가</p>
+                        <div class="space-y-3">
+                            <div class="flex items-center">
+                                <svg class="w-5 h-5 text-green-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+                                </svg>
+                                <span>최대 증가: 2022년 3월 (38.54%)</span>
+                            </div>
+                            <div class="flex items-center">
+                                <svg class="w-5 h-5 text-green-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                                <span>최근 급증: 2025년 1월 (32.66%)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="text-xl font-semibold mb-6 text-gray-800">주요 이슈와 연관성</h3>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">시기</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">급증 현상</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">추정 원인</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200">
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">2020년 9월</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">위험요소 250.11% 증가</td>
+                                    <td class="px-6 py-4 text-sm text-gray-500">태풍 피해 관련 전기안전 우려 증가</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">2022년 12월</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">위험요소 146.78% 증가</td>
+                                    <td class="px-6 py-4 text-sm text-gray-500">겨울철 전기화재 사고 증가</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">2024년 6월</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">위험요소 157.06% 증가</td>
+                                    <td class="px-6 py-4 text-sm text-gray-500">장마철 누전/감전 사고 증가</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">2025년 3월</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">위험요소 150.63% 증가</td>
+                                    <td class="px-6 py-4 text-sm text-gray-500">최근 전기안전 관련 대형 사고 발생 추정</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 그룹간 상관관계 섹션 -->
+        <section id="correlation" class="section min-h-screen flex flex-col justify-center py-20">
+            <div class="bg-white rounded-xl shadow-lg p-8 md:p-12">
+                <h2 class="text-3xl font-bold mb-8 text-gray-800 border-b pb-4">그룹간 상관관계</h2>
+                
+                <div class="chart-container mb-10">
+                    <canvas id="correlationChart"></canvas>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="bg-gray-50 p-6 rounded-lg">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-3">위험요소 vs 안전장치</h3>
+                        <div class="text-4xl font-bold text-gray-800 mb-2">-0.1633</div>
+                        <div class="bg-red-100 text-red-800 px-3 py-1 rounded-full inline-block mb-3">약한 부적 상관관계</div>
+                        <p class="text-gray-600">안전장치에 대한 관심이 높아질 때 위험요소에 대한 관심은 다소 감소하는 경향이 있습니다.</p>
+                    </div>
+                    
+                    <div class="bg-gray-50 p-6 rounded-lg">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-3">위험요소 vs 신기술</h3>
+                        <div class="text-4xl font-bold text-gray-800 mb-2">-0.0362</div>
+                        <div class="bg-gray-100 text-gray-800 px-3 py-1 rounded-full inline-block mb-3">거의 무관</div>
+                        <p class="text-gray-600">위험요소와 신기술 간의 검색 패턴은 서로 거의 관련이 없습니다.</p>
+                    </div>
+                    
+                    <div class="bg-gray-50 p-6 rounded-lg">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-3">안전장치 vs 신기술</h3>
+                        <div class="text-4xl font-bold text-gray-800 mb-2">0.2767</div>
+                        <div class="bg-green-100 text-green-800 px-3 py-1 rounded-full inline-block mb-3">약한 정적 상관관계</div>
+                        <p class="text-gray-600">신기술에 대한 관심이 높아질 때 안전장치에 대한 관심도 다소 증가하는 경향이 있습니다.</p>
+                    </div>
+                </div>
+                
+                <div class="bg-blue-50 p-6 rounded-lg mt-10">
+                    <h3 class="text-lg font-semibold text-blue-800 mb-3">상관관계 해석</h3>
+                    <ul class="list-disc pl-5 space-y-2 text-gray-700">
+                        <li>위험요소에 대한 관심은 다른 두 키워드 그룹과 크게 연관되지 않는 독립적인 패턴을 보입니다.</li>
+                        <li>안전장치와 신기술 간 약한 긍정적 상관관계는 새로운 전기 기술 도입 시 안전장치에 대한 관심도 함께 증가함을 시사합니다.</li>
+                        <li>위험요소와 안전장치 간 약한 부적 상관관계는 안전장치에 대한 관심 증가가 위험 인식 감소로 이어질 수 있음을 암시합니다.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- 최근 1년간 관심도 변화 섹션 -->
+        <section id="recent" class="section min-h-screen flex flex-col justify-center py-20">
+            <div class="bg-white rounded-xl shadow-lg p-8 md:p-12">
+                <h2 class="text-3xl font-bold mb-8 text-gray-800 border-b pb-4">최근 1년간 관심도 변화</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+                    <div>
+                        <div class="chart-container">
+                            <canvas id="recentTrendChart"></canvas>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h3 class="text-xl font-semibold mb-6 text-gray-800">키워드 그룹별 변화율</h3>
+                        <div class="space-y-8">
+                            <div>
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="text-lg font-medium text-gray-700">위험요소</span>
+                                    <span class="text-lg font-bold text-green-600">+57.39%</span>
+                                </div>
+                                <div class="w-full bg-gray-200 rounded-full h-4">
+                                    <div class="bg-green-600 h-4 rounded-full" style="width: 57.39%"></div>
+                                </div>
+                                <div class="mt-2 flex justify-between text-sm text-gray-500">
+                                    <span>이전 1년 평균: 28.37</span>
+                                    <span>최근 1년 평균: 44.65</span>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="text-lg font-medium text-gray-700">안전장치</span>
+                                    <span class="text-lg font-bold text-red-600">-16.93%</span>
+                                </div>
+                                <div class="w-full bg-gray-200 rounded-full h-4">
+                                    <div class="bg-red-600 h-4 rounded-full" style="width: 16.93%"></div>
+                                </div>
+                                <div class="mt-2 flex justify-between text-sm text-gray-500">
+                                    <span>이전 1년 평균: 89.34</span>
+                                    <span>최근 1년 평균: 74.21</span>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="text-lg font-medium text-gray-700">신기술</span>
+                                    <span class="text-lg font-bold text-red-600">-10.53%</span>
+                                </div>
+                                <div class="w-full bg-gray-200 rounded-full h-4">
+                                    <div class="bg-red-600 h-4 rounded-full" style="width: 10.53%"></div>
+                                </div>
+                                <div class="mt-2 flex justify-between text-sm text-gray-500">
+                                    <span>이전 1년 평균: 43.96</span>
+                                    <span>최근 1년 평균: 39.33</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-10">
+                    <h3 class="text-xl font-semibold mb-6 text-gray-800">주요 발견점</h3>
+                    <div class="bg-yellow-50 border-l-4 border-yellow-500 p-4">
+                        <div class="flex">
+                            <div class="flex-shrink-0">
+                                <svg class="h-5 w-5 text-yellow-600" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
+                                </svg>
+                            </div>
+                            <div class="ml-3">
+                                <div class="text-yellow-700">
+                                    <ul class="list-disc pl-5 space-y-2">
+                                        <li><span class="font-semibold">위험요소</span>에 대한 관심도가 57.39% 증가하며 가장 큰 상승세를 보입니다.</li>
+                                        <li><span class="font-semibold">안전장치</span>와 <span class="font-semibold">신기술</span>은 모두 관심도 하락 추세를 보이고 있습니다.</li>
+                                        <li>위험요소 관련 급증 현상도 최근 1년간 3회 발생하여 가장 빈번했습니다.</li>
+                                        <li>이는 전기안전에 대한 우려가 증가하고 있으나, 예방 및 대응책에 대한 관심은 상대적으로 감소하고 있음을 시사합니다.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-10 text-right">
+                    <div class="inline-block bg-blue-100 text-blue-800 px-4 py-2 rounded-lg">
+                        최근 데이터 기준: 2025년 4월
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 공모전 제안 방향 섹션 -->
+        <section id="proposals" class="section min-h-screen flex flex-col justify-center py-20">
+            <div class="bg-white rounded-xl shadow-lg p-8 md:p-12">
+                <h2 class="text-3xl font-bold mb-8 text-gray-800 border-b pb-4">공모전 제안 방향</h2>
+                
+                <div class="mb-12">
+                    <h3 class="text-xl font-semibold mb-4 text-gray-800">적합한 공모전 분야</h3>
+                    <div class="bg-blue-600 text-white p-6 rounded-lg">
+                        <div class="flex flex-col md:flex-row items-center">
+                            <div class="md:w-1/2 mb-6 md:mb-0 md:mr-8">
+                                <h4 class="text-2xl font-bold mb-4">일상속 전기안전 실천방안</h4>
+                                <p>위험요소에 대한 관심 증가 추세(57.39%)와 계절적 특성을 반영하여, '일상속 전기안전 실천방안' 분야가 공모전 제안에 더 적합합니다.</p>
+                                <p class="mt-3">특히 봄철과 여름철 전기안전 대책에 초점을 맞추어 아이디어를 개발하는 것이 효과적일 것입니다.</p>
+                            </div>
+                            <div class="md:w-1/2 flex justify-center">
+                                <div class="bg-white text-blue-600 rounded-full p-6 w-40 h-40 flex items-center justify-center">
+                                    <div class="text-center">
+                                        <div class="text-5xl font-bold">57%</div>
+                                        <div class="text-sm">위험요소<br>관심도 증가</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <h3 class="text-xl font-semibold mb-6 text-gray-800">공모전 아이디어 제안</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <!-- 아이디어 1 -->
+                    <div class="idea-card bg-white border border-gray-200 rounded-xl shadow-lg overflow-hidden">
+                        <div class="h-3 bg-red-500"></div>
+                        <div class="p-6">
+                            <div class="flex items-center mb-4">
+                                <div class="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center mr-4">
+                                    <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                </div>
+                                <h4 class="text-lg font-semibold">계절별 맞춤형 전기안전 알림 서비스</h4>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <div class="text-xs font-semibold text-gray-500 mb-1">배경</div>
+                                <p class="text-sm text-gray-600">위험요소의 검색량이 계절에 따라 변동하며, 특히 봄철(3~5월)에 가장 높음</p>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <div class="text-xs font-semibold text-gray-500 mb-1">제안</div>
+                                <p class="text-sm text-gray-600">각 계절별 주요 전기 위험요소에 대한 맞춤형 알림 서비스</p>
+                                <ul class="text-sm text-gray-600 mt-2 space-y-1 pl-5 list-disc">
+                                    <li>봄: 대청소 시 감전/화재 예방 가이드</li>
+                                    <li>여름: 장마철 누전/감전 방지 체크리스트</li>
+                                    <li>가을: 가전제품 점검 및 전기안전 문화 확산</li>
+                                    <li>겨울: 전열기기 안전 사용법 및 과부하 방지 방안</li>
+                                </ul>
+                            </div>
+                            
+                            <div>
+                                <div class="text-xs font-semibold text-gray-500 mb-1">구현 방식</div>
+                                <p class="text-sm text-gray-600">모바일 앱, 알림 서비스, 인포그래픽 시리즈 등</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 아이디어 2 -->
+                    <div class="idea-card bg-white border border-gray-200 rounded-xl shadow-lg overflow-hidden">
+                        <div class="h-3 bg-blue-500"></div>
+                        <div class="p-6">
+                            <div class="flex items-center mb-4">
+                                <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mr-4">
+                                    <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                                    </svg>
+                                </div>
+                                <h4 class="text-lg font-semibold">위험 인지 증강 스마트 안전 시스템</h4>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <div class="text-xs font-semibold text-gray-500 mb-1">배경</div>
+                                <p class="text-sm text-gray-600">위험요소에 대한 검색 관심도가 크게 증가했으나, 안전장치에 대한 관심은 감소 추세</p>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <div class="text-xs font-semibold text-gray-500 mb-1">제안</div>
+                                <p class="text-sm text-gray-600">IoT 기반 통합 전기안전 모니터링 시스템</p>
+                                <ul class="text-sm text-gray-600 mt-2 space-y-1 pl-5 list-disc">
+                                    <li>실시간 전력 사용량 및 이상징후 감지</li>
+                                    <li>과부하/누전 사전 경고 시스템</li>
+                                    <li>스마트폰 연동 원격 확인 및 제어</li>
+                                    <li>위험 상황 발생 시 자동 차단 및 알림</li>
+                                </ul>
+                            </div>
+                            
+                            <div>
+                                <div class="text-xs font-semibold text-gray-500 mb-1">특징</div>
+                                <p class="text-sm text-gray-600">일반 가정에서도 쉽게 설치하고 사용할 수 있는 사용자 친화적 디자인</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 아이디어 3 -->
+                    <div class="idea-card bg-white border border-gray-200 rounded-xl shadow-lg overflow-hidden">
+                        <div class="h-3 bg-green-500"></div>
+                        <div class="p-6">
+                            <div class="flex items-center mb-4">
+                                <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mr-4">
+                                    <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+                                    </svg>
+                                </div>
+                                <h4 class="text-lg font-semibold">생활 속 전기안전 교육 체험 콘텐츠</h4>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <div class="text-xs font-semibold text-gray-500 mb-1">배경</div>
+                                <p class="text-sm text-gray-600">2025년 3월 위험요소 검색 급증, 전기안전에 대한 교육 필요성 증가</p>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <div class="text-xs font-semibold text-gray-500 mb-1">제안</div>
+                                <p class="text-sm text-gray-600">VR/AR 기술을 활용한 체험형 전기안전 교육</p>
+                                <ul class="text-sm text-gray-600 mt-2 space-y-1 pl-5 list-disc">
+                                    <li>가상현실에서 일상 속 위험 상황 체험</li>
+                                    <li>올바른 대처법 체험 및 학습</li>
+                                    <li>게이미피케이션 요소 적용으로 흥미 유발</li>
+                                    <li>학교, 공공기관, 기업 등 다양한 환경에서 활용 가능</li>
+                                </ul>
+                            </div>
+                            
+                            <div>
+                                <div class="text-xs font-semibold text-gray-500 mb-1">타겟</div>
+                                <p class="text-sm text-gray-600">아동, 청소년, 성인 등 연령대별 맞춤형 콘텐츠</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 부록 섹션 -->
+        <section id="appendix" class="section min-h-screen flex flex-col justify-center py-20">
+            <div class="bg-white rounded-xl shadow-lg p-8 md:p-12">
+                <h2 class="text-3xl font-bold mb-8 text-gray-800 border-b pb-4">부록: 분석 방법 및 한계점</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+                    <div>
+                        <h3 class="text-xl font-semibold mb-6 text-gray-800">분석 방법</h3>
+                        <ul class="space-y-4">
+                            <li class="flex items-start">
+                                <svg class="w-6 h-6 text-blue-600 mr-2 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path>
+                                </svg>
+                                <span>네이버 데이터랩 API를 통한 검색어 트렌드 데이터 수집</span>
+                            </li>
+                            <li class="flex items-start">
+                                <svg class="w-6 h-6 text-blue-600 mr-2 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                                </svg>
+                                <span>월별 시계열 데이터 분석 및 계절성 파악</span>
+                            </li>
+                            <li class="flex items-start">
+                                <svg class="w-6 h-6 text-blue-600 mr-2 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z"></path>
+                                </svg>
+                                <span>피어슨 상관계수를 활용한 그룹간 상관관계 분석</span>
+                            </li>
+                            <li class="flex items-start">
+                                <svg class="w-6 h-6 text-blue-600 mr-2 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+                                </svg>
+                                <span>급증 현상 탐지(전월 대비 30% 이상 증가 구간)</span>
+                            </li>
+                            <li class="flex items-start">
+                                <svg class="w-6 h-6 text-blue-600 mr-2 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                                <span>최근 1년간 검색 트렌드 변화 분석</span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div>
+                        <h3 class="text-xl font-semibold mb-6 text-gray-800">한계점</h3>
+                        <div class="space-y-4">
+                            <div class="flex items-start">
+                                <span class="w-6 h-6 rounded-full bg-gray-200 text-gray-800 flex items-center justify-center mr-2 flex-shrink-0">1</span>
+                                <div>
+                                    <h4 class="font-medium text-gray-800">5글자 이하 키워드 제한</h4>
+                                    <p class="text-sm text-gray-600">네이버 데이터랩 API 제한으로 더 구체적인 키워드 사용 불가</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start">
+                                <span class="w-6 h-6 rounded-full bg-gray-200 text-gray-800 flex items-center justify-center mr-2 flex-shrink-0">2</span>
+                                <div>
+                                    <h4 class="font-medium text-gray-800">상대적 지수 활용</h4>
+                                    <p class="text-sm text-gray-600">절대적 검색량이 아닌 상대적 지수(최대값 100 기준)를 사용하여 실제 검색량 파악 제한</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start">
+                                <span class="w-6 h-6 rounded-full bg-gray-200 text-gray-800 flex items-center justify-center mr-2 flex-shrink-0">3</span>
+                                <div>
+                                    <h4 class="font-medium text-gray-800">원인 분석 제한</h4>
+                                    <p class="text-sm text-gray-600">검색 급증 현상의 정확한 원인 파악을 위해서는 추가 데이터 필요</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start">
+                                <span class="w-6 h-6 rounded-full bg-gray-200 text-gray-800 flex items-center justify-center mr-2 flex-shrink-0">4</span>
+                                <div>
+                                    <h4 class="font-medium text-gray-800">지역별 분석 부재</h4>
+                                    <p class="text-sm text-gray-600">지역별 검색 트렌드 차이 분석 불가</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start">
+                                <span class="w-6 h-6 rounded-full bg-gray-200 text-gray-800 flex items-center justify-center mr-2 flex-shrink-0">5</span>
+                                <div>
+                                    <h4 class="font-medium text-gray-800">최신 데이터 반영</h4>
+                                    <p class="text-sm text-gray-600">2025년 4월까지의 데이터만 반영되어 최신 트렌드 변화 반영 제한</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-12">
+                    <h3 class="text-xl font-semibold mb-6 text-gray-800">추가 연구 방향</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="bg-gray-50 p-4 rounded-lg">
+                            <div class="flex items-start mb-2">
+                                <svg class="w-5 h-5 text-purple-600 mr-2 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path>
+                                </svg>
+                                <span>위험요소별 세부 키워드 분석 (감전, 화재, 누전 등 개별 분석)</span>
+                            </div>
+                            <div class="flex items-start mb-2">
+                                <svg class="w-5 h-5 text-purple-600 mr-2 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z"></path>
+                                </svg>
+                                <span>소셜미디어 감성분석을 통한 대중 인식 파악</span>
+                            </div>
+                            <div class="flex items-start">
+                                <svg class="w-5 h-5 text-purple-600 mr-2 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                                </svg>
+                                <span>실제 전기안전 사고 데이터와의 연관성 분석</span>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-gray-50 p-4 rounded-lg">
+                            <div class="flex items-start mb-2">
+                                <svg class="w-5 h-5 text-purple-600 mr-2 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                                <span>지역별, 연령별 검색 트렌드 차이 연구</span>
+                            </div>
+                            <div class="flex items-start">
+                                <svg class="w-5 h-5 text-purple-600 mr-2 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z"></path>
+                                </svg>
+                                <span>전기안전 인식 개선을 위한 효과적인 커뮤니케이션 전략 연구</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-12 text-center text-gray-500 text-sm">
+                    <p>본 보고서는 2025년 제4회 전기안전 국민 공모전 아이디어 제안을 위한 기초 자료로 활용될 수 있습니다.</p>
+                    <p class="mt-2">작성일: 2025년 5월 11일</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // 차트 데이터 및 설정
+        document.addEventListener('DOMContentLoaded', function() {
+            // 연간 트렌드 차트
+            const yearlyTrendChart = new Chart(
+                document.getElementById('yearlyTrendChart').getContext('2d'),
+                {
+                    type: 'line',
+                    data: {
+                        labels: ['2020', '2021', '2022', '2023', '2024', '2025'],
+                        datasets: [
+                            {
+                                label: '위험요소',
+                                data: [43.02, 32.75, 36.25, 30.75, 36.16, 56.84],
+                                borderColor: 'rgb(239, 68, 68)',
+                                backgroundColor: 'rgba(239, 68, 68, 0.1)',
+                                tension: 0.3,
+                                fill: true
+                            },
+                            {
+                                label: '안전장치',
+                                data: [83.44, 83.78, 86.17, 91.29, 80.22, 62.19],
+                                borderColor: 'rgb(59, 130, 246)',
+                                backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                                tension: 0.3,
+                                fill: true
+                            },
+                            {
+                                label: '신기술',
+                                data: [60.00, 69.04, 77.54, 46.41, 38.74, 36.24],
+                                borderColor: 'rgb(34, 197, 94)',
+                                backgroundColor: 'rgba(34, 197, 94, 0.1)',
+                                tension: 0.3,
+                                fill: true
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            title: {
+                                display: true,
+                                text: '연간 평균 검색량 추이 (2020-2025)',
+                                font: {
+                                    size: 16,
+                                    weight: 'bold'
+                                }
+                            },
+                            legend: {
+                                position: 'top',
+                            },
+                            tooltip: {
+                                mode: 'index',
+                                intersect: false,
+                            }
+                        },
+                        scales: {
+                            y: {
+                                min: 0,
+                                max: 100,
+                                title: {
+                                    display: true,
+                                    text: '상대적 검색량 지수'
+                                }
+                            }
+                        }
+                    }
+                }
+            );
+            
+            // 계절별 차트
+            const seasonalChart = new Chart(
+                document.getElementById('seasonalChart').getContext('2d'),
+                {
+                    type: 'radar',
+                    data: {
+                        labels: ['봄 (3~5월)', '여름 (6~8월)', '가을 (9~11월)', '겨울 (12~2월)'],
+                        datasets: [
+                            {
+                                label: '위험요소',
+                                data: [40.29, 36.18, 34.71, 36.84],
+                                backgroundColor: 'rgba(239, 68, 68, 0.2)',
+                                borderColor: 'rgb(239, 68, 68)',
+                                pointBackgroundColor: 'rgb(239, 68, 68)',
+                                pointBorderColor: '#fff',
+                                pointHoverBackgroundColor: '#fff',
+                                pointHoverBorderColor: 'rgb(239, 68, 68)'
+                            },
+                            {
+                                label: '안전장치',
+                                data: [86.61, 88.42, 84.62, 75.27],
+                                backgroundColor: 'rgba(59, 130, 246, 0.2)',
+                                borderColor: 'rgb(59, 130, 246)',
+                                pointBackgroundColor: 'rgb(59, 130, 246)',
+                                pointBorderColor: '#fff',
+                                pointHoverBackgroundColor: '#fff',
+                                pointHoverBorderColor: 'rgb(59, 130, 246)'
+                            },
+                            {
+                                label: '신기술',
+                                data: [57.09, 64.55, 55.28, 51.62],
+                                backgroundColor: 'rgba(34, 197, 94, 0.2)',
+                                borderColor: 'rgb(34, 197, 94)',
+                                pointBackgroundColor: 'rgb(34, 197, 94)',
+                                pointBorderColor: '#fff',
+                                pointHoverBackgroundColor: '#fff',
+                                pointHoverBorderColor: 'rgb(34, 197, 94)'
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        elements: {
+                            line: {
+                                borderWidth: 3
+                            }
+                        },
+                        plugins: {
+                            title: {
+                                display: true,
+                                text: '계절별 평균 검색량',
+                                font: {
+                                    size: 16,
+                                    weight: 'bold'
+                                }
+                            },
+                            legend: {
+                                position: 'top',
+                            }
+                        },
+                        scales: {
+                            r: {
+                                min: 0,
+                                max: 100,
+                                ticks: {
+                                    stepSize: 20
+                                }
+                            }
+                        }
+                    }
+                }
+            );
+            
+            // 상관관계 차트
+            const correlationChart = new Chart(
+                document.getElementById('correlationChart').getContext('2d'),
+                {
+                    type: 'bar',
+                    data: {
+                        labels: ['위험요소 vs 안전장치', '위험요소 vs 신기술', '안전장치 vs 신기술'],
+                        datasets: [
+                            {
+                                label: '피어슨 상관계수',
+                                data: [-0.1633, -0.0362, 0.2767],
+                                backgroundColor: [
+                                    'rgba(239, 68, 68, 0.7)',
+                                    'rgba(249, 115, 22, 0.7)',
+                                    'rgba(34, 197, 94, 0.7)'
+                                ],
+                                borderColor: [
+                                    'rgb(239, 68, 68)',
+                                    'rgb(249, 115, 22)',
+                                    'rgb(34, 197, 94)'
+                                ],
+                                borderWidth: 1
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            title: {
+                                display: true,
+                                text: '키워드 그룹 간 상관관계 (피어슨 상관계수)',
+                                font: {
+                                    size: 16,
+                                    weight: 'bold'
+                                }
+                            },
+                            legend: {
+                                display: false
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        let label = context.dataset.label || '';
+                                        if (label) {
+                                            label += ': ';
+                                        }
+                                        label += context.parsed.y.toFixed(4);
+                                        
+                                        // 상관관계 해석 추가
+                                        if (context.parsed.y > 0.5) {
+                                            return [label, '강한 정적 상관관계'];
+                                        } else if (context.parsed.y > 0.2) {
+                                            return [label, '약한 정적 상관관계'];
+                                        } else if (context.parsed.y > -0.2) {
+                                            return [label, '거의 무관'];
+                                        } else if (context.parsed.y > -0.5) {
+                                            return [label, '약한 부적 상관관계'];
+                                        } else {
+                                            return [label, '강한 부적 상관관계'];
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            y: {
+                                min: -1,
+                                max: 1,
+                                title: {
+                                    display: true,
+                                    text: '상관계수'
+                                }
+                            }
+                        }
+                    }
+                }
+            );
+            
+            // 최근 1년 트렌드 차트
+            const recentTrendChart = new Chart(
+                document.getElementById('recentTrendChart').getContext('2d'),
+                {
+                    type: 'line',
+                    data: {
+                        labels: ['이전 1년 평균', '최근 1년 평균'],
+                        datasets: [
+                            {
+                                label: '위험요소',
+                                data: [28.37, 44.65],
+                                borderColor: 'rgb(239, 68, 68)',
+                                backgroundColor: 'rgba(239, 68, 68, 0.1)',
+                                tension: 0.3,
+                                fill: true
+                            },
+                            {
+                                label: '안전장치',
+                                data: [89.34, 74.21],
+                                borderColor: 'rgb(59, 130, 246)',
+                                backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                                tension: 0.3,
+                                fill: true
+                            },
+                            {
+                                label: '신기술',
+                                data: [43.96, 39.33],
+                                borderColor: 'rgb(34, 197, 94)',
+                                backgroundColor: 'rgba(34, 197, 94, 0.1)',
+                                tension: 0.3,
+                                fill: true
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            title: {
+                                display: true,
+                                text: '최근 1년간 관심도 변화 (2024.05 ~ 2025.04)',
+                                font: {
+                                    size: 16,
+                                    weight: 'bold'
+                                }
+                            },
+                            legend: {
+                                position: 'top',
+                            },
+                            tooltip: {
+                                mode: 'index',
+                                intersect: false,
+                                callbacks: {
+                                    afterLabel: function(context) {
+                                        const index = context.dataIndex;
+                                        const value = context.dataset.data[index];
+                                        
+                                        if (index === 1) {
+                                            const prevValue = context.dataset.data[0];
+    const currentValue = value;
+    const changeRate = ((currentValue - prevValue) / prevValue * 100).toFixed(2);
+    const isPositive = changeRate > 0;
+    
+    return `변화율: ${isPositive ? '+' : ''}${changeRate}%`;
+}
+return '';
+
+                               }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            min: 0,
+                            max: 100,
+                            title: {
+                                display: true,
+                                text: '상대적 검색량 지수'
+                            }
+                        }
+                    }
+                }
+            }
+        );
+        
+        // 스크롤 관련 동작 처리
+        const sections = document.querySelectorAll('.section');
+        const navDots = document.querySelectorAll('.nav-dot');
+        const progressBar = document.getElementById('progress-bar');
+        
+        function checkScroll() {
+            let current = '';
+            let scrollY = window.pageYOffset;
+            
+            // 섹션 가시성 확인
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop - 100;
+                const sectionHeight = section.offsetHeight;
+                
+                if (scrollY >= sectionTop && scrollY < sectionTop + sectionHeight) {
+                    current = section.getAttribute('id');
+                    section.classList.add('visible');
+                }
+            });
+            
+            // 네비게이션 도트 활성화
+            navDots.forEach(dot => {
+                dot.classList.remove('active');
+                if (dot.getAttribute('data-section') === current) {
+                    dot.classList.add('active');
+                }
+            });
+            
+            // 프로그레스 바 업데이트
+            const scrollPercent = (scrollY / (document.body.scrollHeight - window.innerHeight)) * 100;
+            progressBar.style.width = `${scrollPercent}%`;
+        }
+        
+        // 초기 섹션 가시성 설정
+        sections.forEach(section => {
+            const sectionTop = section.offsetTop;
+            const sectionHeight = section.offsetHeight;
+            const scrollY = window.pageYOffset;
+            
+            if (scrollY >= sectionTop - window.innerHeight && scrollY < sectionTop + sectionHeight) {
+                section.classList.add('visible');
+            }
+        });
+        
+        // 스크롤 이벤트 리스너
+        window.addEventListener('scroll', checkScroll);
+        
+        // 도트 내비게이션 클릭 이벤트
+        navDots.forEach(dot => {
+            dot.addEventListener('click', e => {
+                e.preventDefault();
+                const targetId = dot.getAttribute('href').substring(1);
+                const targetSection = document.getElementById(targetId);
+                
+                window.scrollTo({
+                    top: targetSection.offsetTop,
+                    behavior: 'smooth'
+                });
+            });
+        });
+        
+        // 초기 스크롤 검사
+        checkScroll();
+    });
+</script>
+
+</body>
+</html>

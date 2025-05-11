@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>배경 및 문제점 - SafetySync 전기안전 공모전 제안서</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-gray-50">
+  <!-- 프로그레스 바 -->
+  <div class="progress-bar"></div>
+  
+  <!-- 네비게이션 바 -->
+  <nav class="navbar fixed top-0 w-full bg-white z-50 shadow-sm">
+    <div class="container mx-auto px-4 py-3">
+      <div class="flex justify-between items-center">
+        <a href="index.html" class="flex items-center">
+          <span class="text-blue-600 font-bold text-2xl">Safety<span class="text-gray-800">Sync</span></span>
+        </a>
+        
+        <!-- 데스크탑 메뉴 -->
+        <div class="hidden md:flex space-x-8">
+          <a href="current-status.html" class="nav-link text-gray-700 hover:text-blue-600">현황</a>
+          <a href="background.html" class="nav-link text-gray-700 hover:text-blue-600">배경 및 문제점</a>
+          <a href="details.html" class="nav-link text-gray-700 hover:text-blue-600">세부내용</a>
+          <a href="expected-effects.html" class="nav-link text-gray-700 hover:text-blue-600">기대효과</a>
+          <a href="law-amendment.html" class="nav-link text-gray-700 hover:text-blue-600">법률개정안</a>
+          <a href="trend-analysis.html" class="nav-link text-gray-700 hover:text-blue-600">트렌드 분석</a>
+        </div>
+        
+        <!-- 모바일 메뉴 버튼 -->
+        <div class="md:hidden">
+          <button class="menu-toggle focus:outline-none">
+            <svg class="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+      
+      <!-- 모바일 메뉴 -->
+      <div class="mobile-menu hidden md:hidden mt-4 pb-4">
+        <a href="current-status.html" class="block py-2 text-gray-700 hover:text-blue-600">현황</a>
+        <a href="background.html" class="block py-2 text-gray-700 hover:text-blue-600">배경 및 문제점</a>
+        <a href="details.html" class="block py-2 text-gray-700 hover:text-blue-600">세부내용</a>
+        <a href="expected-effects.html" class="block py-2 text-gray-700 hover:text-blue-600">기대효과</a>
+        <a href="law-amendment.html" class="block py-2 text-gray-700 hover:text-blue-600">법률개정안</a>
+        <a href="trend-analysis.html" class="block py-2 text-gray-700 hover:text-blue-600">트렌드 분석</a>
+      </div>
+    </div>
+  </nav>
+  
+  <!-- 헤더 섹션 -->
+  <header class="section pt-32 pb-16 bg-gradient-to-r from-red-50 to-red-100">
+    <div class="container mx-auto px-4">
+      <h1 class="text-4xl md:text-5xl font-bold text-gray-800 mb-4">전기안전 <span class="text-red-600">배경 및 문제점</span></h1>
+      <p class="text-xl text-gray-600">전기안전 관련 문제의 발생 배경과 주요 이슈 포인트 분석</p>
+    </div>
+  </header>
+  
+  <!-- 메인 콘텐츠 섹션 -->
+  <main class="container mx-auto px-4 py-12">
+    <!-- 문제 배경 섹션 -->
+    <section class="section mb-16">
+      <h2 class="text-3xl font-bold text-gray-800 mb-8">전기안전 문제의 배경</h2>
+      
+      <div class="bg-white rounded-xl shadow-md p-8 mb-10">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <div class="col-span-2">
+            <h3 class="text-xl font-semibold text-gray-800 mb-4">전기 사용 환경 변화</h3>
+            <p class="text-gray-700 mb-4">최근 10년간 가정과 산업 현장에서의 전기 사용 패턴이 급격히 변화하고 있습니다. 가정에서는 고용량 전자기기 사용이 증가하고, 산업 현장에서는 자동화 시스템과 첨단 장비 도입으로 전력 사용량이 대폭 증가했습니다.</p>
+            
+            <div class="ml-5 border-l-4 border-blue-500 pl-4 my-6">
+              <p class="text-gray-700 italic">
+                "2015년 대비 2025년 가정용 전력 소비량은 평균 23% 증가했으며, 신재생에너지 사용 시설의 경우 전기안전 관리 방식의 근본적 변화가 필요한 시점입니다."
+              </p>
+              <p class="text-sm text-gray-500 mt-2">- 2025년 전기안전백서, 한국전기안전공사</p>
+            </div>
+            
+            <p class="text-gray-700 mb-4">특히 신재생에너지 확대, ESS(에너지저장장치) 보급, 전기차 충전 인프라 확대 등으로 기존과 다른 형태의 전기설비가 급증하면서 새로운 형태의 전기안전 문제가 등장하고 있습니다.</p>
+          </div>
+          
+          <div class="bg-gray-50 p-6 rounded-lg">
+            <h4 class="font-semibold text-gray-800 mb-4">주요 전기 환경 변화</h4>
+            <ul class="space-y-3">
+              <li class="flex items-start">
+                <svg class="w-5 h-5 text-blue-600 mr-2 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                </svg>
+                <span>가정용 고용량 전기기기 사용 증가</span>
+              </li>
+              <li class="flex items-start">
+                <svg class="w-5 h-5 text-blue-600 mr-2 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                </svg>
+                <span>신재생에너지 설비 보급 확대</span>
+              </li>
+              <li class="flex items-start">
+                <svg class="w-5 h-5 text-blue-600 mr-2 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                </svg>
+                <span>ESS(에너지저장장치) 확산</span>
+              </li>
+              <li class="flex items-start">
+                <svg class="w-5 h-5 text-blue-600 mr-2 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                </svg>
+                <span>전기차 충전 인프라 구축</span>
+              </li>
+              <li class="flex items-start">
+                <svg class="w-5 h-5 text-blue-600 mr-2 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                </svg>
+                <span>노후 전기설비 증가</span>
+              </li>
+              <li class="flex items-start">
+                <svg class="w-5 h-5 text-blue-600 mr-2 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                </svg>
+                <span>스마트 그리드 및 IoT 기반 전력망</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      
+      <div class="bg-white rounded-xl shadow-md p-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div>
+            <h3 class="text-xl font-semibold text-gray-800 mb-4">노후 전기설비 증가</h3>
+            <p class="text-gray-700 mb-4">국내 건축물 중 30년 이상 경과한 비율이 2025년 기준 18.7%에 이르며, 이에 따라 노후 전기설비의 비율도 지속적으로 증가하고 있습니다. 노후 전기설비는 절연 성능 저하, 접속부 열화 등의 문제를 일으켜 화재 및 감전사고의 주요 원인이 됩니다.</p>
+            
+            <div class="mt-6 bg-yellow-50 p-4 rounded-lg">
+              <h4 class="font-semibold text-yellow-800 mb-2">주요 통계</h4>
+              <ul class="list-disc pl-5 text-gray-700 space-y-1">
+                <li>20년 이상 노후 전기설비 비율: 27.3%</li>
+                <li>노후 전기설비 기인 화재 비율: 41.8%</li>
+                <li>주거시설 노후 전기설비 점검률: 58.6%</li>
+              </ul>
+            </div>
+          </div>
+          
+          <div>
+            <h3 class="text-xl font-semibold text-gray-800 mb-4">신기술 도입에 따른 새로운 위험</h3>
+            <p class="text-gray-700 mb-4">신재생에너지 설비, ESS, 전기차 충전시설 등 새로운 전기 기술과 설비 도입이 확대되면서, 기존 전기안전 관리체계로는 대응하기 어려운 새로운 형태의 안전 위험이 증가하고 있습니다.</p>
+            
+            <div class="mt-6 bg-red-50 p-4 rounded-lg">
+              <h4 class="font-semibold text-red-800 mb-2">신기술 관련 안전사고 증가</h4>
+              <ul class="list-disc pl-5 text-gray-700 space-y-1">
+                <li>ESS 화재사고: 2022년 이후 32건 발생</li>
+                <li>태양광 설비 관련 사고: 연 평균 48건</li>
+                <li>전기차 충전기 안전사고: 2023년 27건</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- 주요 문제점 섹션 -->
+    <section class="section mb-16">
+      <h2 class="text-3xl font-bold text-gray-800 mb-8">주요 문제점</h2>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+        <!-- 문제점 1 -->
+        <div class="bg-white rounded-xl shadow-md overflow-hidden">
+          <div class="h-2 bg-red-500"></div>
+          <div class="p-6">
+            <div class="flex items-start mb-4">
+              <div class="flex-shrink-0 h-12 w-12 bg-red-100 rounded-full flex items-center justify-center mr-4">
+                <span class="text-xl font-bold text-red-600">1</span>
+              </div>
+              <h3 class="text-xl font-semibold text-gray-800">계절적 전기안전 위험 대응 부족</h3>
+            </div>
+            <p class="text-gray-700 mb-4">트렌드 분석 결과, 전기안전 위험은 계절에 따라 크게 달라지나, 현 안전관리 체계는 이를 반영하지 못하고 있습니다. 봄철 대청소 시기 감전사고, 여름철 장마기간 누전, 겨울철 전열기기 과부하와 같은 계절성 위험에 대한 체계적 대응책이 미비합니다.</p>
+            
+            <div class="bg-gray-50 p-4 rounded-lg">
+              <p class="text-sm text-gray-600">
+                트렌드 분석 결과, 위험요소에 대한 검색 관심도가 봄철(3~5월)에 40.29로 가장 높게 나타났으며, 실제 사고 통계에서도 봄철 전기화재 발생률(31%)이 가장 높았습니다.
+              </p>
+            </div>
+          </div>
+        </div>
+        
+        <!-- 문제점 2 -->
+        <div class="bg-white rounded-xl shadow-md overflow-hidden">
+          <div class="h-2 bg-red-500"></div>
+          <div class="p-6">
+            <div class="flex items-start mb-4">
+              <div class="flex-shrink-0 h-12 w-12 bg-red-100 rounded-full flex items-center justify-center mr-4">
+                <span class="text-xl font-bold text-red-600">2</span>
+              </div>
+              <h3 class="text-xl font-semibold text-gray-800">인식-행동 격차 및 정보 접근성 부족</h3>
+            </div>
+            <p class="text-gray-700 mb-4">전기안전 인식도 조사에 따르면, 안전의 중요성은 높게 인식(78%)하나 실제 점검 실시율(42%)은 낮은 '인식-행동 격차'가 존재합니다. 또한 전기안전 정보에 쉽게 접근하기 어렵다는 응답이 65%에 달해 정보 접근성 개선이 필요합니다.</p>
+            
+            <div class="bg-gray-50 p-4 rounded-lg">
+              <p class="text-sm text-gray-600">
+                특히 20-30대 젊은 층의 안전 인식도가 전체 연령대 중 가장 낮아(64%), 미래 안전문화 정착을 위한 젊은 세대 대상 교육 및 정보제공이 시급합니다.
+              </p>
+            </div>
+          </div>
+        </div>
+        
+        <!-- 문제점 3 -->
+        <div class="bg-white rounded-xl shadow-md overflow-hidden">
+          <div class="h-2 bg-red-500"></div>
+          <div class="p-6">
+            <div class="flex items-start mb-4">
+              <div class="flex-shrink-0 h-12 w-12 bg-red-100 rounded-full flex items-center justify-center mr-4">
+                <span class="text-xl font-bold text-red-600">3</span>
+              </div>
+              <h3 class="text-xl font-semibold text-gray-800">안전점검 사각지대 존재</h3>
+            </div>
+            <p class="text-gray-700 mb-4">도심 지역(87.5%)과 농어촌 지역(62.3%) 간 전기안전 점검률 격차가 크게 나타나고 있으며, 소규모 시설, 노후주택 등은 정기점검 제도의 사각지대에 있어 안전 위험에 더 많이 노출되어 있습니다.</p>
+            
+            <div class="bg-gray-50 p-4 rounded-lg">
+              <p class="text-sm text-gray-600">
+                도서 지역의 경우 점검률이 43.2%에 불과하며, 농어촌 지역 노후주택의 전기설비 상태는 도심 지역 대비 현저히 열악한 것으로 조사되었습니다.
+              </p>
+            </div>
+          </div>
+        </div>
+        
+        <!-- 문제점 4 -->
+        <div class="bg-white rounded-xl shadow-md overflow-hidden">
+          <div class="h-2 bg-red-500"></div>
+          <div class="p-6">
+            <div class="flex items-start mb-4">
+              <div class="flex-shrink-0 h-12 w-12 bg-red-100 rounded-full flex items-center justify-center mr-4">
+                <span class="text-xl font-bold text-red-600">4</span>
+              </div>
+              <h3 class="text-xl font-semibold text-gray-800">신기술 대응 안전관리 체계 미흡</h3>
+            </div>
+            <p class="text-gray-700 mb-4">ESS, 태양광 등 신재생에너지 설비, 전기차 충전 인프라 등 새로운 전기 기술에 대한 안전관리 체계가 기술 발전 속도를 따라가지 못하고 있어 관련 안전사고가 증가하고 있습니다.</p>
+            
+            <div class="bg-gray-50 p-4 rounded-lg">
+              <p class="text-sm text-gray-600">
+                신재생에너지 설비 관련 검색어 트렌드는 최근 하락세(-10.53%)를 보이고 있으나, 실제 설치량은 증가하고 있어 안전관리에 대한 적절한 정보 제공이 필요합니다.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- 문제점 종합 분석 -->
+      <div class="bg-white rounded-xl shadow-md p-8">
+        <h3 class="text-xl font-semibold text-gray-800 mb-6">문제점 종합 분석</h3>
+        
+        <div class="overflow-hidden relative">
+          <div class="chart-container" style="position: relative; height:400px;">
+            <canvas id="problemAnalysisChart"></canvas>
+          </div>
+        </div>
+        
+        <div class="mt-8 bg-red-50 p-5 rounded-lg">
+          <h4 class="font-semibold text-red-800 mb-3">문제 해결을 위한 핵심 요구사항</h4>
+          <ul class="list-disc pl-5 text-gray-700 space-y-2">
+            <li><span class="font-medium">계절성 고려한 접근:</span> 봄, 여름, 가을, 겨울 각 계절별 전기안전 위험요소 특성을 반영한 맞춤형 관리 체계 필요</li>
+            <li><span class="font-medium">인식-행동 격차 해소:</span> 인식을 실제 행동으로 연결하는 효과적인 정보 전달 및 접근성 개선 방안 필요</li>
+            <li><span class="font-medium">사각지대 해소:</span> 지역, 시설 유형에 관계없이 균등한 전기안전 관리 서비스 제공 방안 필요</li>
+            <li><span class="font-medium">신기술 대응:</span> 새로운 전기 기술 및 설비에 대한 안전관리 체계 구축 필요</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+    
+    <!-- 기존 대응의 한계 -->
+    <section class="section">
+      <h2 class="text-3xl font-bold text-gray-800 mb-8">기존 대응의 한계</h2>
+      
+      <div class="bg-white rounded-xl shadow-md p-8">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div class="md:col-span-2">
+            <h3 class="text-xl font-semibold text-gray-800 mb-4">기존 전기안전 관리 체계의 한계</h3>
+            <p class="text-gray-700 mb-4">현행 전기안전 관리 체계는 정기점검, 안전관리자 선임 등 전통적인 방식에 의존하고 있어 다양한 환경과 상황에 맞는 유연한 대응이 어렵습니다. 특히 다음과 같은 한계점이 두드러집니다:</p>
+            
+            <ul class="space-y-3 mb-6">
+              <li class="flex items-start">
+                <svg class="w-5 h-5 text-red-600 mr-2 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+                <span><span class="font-medium">시간적 유연성 부족:</span> 정기점검 위주의 관리로 계절별, 시기별 특성을 반영한 맞춤형 관리가 어려움</span>
+              </li>
+              <li class="flex items-start">
+                <svg class="w-5 h-5 text-red-600 mr-2 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+                <span><span class="font-medium">일방향적 정보 제공:</span> 전문가에서 일반인으로의 일방향 정보 제공으로 실질적인 행동 변화 유도에 한계</span>
+              </li>
+              <li class="flex items-start">
+                <svg class="w-5 h-5 text-red-600 mr-2 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+                <span><span class="font-medium">접근성 제한:</span> 전문적인 내용 위주로 일반 사용자가 이해하고 적용하기 어려운 정보 제공</span>
+              </li>
+              <li class="flex items-start">
+                <svg class="w-5 h-5 text-red-600 mr-2 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+                <span><span class="font-medium">신기술 대응 지연:</span> 제도 개선의 지연으로 신기술 관련 안전관리 기준 마련에 시간차 발생</span>
+              </li>
+            </ul>
+            
+            <p class="text-gray-700">이러한 한계로 인해 전기안전 위험요소에 대한 관심도는 증가(57.39%)하고 있지만, 실제 안전 행동으로의 전환은 이루어지지 않고 있습니다. 보다 효과적인 대응을 위해서는 기존 방식에서 벗어나 계절별 맞춤형 접근, 쌍방향 정보 교류, 사용자 친화적 서비스 제공이 필요합니다.</p>
+          </div>
+          
+          <div>
+            <div class="bg-gray-50 p-6 rounded-lg h-full">
+              <h4 class="font-semibold text-gray-800 mb-4">새로운 접근법의 필요성</h4>
+              <div class="space-y-4">
+                <div class="flex items-center">
+                  <div class="h-10 w-10 bg-blue-100 rounded-full flex items-center justify-center mr-3">
+                    <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                  </div>
+                  <span class="text-gray-700">계절별 맞춤형 접근</span>
+                </div>
+                
+                <div class="flex items-center">
+                  <div class="h-10 w-10 bg-blue-100 rounded-full flex items-center justify-center mr-3">
+                    <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+                    </svg>
+                  </div>
+                  <span class="text-gray-700">쌍방향 정보 교류</span>
+                </div>
+                
+                <div class="flex items-center">
+                  <div class="h-10 w-10 bg-blue-100 rounded-full flex items-center justify-center mr-3">
+                    <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122"></path>
+                    </svg>
+                  </div>
+                  <span class="text-gray-700">사용자 친화적 접근</span>
+                </div>
+                
+                <div class="flex items-center">
+                  <div class="h-10 w-10 bg-blue-100 rounded-full flex items-center justify-center mr-3">
+                    <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+                    </svg>
+                  </div>
+                  <span class="text-gray-700">신기술 통합 관리</span>
+                </div>
+                
+                <div class="flex items-center">
+                  <div class="h-10 w-10 bg-blue-100 rounded-full flex items-center justify-center mr-3">
+                    <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path>
+                    </svg>
+                  </div>
+                  <span class="text-gray-700">데이터 기반 맞춤 서비스</span>
+                </div>
+              </div>
+              
+              <div class="mt-6 pt-6 border-t border-gray-200">
+                <p class="text-gray-700 font-medium">
+                  기존 방식의 한계를 극복하고 효과적인 전기안전 관리를 위해 새로운 접근법이 필요합니다.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  
+  <!-- 페이지 내비게이션 -->
+  <div class="container mx-auto px-4 py-8 border-t border-gray-200">
+    <div class="flex flex-col md:flex-row justify-between">
+      <a href="current-status.html" class="mb-4 md:mb-0 text-blue-600 hover:text-blue-700">
+        &larr; 이전: 현황
+      </a>
+      <a href="details.html" class="text-blue-600 hover:text-blue-700">
+        다음: 세부내용 &rarr;
+      </a>
+    </div>
+  </div>
+  
+  <!-- 푸터 섹션 -->
+  <footer class="bg-gray-900 text-white py-12">
+    <div class="container mx-auto px-4">
+      <div class="flex flex-col md:flex-row justify-between">
+        <div class="mb-8 md:mb-0">
+          <div class="text-2xl font-bold mb-4">Safety<span class="text-blue-400">Sync</span></div>
+          <p class="text-gray-400 max-w-md">계절별 맞춤형 전기안전 알림 서비스를 통한 전기재해 예방 및 전기안전관리 방안</p>
+        </div>
+        
+        <div>
+          <h3 class="text-lg font-semibold mb-4">공모전 정보</h3>
+          <p class="text-gray-400">2025년 제4회 전기안전 국민 공모전</p>
+          <p class="text-gray-400">주최: 한국전기안전공사</p>
+          <p class="text-gray-400">작성일: 2025년 5월 11일</p>
+        </div>
+      </div>
+      
+      <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-500 text-sm">
+        <p>&copy; 2025 SafetySync. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+  
+  <script src="main.js"></script>
+  <!-- 차트 스크립트 -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // 문제점 분석 차트
+      const problemCtx = document.getElementById('problemAnalysisChart').getContext('2d');
+      const problemChart = new Chart(problemCtx, {
+        type: 'radar',
+        data: {
+          labels: [
+            '계절별 특성 반영',
+            '정보 접근성',
+            '행동 전환율',
+            '사각지대 해소',
+            '신기술 대응성'
+          ],
+          datasets: [
+            {
+              label: '현 체계 수준',
+              data: [35, 45, 40, 30, 25],
+              backgroundColor: 'rgba(239, 68, 68, 0.2)',
+              borderColor: 'rgb(239, 68, 68)',
+              pointBackgroundColor: 'rgb(239, 68, 68)',
+              pointBorderColor: '#fff',
+              pointHoverBackgroundColor: '#fff',
+              pointHoverBorderColor: 'rgb(239, 68, 68)'
+            },
+            {
+              label: '목표 수준',
+              data: [85, 90, 80, 85, 80],
+              backgroundColor: 'rgba(59, 130, 246, 0.2)',
+              borderColor: 'rgb(59, 130, 246)',
+              pointBackgroundColor: 'rgb(59, 130, 246)',
+              pointBorderColor: '#fff',
+              pointHoverBackgroundColor: '#fff',
+              pointHoverBorderColor: 'rgb(59, 130, 246)'
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          elements: {
+            line: {
+              borderWidth: 2
+            }
+          },
+          scales: {
+            r: {
+              min: 0,
+              max: 100,
+              ticks: {
+                stepSize: 20
+              },
+              pointLabels: {
+                font: {
+                  size: 14
+                }
+              }
+            }
+          }
+        }
+      });
+    });
+  </script>
+</body>
+</html>

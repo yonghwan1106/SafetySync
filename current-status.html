@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>현황 - SafetySync 전기안전 공모전 제안서</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-gray-50">
+  <!-- 프로그레스 바 -->
+  <div class="progress-bar"></div>
+  
+  <!-- 네비게이션 바 -->
+  <nav class="navbar fixed top-0 w-full bg-white z-50 shadow-sm">
+    <div class="container mx-auto px-4 py-3">
+      <div class="flex justify-between items-center">
+        <a href="index.html" class="flex items-center">
+          <span class="text-blue-600 font-bold text-2xl">Safety<span class="text-gray-800">Sync</span></span>
+        </a>
+        
+        <!-- 데스크탑 메뉴 -->
+        <div class="hidden md:flex space-x-8">
+          <a href="current-status.html" class="nav-link text-gray-700 hover:text-blue-600">현황</a>
+          <a href="background.html" class="nav-link text-gray-700 hover:text-blue-600">배경 및 문제점</a>
+          <a href="details.html" class="nav-link text-gray-700 hover:text-blue-600">세부내용</a>
+          <a href="expected-effects.html" class="nav-link text-gray-700 hover:text-blue-600">기대효과</a>
+          <a href="law-amendment.html" class="nav-link text-gray-700 hover:text-blue-600">법률개정안</a>
+          <a href="trend-analysis.html" class="nav-link text-gray-700 hover:text-blue-600">트렌드 분석</a>
+        </div>
+        
+        <!-- 모바일 메뉴 버튼 -->
+        <div class="md:hidden">
+          <button class="menu-toggle focus:outline-none">
+            <svg class="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+      
+      <!-- 모바일 메뉴 -->
+      <div class="mobile-menu hidden md:hidden mt-4 pb-4">
+        <a href="current-status.html" class="block py-2 text-gray-700 hover:text-blue-600">현황</a>
+        <a href="background.html" class="block py-2 text-gray-700 hover:text-blue-600">배경 및 문제점</a>
+        <a href="details.html" class="block py-2 text-gray-700 hover:text-blue-600">세부내용</a>
+        <a href="expected-effects.html" class="block py-2 text-gray-700 hover:text-blue-600">기대효과</a>
+        <a href="law-amendment.html" class="block py-2 text-gray-700 hover:text-blue-600">법률개정안</a>
+        <a href="trend-analysis.html" class="block py-2 text-gray-700 hover:text-blue-600">트렌드 분석</a>
+      </div>
+    </div>
+  </nav>
+  
+  <!-- 헤더 섹션 -->
+  <header class="section pt-32 pb-16 bg-gradient-to-r from-blue-50 to-blue-100">
+    <div class="container mx-auto px-4">
+      <h1 class="text-4xl md:text-5xl font-bold text-gray-800 mb-4">전기안전 <span class="text-blue-600">현황</span></h1>
+      <p class="text-xl text-gray-600">현재 전기안전 관련 상황 분석 및 주요 통계 데이터</p>
+    </div>
+  </header>
+  
+  <!-- 메인 콘텐츠 섹션 -->
+  <main class="container mx-auto px-4 py-12">
+    <!-- 주요 통계 섹션 -->
+    <section class="section mb-16">
+      <h2 class="text-3xl font-bold text-gray-800 mb-8">전기안전 주요 통계</h2>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+        <div class="bg-white rounded-xl shadow-md p-6 border-l-4 border-red-500">
+          <div class="text-3xl font-bold text-red-600 mb-2">2,743건</div>
+          <p class="text-gray-600">2024년 전기화재 발생 건수</p>
+          <p class="text-sm text-gray-500 mt-2">전년 대비 7.2% 증가</p>
+        </div>
+        
+        <div class="bg-white rounded-xl shadow-md p-6 border-l-4 border-orange-500">
+          <div class="text-3xl font-bold text-orange-600 mb-2">182명</div>
+          <p class="text-gray-600">2024년 전기사고 인명피해</p>
+          <p class="text-sm text-gray-500 mt-2">사망 47명, 부상 135명</p>
+        </div>
+        
+        <div class="bg-white rounded-xl shadow-md p-6 border-l-4 border-blue-500">
+          <div class="text-3xl font-bold text-blue-600 mb-2">57.4%</div>
+          <p class="text-gray-600">위험요소 관련 검색 증가율</p>
+          <p class="text-sm text-gray-500 mt-2">최근 1년간 추이</p>
+        </div>
+        
+        <div class="bg-white rounded-xl shadow-md p-6 border-l-4 border-purple-500">
+          <div class="text-3xl font-bold text-purple-600 mb-2">3,812억원</div>
+          <p class="text-gray-600">전기사고 관련 경제적 손실</p>
+          <p class="text-sm text-gray-500 mt-2">2024년 추정액</p>
+        </div>
+      </div>
+      
+      <!-- 연간 전기화재 추이 차트 -->
+      <div class="bg-white rounded-xl shadow-md p-6 mb-12">
+        <h3 class="text-xl font-semibold text-gray-800 mb-4">연간 전기화재 발생 추이 (2020-2025)</h3>
+        <div class="chart-container" style="position: relative; height:300px;">
+          <canvas id="fireChart"></canvas>
+        </div>
+        <p class="text-sm text-gray-500 mt-4">* 자료출처: 소방청 화재통계연감, 한국전기안전공사 통계자료</p>
+      </div>
+      
+      <!-- 계절별 전기사고 현황 -->
+      <div class="bg-white rounded-xl shadow-md p-6">
+        <h3 class="text-xl font-semibold text-gray-800 mb-4">계절별 전기사고 현황 (2024년)</h3>
+        <div class="chart-container" style="position: relative; height:300px;">
+          <canvas id="seasonalChart"></canvas>
+        </div>
+        <div class="mt-6 bg-blue-50 p-4 rounded-lg">
+          <h4 class="font-semibold text-blue-800 mb-2">주요 발견점</h4>
+          <ul class="list-disc pl-5 text-gray-700 space-y-1">
+            <li>봄철(3~5월)에 전기화재 발생률이 가장 높음 (전체의 31%)</li>
+            <li>여름철(6~8월) 장마기간 감전사고 비율 높음 (전체 감전사고의 40%)</li>
+            <li>겨울철 전열기기 사용으로 인한 과부하/누전 사고 증가</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+    
+    <!-- 지역별 현황 섹션 -->
+    <section class="section mb-16">
+      <h2 class="text-3xl font-bold text-gray-800 mb-8">지역별 전기안전 현황</h2>
+      
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div class="bg-white rounded-xl shadow-md p-6">
+          <h3 class="text-xl font-semibold text-gray-800 mb-4">지역별 전기화재 발생 건수</h3>
+          <div class="overflow-x-auto">
+            <table class="min-w-full bg-white">
+              <thead>
+                <tr>
+                  <th class="py-3 px-4 bg-gray-100 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">지역</th>
+                  <th class="py-3 px-4 bg-gray-100 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">발생 건수</th>
+                  <th class="py-3 px-4 bg-gray-100 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">전년 대비</th>
+                  <th class="py-3 px-4 bg-gray-100 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">인구 10만명당</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-gray-200">
+                <tr>
+                  <td class="py-3 px-4 text-sm text-gray-900">서울</td>
+                  <td class="py-3 px-4 text-sm text-gray-900">621</td>
+                  <td class="py-3 px-4 text-sm text-red-600">↑ 5.4%</td>
+                  <td class="py-3 px-4 text-sm text-gray-900">6.4건</td>
+                </tr>
+                <tr>
+                  <td class="py-3 px-4 text-sm text-gray-900">경기</td>
+                  <td class="py-3 px-4 text-sm text-gray-900">583</td>
+                  <td class="py-3 px-4 text-sm text-red-600">↑ 8.2%</td>
+                  <td class="py-3 px-4 text-sm text-gray-900">4.3건</td>
+                </tr>
+                <tr>
+                  <td class="py-3 px-4 text-sm text-gray-900">부산</td>
+                  <td class="py-3 px-4 text-sm text-gray-900">284</td>
+                  <td class="py-3 px-4 text-sm text-red-600">↑ 3.6%</td>
+                  <td class="py-3 px-4 text-sm text-gray-900">8.2건</td>
+                </tr>
+                <tr>
+                  <td class="py-3 px-4 text-sm text-gray-900">인천</td>
+                  <td class="py-3 px-4 text-sm text-gray-900">231</td>
+                  <td class="py-3 px-4 text-sm text-green-600">↓ 1.3%</td>
+                  <td class="py-3 px-4 text-sm text-gray-900">7.8건</td>
+                </tr>
+                <tr>
+                  <td class="py-3 px-4 text-sm text-gray-900">대구</td>
+                  <td class="py-3 px-4 text-sm text-gray-900">192</td>
+                  <td class="py-3 px-4 text-sm text-red-600">↑ 11.6%</td>
+                  <td class="py-3 px-4 text-sm text-gray-900">7.9건</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="text-sm text-gray-500 mt-4">* 상위 5개 지역 데이터</p>
+        </div>
+        
+        <div class="bg-white rounded-xl shadow-md p-6">
+          <h3 class="text-xl font-semibold text-gray-800 mb-4">취약지역 전기안전 점검 현황</h3>
+          <div class="chart-container" style="position: relative; height:280px;">
+            <canvas id="inspectionChart"></canvas>
+          </div>
+          <div class="mt-4 p-4 bg-yellow-50 rounded-lg">
+            <p class="text-sm text-gray-700">
+              <span class="font-semibold text-yellow-800">점검률 격차:</span> 도심 지역(87.5%)과 농어촌 지역(62.3%) 간 점검률 격차 존재. 취약지역 맞춤형 전기안전 점검 서비스 확대 필요.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- 안전인식 조사 섹션 -->
+    <section class="section mb-16">
+      <h2 class="text-3xl font-bold text-gray-800 mb-8">전기안전 인식 조사</h2>
+      
+      <div class="bg-white rounded-xl shadow-md p-8 mb-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+          <div>
+            <h3 class="text-xl font-semibold text-gray-800 mb-6">전기안전 인식도 조사 결과</h3>
+            <p class="text-gray-700 mb-4">2025년 1월, 전국 성인 2,000명 대상 조사</p>
+            
+            <div class="space-y-4">
+              <div>
+                <div class="flex justify-between items-center mb-1">
+                  <span class="text-sm font-medium text-gray-700">전기안전 중요성 인식</span>
+                  <span class="text-sm font-medium text-gray-700">78%</span>
+                </div>
+                <div class="w-full bg-gray-200 rounded-full h-2.5">
+                  <div class="bg-blue-600 h-2.5 rounded-full" style="width: 78%"></div>
+                </div>
+              </div>
+              
+              <div>
+                <div class="flex justify-between items-center mb-1">
+                  <span class="text-sm font-medium text-gray-700">가정 내 전기안전 점검 실시</span>
+                  <span class="text-sm font-medium text-gray-700">42%</span>
+                </div>
+                <div class="w-full bg-gray-200 rounded-full h-2.5">
+                  <div class="bg-blue-600 h-2.5 rounded-full" style="width: 42%"></div>
+                </div>
+              </div>
+              
+              <div>
+                <div class="flex justify-between items-center mb-1">
+                  <span class="text-sm font-medium text-gray-700">전기안전 관련 교육 경험</span>
+                  <span class="text-sm font-medium text-gray-700">23%</span>
+                </div>
+                <div class="w-full bg-gray-200 rounded-full h-2.5">
+                  <div class="bg-blue-600 h-2.5 rounded-full" style="width: 23%"></div>
+                </div>
+              </div>
+              
+              <div>
+                <div class="flex justify-between items-center mb-1">
+                  <span class="text-sm font-medium text-gray-700">전기안전 정보 접근성</span>
+                  <span class="text-sm font-medium text-gray-700">35%</span>
+                </div>
+                <div class="w-full bg-gray-200 rounded-full h-2.5">
+                  <div class="bg-blue-600 h-2.5 rounded-full" style="width: 35%"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div>
+            <h3 class="text-xl font-semibold text-gray-800 mb-6">연령대별 안전 인식도</h3>
+            <div class="chart-container" style="position: relative; height:300px;">
+              <canvas id="awarenessChart"></canvas>
+            </div>
+          </div>
+        </div>
+        
+        <div class="mt-8 bg-red-50 p-5 rounded-lg">
+          <h4 class="font-semibold text-red-800 mb-3">주요 발견점</h4>
+          <ul class="list-disc pl-5 text-gray-700 space-y-2">
+            <li><span class="font-medium">인식-행동 격차:</span> 전기안전의 중요성은 높게 인식(78%)하지만 실제 점검 실시율은 낮음(42%)</li>
+            <li><span class="font-medium">연령별 차이:</span> 20-30대의 전기안전 인식도(64%)가 50대 이상(83%)보다 크게 낮음</li>
+            <li><span class="font-medium">교육 부족:</span> 전체 응답자의 77%가 전기안전 교육 경험 없음</li>
+            <li><span class="font-medium">정보 접근성:</span> 65% 이상이 전기안전 정보에 쉽게 접근하기 어렵다고 응답</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+    
+    <!-- 전기안전 제도 현황 섹션 -->
+    <section class="section">
+      <h2 class="text-3xl font-bold text-gray-800 mb-8">전기안전 제도 현황</h2>
+      
+      <div class="bg-white rounded-xl shadow-md p-8">
+        <div class="overflow-x-auto">
+          <table class="min-w-full bg-white">
+            <thead>
+              <tr>
+                <th class="py-3 px-4 bg-gray-100 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">제도명</th>
+                <th class="py-3 px-4 bg-gray-100 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">주요 내용</th>
+                <th class="py-3 px-4 bg-gray-100 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">시행 시기</th>
+                <th class="py-3 px-4 bg-gray-100 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">현황 및 한계점</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200">
+              <tr>
+                <td class="py-3 px-4 text-sm text-gray-900">정기점검 제도</td>
+                <td class="py-3 px-4 text-sm text-gray-600">전기설비 안전관리를 위한 정기적인 점검 실시</td>
+                <td class="py-3 px-4 text-sm text-gray-600">1974년</td>
+                <td class="py-3 px-4 text-sm text-gray-600">소규모 시설, 노후주택 등 사각지대 존재</td>
+              </tr>
+              <tr>
+                <td class="py-3 px-4 text-sm text-gray-900">전기안전관리자 선임 제도</td>
+                <td class="py-3 px-4 text-sm text-gray-600">일정 규모 이상 시설에 전기안전관리자 의무 배치</td>
+                <td class="py-3 px-4 text-sm text-gray-600">1982년</td>
+                <td class="py-3 px-4 text-sm text-gray-600">소규모 사업장 적용 제외, 안전관리자 부족</td>
+              </tr>
+              <tr>
+                <td class="py-3 px-4 text-sm text-gray-900">전기설비 안전등급제</td>
+                <td class="py-3 px-4 text-sm text-gray-600">전기설비 상태에 따른 등급 분류, 차등 관리</td>
+                <td class="py-3 px-4 text-sm text-gray-600">2018년</td>
+                <td class="py-3 px-4 text-sm text-gray-600">등급제 기준 개선 필요, 후속조치 부족</td>
+              </tr>
+              <tr>
+                <td class="py-3 px-4 text-sm text-gray-900">취약시설 안전점검</td>
+                <td class="py-3 px-4 text-sm text-gray-600">사회복지시설, 노후주택 등 무상 안전점검</td>
+                <td class="py-3 px-4 text-sm text-gray-600">2019년</td>
+                <td class="py-3 px-4 text-sm text-gray-600">일회성 점검, 지속적 모니터링 체계 미흡</td>
+              </tr>
+              <tr>
+                <td class="py-3 px-4 text-sm text-gray-900">신재생에너지 안전관리</td>
+                <td class="py-3 px-4 text-sm text-gray-600">태양광, ESS 등 신재생에너지 설비 안전기준</td>
+                <td class="py-3 px-4 text-sm text-gray-600">2022년</td>
+                <td class="py-3 px-4 text-sm text-gray-600">기술 발전 속도에 비해 제도 대응 지연</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        
+        <div class="mt-8 bg-blue-50 p-5 rounded-lg">
+          <h4 class="font-semibold text-blue-800 mb-3">제도적 한계 및 개선 필요성</h4>
+          <ul class="list-disc pl-5 text-gray-700 space-y-2">
+            <li><span class="font-medium">계절별 위험요소 대응 미흡:</span> 계절에 따른 전기안전 위험요소 변화에 대응하는 체계적 제도 부재</li>
+            <li><span class="font-medium">사각지대 존재:</span> 소형 주택, 노후 건물 등 정기점검 제도 사각지대 존재</li>
+            <li><span class="font-medium">통합적 접근 부족:</span> 부처별, 기관별 분산된 전기안전 관리로 통합적 접근 한계</li>
+            <li><span class="font-medium">인식 개선 활동 미흡:</span> 전기안전 인식 및 교육 프로그램의 체계적 확산 부족</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  </main>
+  
+  <!-- 페이지 내비게이션 -->
+  <div class="container mx-auto px-4 py-8 border-t border-gray-200">
+    <div class="flex flex-col md:flex-row justify-between">
+      <a href="index.html" class="mb-4 md:mb-0 text-blue-600 hover:text-blue-700">
+        &larr; 메인 페이지로 돌아가기
+      </a>
+      <a href="background.html" class="text-blue-600 hover:text-blue-700">
+        다음: 배경 및 문제점 &rarr;
+      </a>
+    </div>
+  </div>
+  
+  <!-- 푸터 섹션 -->
+  <footer class="bg-gray-900 text-white py-12">
+    <div class="container mx-auto px-4">
+      <div class="flex flex-col md:flex-row justify-between">
+        <div class="mb-8 md:mb-0">
+          <div class="text-2xl font-bold mb-4">Safety<span class="text-blue-400">Sync</span></div>
+          <p class="text-gray-400 max-w-md">계절별 맞춤형 전기안전 알림 서비스를 통한 전기재해 예방 및 전기안전관리 방안</p>
+        </div>
+        
+        <div>
+          <h3 class="text-lg font-semibold mb-4">공모전 정보</h3>
+          <p class="text-gray-400">2025년 제4회 전기안전 국민 공모전</p>
+          <p class="text-gray-400">주최: 한국전기안전공사</p>
+          <p class="text-gray-400">작성일: 2025년 5월 11일</p>
+        </div>
+      </div>
+      
+      <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-500 text-sm">
+        <p>&copy; 2025 SafetySync. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+  
+  <script src="main.js"></script>
+  <!-- 차트 스크립트 -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // 연간 전기화재 추이 차트
+      const fireCtx = document.getElementById('fireChart').getContext('2d');
+      const fireChart = new Chart(fireCtx, {
+        type: 'line',
+        data: {
+          labels: ['2020', '2021', '2022', '2023', '2024', '2025(예상)'],
+          datasets: [{
+            label: '전기화재 발생 건수',
+            data: [2156, 2243, 2378, 2559, 2743, 2912],
+            borderColor: 'rgb(239, 68, 68)',
+            backgroundColor: 'rgba(239, 68, 68, 0.1)',
+            tension: 0.3,
+            fill: true
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: 'top',
+            }
+          },
+          scales: {
+            y: {
+              title: {
+                display: true,
+                text: '발생 건수'
+              },
+              suggestedMin: 2000
+            },
+            x: {
+              title: {
+                display: true,
+                text: '연도'
+              }
+            }
+          }
+        }
+      });
+      
+      // 계절별 전기사고 현황 차트
+      const seasonalCtx = document.getElementById('seasonalChart').getContext('2d');
+      const seasonalChart = new Chart(seasonalCtx, {
+        type: 'bar',
+        data: {
+          labels: ['봄 (3~5월)', '여름 (6~8월)', '가을 (9~11월)', '겨울 (12~2월)'],
+          datasets: [
+            {
+              label: '전기화재(건)',
+              data: [851, 686, 523, 683],
+              backgroundColor: 'rgba(239, 68, 68, 0.7)',
+              borderColor: 'rgb(239, 68, 68)',
+              borderWidth: 1
+            },
+            {
+              label: '감전사고(건)',
+              data: [36, 73, 29, 44],
+              backgroundColor: 'rgba(59, 130, 246, 0.7)',
+              borderColor: 'rgb(59, 130, 246)',
+              borderWidth: 1
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: 'top',
+            }
+          },
+          scales: {
+            y: {
+              title: {
+                display: true,
+                text: '발생 건수'
+              }
+            }
+          }
+        }
+      });
+      
+      // 점검 현황 차트
+      const inspectionCtx = document.getElementById('inspectionChart').getContext('2d');
+      const inspectionChart = new Chart(inspectionCtx, {
+        type: 'bar',
+        data: {
+          labels: ['도심 지역', '농어촌 지역', '산간 지역', '도서 지역'],
+          datasets: [
+            {
+              label: '점검률 (%)',
+              data: [87.5, 62.3, 58.7, 43.2],
+              backgroundColor: [
+                'rgba(59, 130, 246, 0.7)',
+                'rgba(245, 158, 11, 0.7)',
+                'rgba(16, 185, 129, 0.7)',
+                'rgba(107, 114, 128, 0.7)'
+              ],
+              borderColor: [
+                'rgb(59, 130, 246)',
+                'rgb(245, 158, 11)',
+                'rgb(16, 185, 129)',
+                'rgb(107, 114, 128)'
+              ],
+              borderWidth: 1
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          indexAxis: 'y',
+          plugins: {
+            legend: {
+              display: false
+            }
+          },
+          scales: {
+            x: {
+              title: {
+                display: true,
+                text: '점검률 (%)'
+              },
+              max: 100
+            }
+          }
+        }
+      });
+      
+      // 연령대별 안전 인식도 차트
+      const awarenessCtx = document.getElementById('awarenessChart').getContext('2d');
+      const awarenessChart = new Chart(awarenessCtx, {
+        type: 'radar',
+        data: {
+          labels: ['전기안전 중요성 인식', '안전 점검 실시율', '교육 참여도', '정보 접근성', '안전장치 인지도'],
+          datasets: [
+            {
+              label: '20-30대',
+              data: [64, 31, 18, 42, 35],
+              backgroundColor: 'rgba(249, 115, 22, 0.2)',
+              borderColor: 'rgb(249, 115, 22)',
+              pointBackgroundColor: 'rgb(249, 115, 22)',
+              pointBorderColor: '#fff',
+              pointHoverBackgroundColor: '#fff',
+              pointHoverBorderColor: 'rgb(249, 115, 22)'
+            },
+            {
+              label: '40-50대',
+              data: [76, 48, 25, 38, 57],
+              backgroundColor: 'rgba(59, 130, 246, 0.2)',
+              borderColor: 'rgb(59, 130, 246)',
+              pointBackgroundColor: 'rgb(59, 130, 246)',
+              pointBorderColor: '#fff',
+              pointHoverBackgroundColor: '#fff',
+              pointHoverBorderColor: 'rgb(59, 130, 246)'
+            },
+            {
+              label: '60대 이상',
+              data: [83, 46, 27, 25, 43],
+              backgroundColor: 'rgba(16, 185, 129, 0.2)',
+              borderColor: 'rgb(16, 185, 129)',
+              pointBackgroundColor: 'rgb(16, 185, 129)',
+              pointBorderColor: '#fff',
+              pointHoverBackgroundColor: '#fff',
+              pointHoverBorderColor: 'rgb(16, 185, 129)'
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          elements: {
+            line: {
+              borderWidth: 2
+            }
+          },
+          scales: {
+            r: {
+              min: 0,
+              max: 100,
+              ticks: {
+                stepSize: 20
+              }
+            }
+          }
+        }
+      });
+    });
+  </script>
+</body>
+</html>
